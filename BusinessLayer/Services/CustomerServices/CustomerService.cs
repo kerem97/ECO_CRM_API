@@ -25,8 +25,9 @@ namespace BusinessLayer.Services.CustomerServices
 
         public async Task AddCustomersAsync(AddCustomerRequest addCustomerRequest, int createdByUserId)
         {
+            addCustomerRequest.CreatedDate = DateTime.Now;
             var customerEntity = _mapper.Map<Customer>(addCustomerRequest);
-            customerEntity.UserId = createdByUserId; // Kullanıcı ID'sini burada atıyoruz
+            customerEntity.UserId = createdByUserId;
 
             await _customerRepository.Add(customerEntity);
         }
@@ -42,7 +43,7 @@ namespace BusinessLayer.Services.CustomerServices
 
         public async Task<List<DisplayCustomerResponse>> GetAllCustomersAsync()
         {
-            var customers = await _customerRepository.GetAll(); 
+            var customers = await _customerRepository.GetAll();
 
             var customerResponses = customers.Select(customer => new DisplayCustomerResponse
             {
@@ -75,7 +76,7 @@ namespace BusinessLayer.Services.CustomerServices
             return new GetByIdCustomerResponse
             {
                 Id = customer.Id,
-                CreatedByUser = customer.User != null ? customer.User.FullName : "Unknown", 
+                CreatedByUser = customer.User != null ? customer.User.FullName : "Unknown",
                 CompanyName = customer.CompanyName,
                 Address = customer.Address,
                 District = customer.District,
@@ -98,7 +99,7 @@ namespace BusinessLayer.Services.CustomerServices
             if (customerEntity != null)
             {
                 _mapper.Map(updateCustomerRequest, customerEntity);
-                customerEntity.UserId = updatedByUserId; 
+                customerEntity.UserId = updatedByUserId;
 
                 _customerRepository.Update(customerEntity);
             }

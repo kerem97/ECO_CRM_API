@@ -9,6 +9,7 @@ namespace DtoLayer.Customer.Requests
     public class AddCustomerRequest
     {
         public string CompanyName { get; set; }
+        public DateTime CreatedDate { get; set; }
         public string Address { get; set; }
         public string District { get; set; }
         public string City { get; set; }
