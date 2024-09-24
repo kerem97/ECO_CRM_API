@@ -1,21 +1,20 @@
 ﻿@{
-    ViewBag.Title = "Index";
-    var userOperations = Model as List<DisplayCustomerOperationResponse>;
+    ViewBag.Title = "Tüm İşlemler";
+    var allOperations = Model as List<DisplayCustomerOperationResponse>;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECO CRM - Dashboard</title>
+    <title>ECO CRM - Tüm İşlemler</title>
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
             crossorigin="anonymous"></script>
 
-
     <style>
-
+        /* Stil kodları aynı kalıyor */
         body {
             background: linear-gradient(to bottom, #b30000, #4d0000);
             margin: 0;
@@ -26,7 +25,6 @@
             overflow: hidden;
             flex-direction: column;
         }
-
 
         .navbar {
             background-color: #990000;
@@ -51,7 +49,6 @@
             .navbar .user-info {
                 font-size: 18px;
             }
-
 
         .sidebar {
             background-color: #333;
@@ -81,24 +78,13 @@
                     background-color: #575757;
                 }
 
-        h2, h3 {
+        h3 {
             margin-left: 220px;
             margin-top: 80px;
             color: #fff;
             text-align: left;
-            padding: 0;
-        }
-
-
-        h3 {
-            margin-left: 220px;
-            margin-bottom: 10px;
-            color: #fff;
-            text-align: left;
             font-size: 18px;
         }
-
-
 
         table {
             width: calc(100% - 220px);
@@ -137,42 +123,20 @@
         }
 
         tbody tr:nth-child(odd) td {
-            background-color: #660000; /* Daha koyu kırmızı */
+            background-color: #660000;
         }
 
         tbody tr:nth-child(even) td {
-            background-color: #4d0000; /* Biraz daha açık koyu kırmızı */
+            background-color: #4d0000;
         }
 
-        .description-cell {
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .read-more {
-            background-color: #ff6666;
-            border: none;
+        .footer-text {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
             color: #fff;
-            padding: 4px 8px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-left: 5px;
-            text-decoration: none;
+            font-size: 12px;
         }
-
-            .read-more:hover {
-                background-color: #ff3333;
-            }
-
-        .btn:active,
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-            background-color: #dc3545;
-        }
-
     </style>
 </head>
 <body>
@@ -188,26 +152,26 @@
         <div class="user-info">@ViewBag.FullName</div>
     </div>
 
-    <h3 style="margin-left:85px;">@ViewBag.FullName , Size Ait İşlemler</h3>
+    <h3 style="margin-left:85px;">Tüm İşlemler Listesi</h3>
     <table style="width: 100%;">
         <thead>
             <tr>
-                <th style="width: 100px;">Tarih</th>
-                <th style="width: 100px;">Personel</th>
-                <th style="width: 80px;">Firma</th>
-                <th style="width: 120px;">Müşteri</th>
-                <th style="width: 120px;">Adres</th>
-                <th style="width: 100px;">Yöntem</th>
-                <th style="width: 100px;">Görüşülen</th>
-                <th style="width: 130px;">Planlanan Tarih</th>
-                <th style="width: 130px;">Görüşülen Tarih</th>
-                <th style="width: 100px;">Sebep</th>
-                <th style="width: 80px;">Durum</th>
+                <th>Tarih</th>
+                <th>Personel</th>
+                <th>Firma</th>
+                <th>Müşteri</th>
+                <th>Adres</th>
+                <th>Yöntem</th>
+                <th>Görüşülen</th>
+                <th>Planlanan Tarih</th>
+                <th>Görüşülen Tarih</th>
+                <th>Sebep</th>
+                <th>Durum</th>
                 <th>Açıklama</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var operation in userOperations)
+            @foreach (var operation in allOperations)
             {
                 <tr>
                     <td>@operation.OperationDate</td>
@@ -228,16 +192,13 @@
             }
         </tbody>
     </table>
-    <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
-        Designed by Eco Software Development ℗
-    </div>
+
+    <div class="footer-text">Designed by Eco Software Development ℗</div>
     <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
         <button class="btn btn-danger btn-sm mx-1" onclick="changePage('prev')" style="border-radius: 20px; padding: 5px 15px;">◀ Previous</button>
         <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #fff;">1</span>
         <button class="btn btn-danger btn-sm mx-1" onclick="changePage('next')" style="border-radius: 20px; padding: 5px 15px;">Next ▶</button>
     </div>
-
-
     <script>
         let currentPage = 1;
         const pageSize = 15;
@@ -275,7 +236,5 @@
             }
         }
     </script>
-
-
 </body>
 </html>

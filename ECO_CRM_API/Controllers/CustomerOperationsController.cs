@@ -56,6 +56,18 @@ public class CustomerOperationController : ControllerBase
         var operations = await _customerOperationService.GetUserOperationsAsync(userId);
         return Ok(operations);
     }
+    [HttpGet("all-operations")]
+    public async Task<IActionResult> GetAllCustomerOperations([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 15)
+    {
+        var operations = await _customerOperationService.GetAllCustomerOperationsPagedAsync(pageNumber, pageSize);
+
+        if (operations == null || operations.Count == 0)
+        {
+            return NotFound("No operations found.");
+        }
+
+        return Ok(operations);
+    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateOperation(int id, [FromBody] UpdateCustomerOperationRequest operationRequest)

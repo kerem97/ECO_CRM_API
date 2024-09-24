@@ -70,6 +70,13 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
         }
 
+        public async Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsPagedAsync(int pageNumber, int pageSize)
+        {
+            var operations = await _customerOperationRepository.GetAllPagedAsync(pageNumber, pageSize);
+            return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
+        }
+
+
         public async Task<GetByIdCustomerOperationResponse> GetCustomerOperationByIdAsync(int id)
         {
             var operation = await _customerOperationRepository.GetById(id);

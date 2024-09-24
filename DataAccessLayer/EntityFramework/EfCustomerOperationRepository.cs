@@ -39,6 +39,17 @@ namespace DataAccessLayer.EntityFramework
             .ToListAsync();
         }
 
+        public async Task<List<CustomerOperation>> GetAllPagedAsync(int pageNumber, int pageSize)
+        {
+            return await _context.CustomerOperations
+                .Include(co => co.User)
+                .Include(co => co.Customer)
+                .OrderByDescending(co => co.OperationDate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
         public async Task<CustomerOperation> GetById(int id)
         {
             return await _context.Set<CustomerOperation>().FindAsync(id);

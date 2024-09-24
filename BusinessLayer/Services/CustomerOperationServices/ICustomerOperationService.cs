@@ -19,5 +19,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task UpdateCustomerOperationsAsync(UpdateCustomerOperationRequest updateCustomerOperationRequest, int userId);
         Task DeleteCustomerOperationsAsync(int id);
         Task<List<DisplayCustomerOperationResponse>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
+        Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsPagedAsync(int pageNumber, int pageSize);
     }
 }
