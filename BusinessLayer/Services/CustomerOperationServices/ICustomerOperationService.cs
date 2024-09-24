@@ -13,8 +13,10 @@ namespace BusinessLayer.Services.CustomerOperationServices
     {
         Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsAsync();
         Task<GetByIdCustomerOperationResponse> GetCustomerOperationByIdAsync(int id);
-        Task AddCustomerOperationsAsync(AddCustomerOperationRequest addCustomerOperationRequest);
-        Task UpdateCustomerOperationsAsync(UpdateCustomerOperationRequest updateCustomerOperationRequest);
+        Task<List<DisplayCustomerOperationByCustomerResponse>> GetOperationsByCustomerIdAsync(int customerId);
+        Task<List<DisplayCustomerOperationResponse>> GetUserOperationsAsync(int userId);
+        Task AddCustomerOperationsAsync(AddCustomerOperationRequest addCustomerOperationRequest, int userId);
+        Task UpdateCustomerOperationsAsync(UpdateCustomerOperationRequest updateCustomerOperationRequest, int userId);
         Task DeleteCustomerOperationsAsync(int id);
     }
 }

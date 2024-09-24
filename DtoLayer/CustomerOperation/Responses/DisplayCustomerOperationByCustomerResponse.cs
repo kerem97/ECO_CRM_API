@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DtoLayer.CustomerOperation.Responses
 {
-    public class DisplayCustomerOperationResponse
+    public class DisplayCustomerOperationByCustomerResponse
     {
-        public string CreatedByUser { get; set; } 
+        public int Id { get; set; }
+        public string CreatedByUser { get; set; }
         public string CustomerName { get; set; }
         public string Method { get; set; }
         public bool IsNew { get; set; }
@@ -20,4 +21,5 @@ namespace DtoLayer.CustomerOperation.Responses
         public string Address { get; set; }
         public string Status { get; set; }
     }
+
 }

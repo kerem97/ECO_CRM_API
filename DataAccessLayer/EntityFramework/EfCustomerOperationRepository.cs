@@ -33,7 +33,10 @@ namespace DataAccessLayer.EntityFramework
 
         public async Task<List<CustomerOperation>> GetAll()
         {
-            return await _context.Set<CustomerOperation>().ToListAsync();
+            return await _context.CustomerOperations
+            .Include(co => co.User)
+            .Include(co => co.Customer)
+            .ToListAsync();
         }
 
         public async Task<CustomerOperation> GetById(int id)
@@ -41,8 +44,26 @@ namespace DataAccessLayer.EntityFramework
             return await _context.Set<CustomerOperation>().FindAsync(id);
         }
 
+        public async Task<List<CustomerOperation>> GetOperationsByCustomerId(int customerId)
+        {
+            return await _context.CustomerOperations
+       .Include(co => co.User)
+       .Include(co => co.Customer)
+       .Where(co => co.CustomerId == customerId)
+       .ToListAsync();
+        }
+
+        public async Task<List<CustomerOperation>> GetOperationsByUserId(int userId)
+        {
+            return await _context.CustomerOperations
+                .Include(co => co.User)
+                .Include(co => co.Customer)
+                .Where(co => co.UserId == userId)
+                .ToListAsync();
+        }
+
         public async void Update(CustomerOperation entity)
-        {   
+        {
             _context.Set<CustomerOperation>().Update(entity);
             _context.SaveChanges();
         }

@@ -25,8 +25,13 @@ namespace BusinessLayer.Mapping
 
             CreateMap<CustomerOperation, AddCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, UpdateCustomerOperationRequest>().ReverseMap();
-            CreateMap<CustomerOperation, DisplayCustomerOperationResponse>().ReverseMap();
+            CreateMap<CustomerOperation, DisplayCustomerOperationResponse>()
+             .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown")) 
+             .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer != null ? src.Customer.CompanyName : "Unknown"));
             CreateMap<CustomerOperation, GetByIdCustomerOperationResponse>().ReverseMap();
+            CreateMap<CustomerOperation, DisplayCustomerOperationByCustomerResponse>()
+             .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown"))
+              .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer != null ? src.Customer.CompanyName : "Unknown"));
 
             CreateMap<User, AddUserRequest>().ReverseMap()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
