@@ -10,7 +10,7 @@ namespace DtoLayer.CustomerOperation.Requests
     {
         public int CustomerId { get; set; }
         public string Method { get; set; }
-        public bool IsNew { get; set; }
+        public string IsNew { get; set; }
         public DateTime? PlannedDate { get; set; }
         public DateTime? ActualDate { get; set; }
         public string Description { get; set; }

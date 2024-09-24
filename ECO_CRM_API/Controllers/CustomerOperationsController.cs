@@ -66,7 +66,12 @@ public class CustomerOperationController : ControllerBase
 
         return Ok("Operation updated successfully");
     }
-
+    [HttpGet("paged-operations")]
+    public async Task<IActionResult> GetPagedOperations(int pageNumber = 1, int pageSize = 15)
+    {
+        var operations = await _customerOperationService.GetPagedCustomerOperationsAsync(pageNumber, pageSize);
+        return Ok(operations);
+    }
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOperation(int id)
     {

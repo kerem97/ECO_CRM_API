@@ -12,5 +12,6 @@ namespace DataAccessLayer.Abstract
     {
         public Task<List<CustomerOperation>> GetOperationsByCustomerId(int customerId);
         public Task<List<CustomerOperation>> GetOperationsByUserId(int userId);
+        public Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
     }
 }
