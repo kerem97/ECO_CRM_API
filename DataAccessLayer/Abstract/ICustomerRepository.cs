@@ -10,5 +10,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
+        public Task<(List<Customer>, int)> GetAllPaged(int pageNumber, int pageSize);
     }
 }

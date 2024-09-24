@@ -95,10 +95,13 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
         }
 
-        public async Task<List<DisplayCustomerOperationResponse>> GetUserOperationsAsync(int userId)
+        public async Task<(List<DisplayCustomerOperationResponse>, int)> GetUserOperationsAsync(int userId, int pageNumber, int pageSize)
         {
-            var operations = await _customerOperationRepository.GetOperationsByUserId(userId);
-            return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
+            var (operations, totalOperations) = await _customerOperationRepository.GetOperationsByUserId(userId, pageNumber, pageSize);
+
+            var mappedOperations = _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
+
+            return (mappedOperations, totalOperations);
         }
         public async Task UpdateCustomerOperationsAsync(UpdateCustomerOperationRequest updateCustomerOperationRequest, int userId)
         {

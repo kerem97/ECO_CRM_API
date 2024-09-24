@@ -24,7 +24,25 @@
             min-height: 100vh;
             overflow: hidden;
             flex-direction: column;
+            overflow-y: scroll; /* Her zaman dikey kaydırma çubuğunu göster */
+            scrollbar-width: thin; /* Daha ince bir scrollbar genişliği */
+            scrollbar-color: #990000 #333; /* Kaydırma çubuğu renkleri */
+            padding: 0 20px;
         }
+
+            body::-webkit-scrollbar {
+                width: 8px; /* Kaydırma çubuğu genişliği */
+            }
+
+            body::-webkit-scrollbar-track {
+                background: #333; /* Scrollbar arka plan rengi */
+            }
+
+            body::-webkit-scrollbar-thumb {
+                background-color: #990000; /* Scrollbar tutacağı rengi */
+                border-radius: 10px; /* Yuvarlatılmış köşeler */
+                border: 2px solid #333; /* Çubuğun içinde boşluk bırakmak için kenarlık */
+            }
 
         .navbar {
             background-color: #990000;
@@ -152,7 +170,7 @@
         <div class="user-info">@ViewBag.FullName</div>
     </div>
 
-    <h3 style="margin-left:85px;">Tüm İşlemler Listesi</h3>
+    <h3 style="margin-left:100px;">Tüm İşlemler Listesi</h3>
     <table style="width: 100%;">
         <thead>
             <tr>
@@ -201,9 +219,8 @@
     </div>
     <script>
         let currentPage = 1;
-        const pageSize = 15;
+        const pageSize = 10;
         const token = '@ViewBag.Token';
-
 
         $(document).ready(function () {
             fetchData(currentPage);
@@ -211,7 +228,7 @@
 
         function fetchData(page) {
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperation/paged-operations?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/paged-operations?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -219,12 +236,47 @@
                 success: function (data) {
                     currentPage = page;
                     $('#currentPage').text(currentPage);
-
-                    console.log(data);
+                    updateTable(data); // Gelen veriyi tabloya ekle
                 },
                 error: function () {
                     alert('Veri alınırken hata oluştu.');
                 }
+            });
+        }
+
+        function updateTable(data) {
+            let tbody = $('table tbody');
+            tbody.empty(); // Önceki verileri temizle
+
+            data.forEach(operation => {
+                const operationDate = operation.operationDate
+                    ? new Date(operation.operationDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.operationDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                    : '';
+                const plannedDate = operation.plannedDate
+                    ? new Date(operation.plannedDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.plannedDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                    : '';
+                const actualDate = operation.actualDate
+                    ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                    : '';
+
+                tbody.append(`
+                        <tr>
+                            <td>${operationDate}</td>
+                            <td>${operation.createdByUser || ''}</td>
+                            <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                            <td>${operation.customerName || ''}</td>
+                            <td>${operation.address || ''}</td>
+                            <td>${operation.method || ''}</td>
+                            <td>${operation.contactPerson || ''}</td>
+                            <td>${plannedDate}</td>
+                            <td>${actualDate}</td>
+                            <td>${operation.reason || ''}</td>
+                            <td>${operation.status || ''}</td>
+                            <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                ${operation.description || ''}
+                            </td>
+                        </tr>
+                    `);
             });
         }
 

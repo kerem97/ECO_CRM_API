@@ -37,6 +37,21 @@ namespace DataAccessLayer.EntityFramework
             return await _context.Customers.Include(c => c.User).ToListAsync();
         }
 
+        public async Task<(List<Customer>, int)> GetAllPaged(int pageNumber, int pageSize)
+        {
+            var customersQuery = _context.Customers.Include(c => c.User)
+                                                   .OrderBy(c => c.CompanyName);
+
+            int totalCustomers = await customersQuery.CountAsync();
+
+            var customers = await customersQuery.Skip((pageNumber - 1) * pageSize)
+                                                .Take(pageSize)
+                                                .ToListAsync();
+
+            return (customers, totalCustomers);
+        }
+
+
         public async Task<Customer> GetById(int id)
         {
             return await _context.Customers

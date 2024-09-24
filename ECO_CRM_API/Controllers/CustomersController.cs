@@ -33,7 +33,15 @@ namespace ECO_CRM_API.Controllers
             var customers = await _customerService.GetAllCustomersAsync();
             return Ok(customers);
         }
+        [HttpGet("paged-customers")]
+        public async Task<IActionResult> GetPagedCustomers(int pageNumber = 1, int pageSize = 15)
+        {
+            var (customers, totalRecords) = await _customerService.GetPagedCustomersAsync(pageNumber, pageSize);
 
+            Response.Headers.Add("X-Total-Count", totalRecords.ToString());
+
+            return Ok(customers);
+        }
         [HttpPost]
         public async Task<IActionResult> AddCustomer([FromBody] AddCustomerRequest customerDto)
         {

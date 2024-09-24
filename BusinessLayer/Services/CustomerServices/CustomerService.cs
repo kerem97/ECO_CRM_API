@@ -93,6 +93,15 @@ namespace BusinessLayer.Services.CustomerServices
             };
         }
 
+        public async Task<(List<DisplayCustomerResponse>, int)> GetPagedCustomersAsync(int pageNumber, int pageSize)
+        {
+            var (customers, totalCustomers) = await _customerRepository.GetAllPaged(pageNumber, pageSize);
+
+            var customerResponses = _mapper.Map<List<DisplayCustomerResponse>>(customers);
+
+            return (customerResponses, totalCustomers);
+        }
+
         public async Task UpdateCustomersAsync(UpdateCustomerRequest updateCustomerRequest, int updatedByUserId)
         {
             var customerEntity = await _customerRepository.GetById(updateCustomerRequest.Id);

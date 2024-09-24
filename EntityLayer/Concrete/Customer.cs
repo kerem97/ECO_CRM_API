@@ -24,6 +24,7 @@ namespace EntityLayer.Concrete
         public string Description { get; set; }
         public string Status { get; set; }
         public decimal LimitTl { get; set; }
+        public string Group { get; set; }
         public ICollection<CustomerOperation> CustomerOperations { get; set; }
         public User User { get; set; }
     }

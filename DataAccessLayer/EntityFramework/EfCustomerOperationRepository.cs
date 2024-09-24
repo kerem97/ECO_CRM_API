@@ -60,17 +60,27 @@ namespace DataAccessLayer.EntityFramework
             return await _context.CustomerOperations
        .Include(co => co.User)
        .Include(co => co.Customer)
+       .OrderByDescending(co => co.OperationDate)
        .Where(co => co.CustomerId == customerId)
        .ToListAsync();
         }
 
-        public async Task<List<CustomerOperation>> GetOperationsByUserId(int userId)
+        public async Task<(List<CustomerOperation>, int)> GetOperationsByUserId(int userId, int pageNumber, int pageSize)
         {
-            return await _context.CustomerOperations
+            var query = _context.CustomerOperations
                 .Include(co => co.User)
                 .Include(co => co.Customer)
                 .Where(co => co.UserId == userId)
+                .OrderByDescending(co => co.OperationDate);
+
+            int totalRecords = await query.CountAsync(); // Toplam kayıt sayısını alıyoruz
+
+            var operations = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (operations, totalRecords); // Operasyonları ve toplam kayıt sayısını dönüyoruz
         }
 
         public async Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize)

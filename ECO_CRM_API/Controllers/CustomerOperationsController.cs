@@ -7,12 +7,12 @@ using System.Security.Claims;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class CustomerOperationController : ControllerBase
+public class CustomerOperationsController : ControllerBase
 {
     private readonly ICustomerOperationService _customerOperationService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CustomerOperationController(ICustomerOperationService customerOperationService, IHttpContextAccessor httpContextAccessor)
+    public CustomerOperationsController(ICustomerOperationService customerOperationService, IHttpContextAccessor httpContextAccessor)
     {
         _customerOperationService = customerOperationService;
         _httpContextAccessor = httpContextAccessor;
@@ -21,7 +21,7 @@ public class CustomerOperationController : ControllerBase
     [HttpPost("add")]
     public async Task<IActionResult> AddOperation([FromBody] AddCustomerOperationRequest operationRequest)
     {
-        var userId = GetCurrentUserId(); 
+        var userId = GetCurrentUserId();
         await _customerOperationService.AddCustomerOperationsAsync(operationRequest, userId);
 
         return Ok("Operation added successfully");
@@ -47,17 +47,23 @@ public class CustomerOperationController : ControllerBase
     public async Task<IActionResult> GetOperationsByCustomer(int customerId)
     {
         var operations = await _customerOperationService.GetOperationsByCustomerIdAsync(customerId);
+        if (operations == null || !operations.Any())
+            return NotFound();
+
         return Ok(operations);
     }
     [HttpGet("user-operations")]
-    public async Task<IActionResult> GetUserOperations()
+    public async Task<IActionResult> GetUserOperations(int pageNumber = 1, int pageSize = 10)
     {
-        var userId = GetCurrentUserId(); 
-        var operations = await _customerOperationService.GetUserOperationsAsync(userId);
+        var userId = GetCurrentUserId();
+        var (operations, totalOperations) = await _customerOperationService.GetUserOperationsAsync(userId, pageNumber, pageSize);
+
+        Response.Headers.Add("X-Total-Count", totalOperations.ToString());
+
         return Ok(operations);
     }
     [HttpGet("all-operations")]
-    public async Task<IActionResult> GetAllCustomerOperations([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 15)
+    public async Task<IActionResult> GetAllCustomerOperations( int pageNumber = 1, int pageSize = 10)
     {
         var operations = await _customerOperationService.GetAllCustomerOperationsPagedAsync(pageNumber, pageSize);
 
@@ -72,7 +78,7 @@ public class CustomerOperationController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateOperation(int id, [FromBody] UpdateCustomerOperationRequest operationRequest)
     {
-        var userId = GetCurrentUserId(); 
+        var userId = GetCurrentUserId();
         operationRequest.Id = id;
         await _customerOperationService.UpdateCustomerOperationsAsync(operationRequest, userId);
 

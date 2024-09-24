@@ -20,7 +20,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
 
             if (string.IsNullOrEmpty(fullName))
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Login", "Account");
             }
 
             ViewBag.FullName = fullName;
@@ -29,7 +29,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
             ViewBag.Token = HttpContext.Session.GetString("Token");
 
-            var response = await client.GetAsync("https://localhost:44309/api/CustomerOperation/all-operations");
+            var response = await client.GetAsync("https://localhost:44309/api/CustomerOperations/all-operations?pageNumber=1&pageSize=10");
             var allOperations = new List<DisplayCustomerOperationResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -39,6 +39,32 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             }
 
             return View(allOperations);
+        }
+        public async Task<IActionResult> OperationsByCustomer(int id)
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ViewBag.Token}");
+
+            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/by-customer/{id}");
+            var customerOperations = new List<DisplayCustomerOperationResponse>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                customerOperations = JsonConvert.DeserializeObject<List<DisplayCustomerOperationResponse>>(apiResponse);
+            }
+
+            return View(customerOperations);
         }
     }
 }

@@ -1,21 +1,16 @@
 ﻿@{
-    ViewBag.Title = "Index";
-    var userOperations = Model as List<DisplayCustomerOperationResponse>;
+    ViewBag.Title = "Müşteri Listesi";
+    var customers = Model as List<DisplayCustomerResponse>;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECO CRM - Dashboard</title>
-    <!-- jQuery CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
-            crossorigin="anonymous"></script>
-
-
+    <title>ECO CRM - Müşteriler</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-
+        /* Genel sayfa ve tablo stilini koruyoruz */
         body {
             background: linear-gradient(to bottom, #b30000, #4d0000);
             margin: 0;
@@ -29,7 +24,6 @@
             scrollbar-width: thin; /* Daha ince bir scrollbar genişliği */
             scrollbar-color: #990000 #333; /* Kaydırma çubuğu renkleri */
             padding: 0 20px;
-
         }
 
             body::-webkit-scrollbar {
@@ -45,7 +39,6 @@
                 border-radius: 10px; /* Yuvarlatılmış köşeler */
                 border: 2px solid #333; /* Çubuğun içinde boşluk bırakmak için kenarlık */
             }
-
 
         .navbar {
             background-color: #990000;
@@ -70,7 +63,6 @@
             .navbar .user-info {
                 font-size: 18px;
             }
-
 
         .sidebar {
             background-color: #333;
@@ -107,17 +99,6 @@
             text-align: left;
             padding: 0;
         }
-
-
-        h3 {
-            margin-left: 220px;
-            margin-bottom: 10px;
-            color: #fff;
-            text-align: left;
-            font-size: 18px;
-        }
-
-
 
         table {
             width: calc(100% - 220px);
@@ -156,42 +137,12 @@
         }
 
         tbody tr:nth-child(odd) td {
-            background-color: #660000; /* Daha koyu kırmızı */
+            background-color: #660000;
         }
 
         tbody tr:nth-child(even) td {
-            background-color: #4d0000; /* Biraz daha açık koyu kırmızı */
+            background-color: #4d0000;
         }
-
-        .description-cell {
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .read-more {
-            background-color: #ff6666;
-            border: none;
-            color: #fff;
-            padding: 4px 8px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-left: 5px;
-            text-decoration: none;
-        }
-
-            .read-more:hover {
-                background-color: #ff3333;
-            }
-
-        .btn:active,
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-            background-color: #dc3545;
-        }
-
     </style>
 </head>
 <body>
@@ -207,41 +158,46 @@
         <div class="user-info">@ViewBag.FullName</div>
     </div>
 
-    <h3 style="margin-left:100px;">@ViewBag.FullName , Size Ait İşlemler</h3>
+    <h3 style="margin-left:100px;">Müşteri Listesi</h3>
+
     <table style="width: 100%;">
         <thead>
             <tr>
-                <th style="width: 100px;">Tarih</th>
-                <th style="width: 100px;">Personel</th>
-                <th style="width: 80px;">Firma</th>
-                <th style="width: 120px;">Müşteri</th>
-                <th style="width: 120px;">Adres</th>
-                <th style="width: 100px;">Yöntem</th>
-                <th style="width: 100px;">Görüşülen</th>
-                <th style="width: 130px;">Planlanan Tarih</th>
-                <th style="width: 130px;">Görüşülen Tarih</th>
-                <th style="width: 100px;">Sebep</th>
-                <th style="width: 80px;">Durum</th>
+                <th>Müşteri Adı</th>
+                <th>Şehir</th>
+                <th>İlçe</th>
+                <th>Adres</th>
+                <th>Ülke</th>
+                <th>Yetkili Kişi</th>
+                <th>Telefon</th>
+                <th>E-Posta</th>
+                <th>Yurt içi</th>
                 <th>Açıklama</th>
+                <th>Durum</th>
+                <th>Grup</th>
+                <th>İşlem Detayları</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var operation in userOperations)
+        <tbody id="customer-table-body">
+            @foreach (var customer in customers)
             {
                 <tr>
-                    <td>@operation.OperationDate</td>
-                    <td>@operation.CreatedByUser</td>
-                    <td>@operation.IsNew</td>
-                    <td>@operation.CustomerName</td>
-                    <td>@operation.Address</td>
-                    <td>@operation.Method</td>
-                    <td>@operation.ContactPerson</td>
-                    <td>@operation.PlannedDate</td>
-                    <td>@operation.ActualDate</td>
-                    <td>@operation.Reason</td>
-                    <td>@operation.Status</td>
-                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                        @operation.Description
+                    <td>@customer.CompanyName</td>
+                    <td>@customer.City</td>
+                    <td>@customer.District</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.Country</td>
+                    <td>@customer.ContactName</td>
+                    <td>@customer.ContactPhone1</td>
+                    <td>@customer.ContactEmail</td>
+                    <td>@(customer.IsDomestic ? "Evet" : "Hayır")</td>
+                    <td>@customer.Description</td>
+                    <td>@customer.Status</td>
+                    <td>@customer.Group</td>
+
+                    <td>
+                        <a href="/CustomerOperation/OperationsByCustomer/@customer.Id" class="btn btn-primary btn-sm" style="background-color: #990000; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+                            Detaylar
                     </td>
                 </tr>
             }
@@ -250,16 +206,16 @@
     <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
         Designed by Eco Software Development ℗
     </div>
+
     <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
         <button class="btn btn-danger btn-sm mx-1" onclick="changePage('prev')" style="border-radius: 20px; padding: 5px 15px;">◀ Previous</button>
         <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #fff;">1</span>
         <button class="btn btn-danger btn-sm mx-1" onclick="changePage('next')" style="border-radius: 20px; padding: 5px 15px;">Next ▶</button>
     </div>
 
-
     <script>
         let currentPage = 1;
-        const pageSize = 10;
+        const pageSize = 8;
         const token = '@ViewBag.Token';
 
         $(document).ready(function () {
@@ -268,7 +224,7 @@
 
         function fetchData(page) {
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/Customers/paged-customers?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -276,7 +232,7 @@
                 success: function (data) {
                     currentPage = page;
                     $('#currentPage').text(currentPage);
-                    updateTable(data); // Gelen veriyi tabloya ekleyelim
+                    updateTable(data);
                 },
                 error: function () {
                     alert('Veri alınırken hata oluştu.');
@@ -285,39 +241,32 @@
         }
 
         function updateTable(data) {
-            let tbody = $('table tbody');
-            tbody.empty(); // Eski veriyi temizle
+            let tbody = $('#customer-table-body');
+            tbody.empty(); // Tablodaki eski veriyi temizle
 
-            data.forEach(operation => {
-                const operationDate = operation.operationDate
-                    ? new Date(operation.operationDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.operationDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                    : '';
-                const plannedDate = operation.plannedDate
-                    ? new Date(operation.plannedDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.plannedDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                    : '';
-                const actualDate = operation.actualDate
-                    ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                    : '';
-
-
+            data.forEach(customer => {
                 tbody.append(`
-                    <tr>
-                        <td>${operationDate}</td>
-                        <td>${operation.createdByUser || ''}</td>
-                        <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                        <td>${operation.customerName || ''}</td>
-                        <td>${operation.address || ''}</td>
-                        <td>${operation.method || ''}</td>
-                        <td>${operation.contactPerson || ''}</td>
-                        <td>${plannedDate}</td>
-                        <td>${actualDate}</td>
-                        <td>${operation.reason || ''}</td>
-                        <td>${operation.status || ''}</td>
-                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                            ${operation.description || ''}
+                               <tr>
+                        <td>${customer.companyName || ""}</td>
+                        <td>${customer.city || ""}</td>
+                        <td>${customer.district || ""}</td>
+                        <td>${customer.address || ""}</td>
+                        <td>${customer.country || ""}</td>
+                        <td>${customer.contactName || ""}</td>
+                        <td>${customer.contactPhone1 || ""}</td>
+                        <td>${customer.contactEmail || ""}</td>
+                        <td>${customer.isDomestic ? "Evet" : "Hayır"}</td>
+                        <td>${customer.description || ""}</td>
+                        <td>${customer.status || ""}</td>
+                        <td>${customer.group || ""}</td>
+                        <td>
+                            <a href="/CustomerOperation/OperationsByCustomer/${customer.id}" class="btn btn-primary btn-sm"
+                               style="background-color: #990000; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                Detaylar
+                            </a>
                         </td>
                     </tr>
-                `);
+                    `);
             });
         }
 
@@ -329,7 +278,5 @@
             }
         }
     </script>
-
-
 </body>
 </html>
