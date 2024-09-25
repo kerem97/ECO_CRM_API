@@ -48,7 +48,13 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             }
             return View(model);
         }
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
 
+            return RedirectToAction("Login", "Account");
+        }
 
 
     }

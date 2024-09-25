@@ -8,13 +8,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECO CRM - Dashboard</title>
-    <!-- jQuery CDN -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
             crossorigin="anonymous"></script>
-
-
     <style>
         body {
             background: linear-gradient(to bottom, #3a3a3a, #1f1f1f);
@@ -27,11 +24,8 @@
             flex-direction: column;
             padding: 0 20px;
         }
-
-           
-
         .navbar {
-            background-color: #444; /* Gri tonları */
+            background-color: #444; 
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
@@ -45,7 +39,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
-
         .sidebar {
             background-color: #333;
             padding: 20px;
@@ -60,7 +53,6 @@
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
             overflow-y: auto;
         }
-
             .sidebar a {
                 color: #fff;
                 text-decoration: none;
@@ -70,43 +62,19 @@
                 margin-bottom: 5px;
                 transition: background-color 0.3s, padding-left 0.3s;
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
             }
-
                 .sidebar a:hover {
                     background-color: #575757;
                     padding-left: 15px;
                 }
-
-            .sidebar .submenu {
-                display: none;
-                flex-direction: column;
-                padding-left: 15px;
-                margin-top: 5px;
-            }
-
-                .sidebar .submenu a {
-                    padding: 5px 10px;
-                    font-size: 14px;
-                    border: none;
-                    background: none;
-                    display: block;
-                }
-
-                    .sidebar .submenu a:hover {
-                        background-color: #444;
-                    }
-
         .arrow {
             margin-left: 10px;
             transition: transform 0.3s;
         }
-
         .rotate {
             transform: rotate(90deg);
         }
-
         h2, h3 {
             margin-left: 220px;
             margin-top: 80px;
@@ -114,7 +82,6 @@
             text-align: left;
             padding: 0;
         }
-
         h3 {
             margin-left: 220px;
             margin-bottom: 10px;
@@ -122,7 +89,6 @@
             text-align: left;
             font-size: 18px;
         }
-
         table {
             width: calc(100% - 220px);
             margin-left: 100px;
@@ -134,13 +100,11 @@
             color: #fff;
             font-size: 12px;
         }
-
         th, td {
             padding: 6px;
             text-align: left;
             color: #fff;
         }
-
         th {
             background-color: #555;
             color: #fff;
@@ -148,29 +112,20 @@
             letter-spacing: 0.05em;
             font-size: 12px;
         }
-
         td {
             background-color: #666;
             font-size: 12px;
             box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
         }
-
         tbody tr:hover {
             background-color: #777;
         }
-
         tbody tr:nth-child(odd) td {
             background-color: #444;
         }
-
         tbody tr:nth-child(even) td {
             background-color: #666;
         }
-
-      
-
- 
-
         .btn:active,
         .btn:focus {
             outline: none;
@@ -178,28 +133,14 @@
             background-color: #777;
         }
     </style>
-
 </head>
 <body>
     <div class="sidebar">
         <a href="/Dashboard/Index/">Ana Sayfa</a>
-        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-            <a href="/CustomerOperation/Index/" style="flex-grow: 1; color: #fff; text-decoration: none;">Tüm İşlemler</a>
-            <span class="arrow" id="toggleOperationSubMenu" style="padding: 0 5px;">▼</span>
-        </div>
-        <div class="submenu" id="operationSubMenu">
-            <a href="/CustomerOperation/AddOperation">Yeni İşlem Girişi</a>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-            <a href="/Customer/" style="flex-grow: 1; color: #fff; text-decoration: none;">Müşteriler</a>
-            <span class="arrow" id="toggleSubMenu" style="padding: 0 5px;">▼</span>
-        </div>
-        <div class="submenu" id="customerSubMenu">
-            <a href="/Customer/NewCustomer">Müşteri Ekle</a>
-        </div>
+        <a href="/CustomerOperation/Index/">Tüm İşlemler</a>
+        <a href="/Customer/Index">Müşteriler</a>
         <a href="/Account/Logout/">Çıkış</a>
     </div>
-
     <div class="navbar">
         <div class="eco-crm">ECO CRM</div>
         <div class="user-info">@ViewBag.FullName</div>
@@ -257,18 +198,13 @@
             Sonraki ▶
         </button>
     </div>
-
-
-
     <script>
         let currentPage = 1;
         const pageSize = 10;
         const token = '@ViewBag.Token';
-
         $(document).ready(function () {
             fetchData(currentPage);
         });
-
         function fetchData(page) {
             $.ajax({
                 url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${page}&pageSize=${pageSize}`,
@@ -286,7 +222,6 @@
                 }
             });
         }
-
         function updateTable(data) {
             let tbody = $('table tbody');
             tbody.empty();
@@ -301,8 +236,6 @@
                 const actualDate = operation.actualDate
                     ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
                     : '';
-
-
                 tbody.append(`
                                     <tr>
                                         <td>${operationDate}</td>
@@ -323,7 +256,6 @@
                                 `);
             });
         }
-
         function changePage(direction) {
             if (direction === 'next') {
                 fetchData(currentPage + 1);
@@ -331,26 +263,9 @@
                 fetchData(currentPage - 1);
             }
         }
-
-        $(document).ready(function () {
-            $('#toggleSubMenu').on('click', function (event) {
-                event.stopPropagation();
-                $('#customerSubMenu').slideToggle();
-                $(this).toggleClass('rotate');
-            });
-        });
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;
         });
-        $(document).ready(function () {
-            $('#toggleOperationSubMenu').on('click', function (event) {
-                event.stopPropagation();
-                $('#operationSubMenu').slideToggle();
-                $(this).toggleClass('rotate');
-            });
-        });
     </script>
-
-
 </body>
 </html>
