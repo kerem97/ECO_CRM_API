@@ -1,18 +1,20 @@
-﻿@model AddCustomerRequest
+﻿@model AddCustomerOperationWithDisplayRequest
 @{
-    ViewBag.Title = "Müşteri Ekle";
+    ViewBag.Title = "Operasyon Ekle";
+    Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Müşteri Ekle - ECO CRM</title>
+    <title>Operasyon Ekle - ECO CRM</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            background: linear-gradient(to bottom, #3a3a3a, #1f1f1f); /* Gri tonları */
+            background: linear-gradient(to bottom, #3a3a3a, #1f1f1f);
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
@@ -24,8 +26,72 @@
             box-sizing: border-box;
         }
 
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn-custom {
+            background-color: #666;
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+            .btn-custom:hover {
+                background-color: #888;
+                transform: translateY(-2px);
+            }
+
+        .custom-dropdown {
+            padding: 8px;
+            font-size: 14px;
+            background-color: #555; /* Temayla uyumlu renk */
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 4px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+            height: 36px; /* Dropdown boyutunu ayarlayalım */
+        }
+
+            /* Dropdown listesi */
+            .custom-dropdown option {
+                background-color: #333; /* Açılan seçenekler için arka plan rengi */
+                color: #fff;
+                padding: 10px;
+                border: none;
+                font-size: 14px;
+                transition: background-color 0.3s ease;
+            }
+
+                .custom-dropdown option:hover {
+                    background-color: #444; /* Hover durumunda arka plan rengi */
+                }
+
+            /* Dropdown açıldığında genişliği ayarlanıyor */
+            .custom-dropdown:focus {
+                border: 1px solid #888;
+                box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.2);
+            }
+
         .navbar {
-            background-color: #444; /* Gri tonları */
+            background-color: #444;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
@@ -92,24 +158,9 @@
                         background-color: #444;
                     }
 
-        .arrow {
-            margin-left: 10px;
-            transition: transform 0.3s;
-        }
-
-        .rotate {
-            transform: rotate(90deg);
-        }
-
-        h3 {
-            margin: 0 0 20px 0;
-            color: #fff;
-            text-align: left;
-        }
-
-        div.form-container {
+        .form-container {
             padding: 20px;
-            background-color: #333; /* Gri tonları */
+            background-color: #333;
             border-radius: 10px;
             position: absolute;
             left: 220px;
@@ -130,7 +181,7 @@
             gap: 8px;
             width: 100%;
             padding: 10px;
-            background-color: #444; /* Gri tonları */
+            background-color: #444;
             border-radius: 10px;
             box-sizing: border-box;
         }
@@ -145,17 +196,13 @@
             font-size: 13px;
             border-radius: 4px;
             border: 1px solid #666;
-            background-color: #555; /* Gri tonları */
+            background-color: #555;
             color: #fff;
             height: 28px;
         }
 
-        textarea.form-control {
-            resize: vertical;
-        }
-
         .btn-custom {
-            background-color: #666; /* Gri tonları */
+            background-color: #666;
             border: none;
             color: #fff;
             padding: 8px 16px;
@@ -168,23 +215,9 @@
         }
 
             .btn-custom:hover {
-                background-color: #888; /* Hover durumunda gri tonları */
+                background-color: #888;
                 transform: translateY(-2px);
             }
-
-        .form-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .table-section {
-            padding: 10px;
-        }
     </style>
 </head>
 <body>
@@ -214,75 +247,67 @@
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
     <div class="form-container">
         <div class="form-header">
-            <h3>Yeni Müşteri Ekleme Formu</h3>
-            <button type="submit" class="btn-custom" form="customerForm">Kaydet ve Devam Et</button>
+            <h3>Yeni Operasyon Ekleme Formu</h3>
+            <button type="submit" class="btn-custom" form="operationForm">Kaydet ve Devam Et</button>
         </div>
-        <form asp-action="NewCustomer" method="post" id="customerForm">
+        <form asp-action="AddOperation" method="post" id="operationForm">
             <div>
-                <label asp-for="CompanyName" class="form-label">Şirket Adı</label>
-                <input asp-for="CompanyName" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="City" class="form-label">Şehir</label>
-                <input asp-for="City" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="District" class="form-label">İlçe</label>
-                <input asp-for="District" class="form-control" />
+                <label class="form-label">Firma</label>
+                <select asp-for="OperationRequest.CustomerId" class="form-control custom-dropdown" id="customerDropdown">
+                    <option value="">Firma Seçin</option>
+                    @foreach (var customer in Model.Customers)
+                    {
+                        <option value="@customer.Id">@customer.CompanyName</option>
+                    }
+                </select>
             </div>
             <div>
-                <label asp-for="Country" class="form-label">Ülke</label>
-                <input asp-for="Country" class="form-control" />
+                <label asp-for="OperationRequest.Method" class="form-label">Yöntem</label>
+                <select asp-for="OperationRequest.Method" class="form-control custom-dropdown">
+                    <option value="Telefon">Telefon</option>
+                    <option value="Yüz Yüze">Yüz Yüze</option>
+                    <option value="E-Mail">E-Mail</option>
+                </select>
             </div>
             <div>
-                <label asp-for="ContactName" class="form-label">Yetkili Kişi</label>
-                <input asp-for="ContactName" class="form-control" />
+                <label asp-for="OperationRequest.IsNew" class="form-label">Yeni Mi?</label>
+                <select asp-for="OperationRequest.IsNew" class="form-control">
+                    <option value="true">Evet</option>
+                    <option value="false">Hayır</option>
+                </select>
             </div>
             <div>
-                <label asp-for="ContactPhone1" class="form-label">Telefon 1</label>
-                <input asp-for="ContactPhone1" class="form-control" />
+                <label asp-for="OperationRequest.PlannedDate" class="form-label">Planlanan Tarih</label>
+                <input asp-for="OperationRequest.PlannedDate" class="form-control" type="datetime-local" />
             </div>
             <div>
-                <label asp-for="ContactPhone2" class="form-label">Telefon 2</label>
-                <input asp-for="ContactPhone2" class="form-control" />
+                <label asp-for="OperationRequest.ActualDate" class="form-label">Gerçekleşen Tarih</label>
+                <input asp-for="OperationRequest.ActualDate" class="form-control" type="datetime-local" />
             </div>
             <div>
-                <label asp-for="ContactEmail" class="form-label">E-Posta</label>
-                <input asp-for="ContactEmail" class="form-control" />
-            </div>
-            <div style="grid-column: span 2;">
-                <label asp-for="Address" class="form-label">Adres</label>
-                <textarea asp-for="Address" class="form-control"></textarea>
-            </div>
-            <div style="grid-column: span 2;">
-                <label asp-for="IsDomestic" class="form-label">Yurt İçi</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input asp-for="IsDomestic" type="radio" class="form-check-input" value="true" id="evet">
-                    <label class="form-check-label" for="evet" style="color: #fff">Evet</label>
-                    <input asp-for="IsDomestic" type="radio" class="form-check-input" value="false" id="hayir">
-                    <label class="form-check-label" for="hayir" style="color: #fff">Hayır</label>
-                </div>
-            </div>
-            <div style="grid-column: span 2;">
-                <label asp-for="Description" class="form-label">Açıklama</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
+                <label asp-for="OperationRequest.Description" class="form-label">Açıklama</label>
+                <textarea asp-for="OperationRequest.Description" class="form-control"></textarea>
             </div>
             <div>
-                <label asp-for="Status" class="form-label">Durum</label>
-                <input asp-for="Status" class="form-control" />
+                <label asp-for="OperationRequest.ContactPerson" class="form-label">Görüşülen Kişi</label>
+                <input asp-for="OperationRequest.ContactPerson" class="form-control" />
             </div>
             <div>
-                <label asp-for="LimitTl" class="form-label">Limit (TL)</label>
-                <input asp-for="LimitTl" class="form-control" />
+                <label asp-for="OperationRequest.Reason" class="form-label">Sebep</label>
+                <select asp-for="OperationRequest.Reason" class="form-control custom-dropdown">
+                    <option value="Randevu">Randevu</option>
+                    <option value="Teklif">Teklif</option>
+                    <option value="Sipariş Sorgulama">Sipariş Sorgulama</option>
+                    <option value="Ziyaret">Ziyaret</option>
+                    <option value="Fuar">Fuar</option>
+                </select>
             </div>
             <div>
-                <label asp-for="Group" class="form-label">Grup</label>
-                <input asp-for="Group" class="form-control" />
+                <label asp-for="OperationRequest.Address" class="form-label">Adres</label>
+                <textarea asp-for="OperationRequest.Address" class="form-control"></textarea>
             </div>
         </form>
     </div>
-
-
     <div style="position: fixed; bottom: 4px; right: 20px; color: #fff; font-size: 12px;">
         Designed by Eco Software Development ℗
     </div>
@@ -293,6 +318,23 @@
                 $('#customerSubMenu').slideToggle();
                 $(this).toggleClass('rotate');
             });
+
+            $.ajax({
+                url: 'https://localhost:44309/api/Customers',
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('Token')
+                },
+                success: function (data) {
+                    var dropdown = $('#customerDropdown');
+                    data.forEach(function (customer) {
+                        dropdown.append(new Option(customer.companyName, customer.id));
+                    });
+                },
+                error: function () {
+                    alert('Firmalar alınırken hata oluştu.');
+                }
+            });
         });
         $(document).ready(function () {
             $('#toggleOperationSubMenu').on('click', function (event) {
@@ -301,11 +343,6 @@
                 $(this).toggleClass('rotate');
             });
         });
-        document.addEventListener("DOMContentLoaded", function () {
-            document.body.style.opacity = 1;
-        });
     </script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

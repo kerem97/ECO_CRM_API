@@ -183,7 +183,13 @@
 <body>
     <div class="sidebar">
         <a href="/Dashboard/Index/">Ana Sayfa</a>
-        <a href="/CustomerOperation/Index/">Tüm İşlemler</a>
+        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+            <a href="/CustomerOperation/Index/" style="flex-grow: 1; color: #fff; text-decoration: none;">Tüm İşlemler</a>
+            <span class="arrow" id="toggleOperationSubMenu" style="padding: 0 5px;">▼</span>
+        </div>
+        <div class="submenu" id="operationSubMenu">
+            <a href="/CustomerOperation/AddOperation">Yeni İşlem Girişi</a>
+        </div>
         <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
             <a href="/Customer/" style="flex-grow: 1; color: #fff; text-decoration: none;">Müşteriler</a>
             <span class="arrow" id="toggleSubMenu" style="padding: 0 5px;">▼</span>
@@ -335,6 +341,13 @@
         });
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;
+        });
+        $(document).ready(function () {
+            $('#toggleOperationSubMenu').on('click', function (event) {
+                event.stopPropagation();
+                $('#operationSubMenu').slideToggle();
+                $(this).toggleClass('rotate');
+            });
         });
     </script>
 
