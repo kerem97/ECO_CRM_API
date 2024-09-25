@@ -1,6 +1,8 @@
-﻿using DtoLayer.Customer.Responses;
+﻿using DtoLayer.Customer.Requests;
+using DtoLayer.Customer.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
 {
@@ -12,7 +14,6 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-
         public async Task<IActionResult> Index(int pageNumber = 1)
         {
             var fullName = HttpContext.Session.GetString("FullName");
@@ -46,5 +47,45 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             ViewBag.CurrentPage = pageNumber;
             return View(customerList);
         }
+
+        [HttpGet]
+        public IActionResult NewCustomer()
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewCustomer(AddCustomerRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
+
+            var jsonContent = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://localhost:44309/api/Customers", httpContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Müşteri başarıyla eklendi!";
+                return RedirectToAction("Index", "Customer");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Müşteri eklenirken hata oluştu.";
+                return View(request);
+            }
+        }
     }
+
 }
+
