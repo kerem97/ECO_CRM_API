@@ -25,7 +25,7 @@ namespace DataAccessLayer.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async void Delete(CustomerOperation entity)
+        public async Task Delete(CustomerOperation entity)
         {
             _context.Set<CustomerOperation>().Remove(entity);
             _context.SaveChanges();
@@ -73,14 +73,14 @@ namespace DataAccessLayer.EntityFramework
                 .Where(co => co.UserId == userId)
                 .OrderByDescending(co => co.OperationDate);
 
-            int totalRecords = await query.CountAsync(); // Toplam kayıt sayısını alıyoruz
+            int totalRecords = await query.CountAsync();
 
             var operations = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return (operations, totalRecords); // Operasyonları ve toplam kayıt sayısını dönüyoruz
+            return (operations, totalRecords);
         }
 
         public async Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize)
@@ -94,7 +94,7 @@ namespace DataAccessLayer.EntityFramework
        .ToListAsync();
         }
 
-        public async void Update(CustomerOperation entity)
+        public async Task Update(CustomerOperation entity)
         {
             _context.Set<CustomerOperation>().Update(entity);
             _context.SaveChanges();

@@ -63,7 +63,7 @@ public class CustomerOperationsController : ControllerBase
         return Ok(operations);
     }
     [HttpGet("all-operations")]
-    public async Task<IActionResult> GetAllCustomerOperations( int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> GetAllCustomerOperations(int pageNumber = 1, int pageSize = 10)
     {
         var operations = await _customerOperationService.GetAllCustomerOperationsPagedAsync(pageNumber, pageSize);
 
@@ -96,7 +96,36 @@ public class CustomerOperationsController : ControllerBase
         await _customerOperationService.DeleteCustomerOperationsAsync(id);
         return Ok("Operation deleted successfully");
     }
+    [HttpPost("cancel-operation")]
+    public async Task<IActionResult> CancelOperation([FromBody] CancelOperationRequest request)
+    {
+        try
+        {
+            await _customerOperationService.CancelOperationAsync(request.OperationId, request.CancelReason);
+            return Ok(new { message = "Operation cancelled successfully." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
 
+    [HttpPost("complete-operation")]
+    public async Task<IActionResult> CompleteOperation([FromBody] CompleteOperationRequest request)
+    {
+        try
+        {
+            if (request.ActualDate == null)
+                return BadRequest(new { message = "Actual date is required for completion." });
+
+            await _customerOperationService.CompleteOperationAsync(request.OperationId, request.ActualDate);
+            return Ok(new { message = "Operation completed successfully." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
     private int GetCurrentUserId()
     {
         var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);

@@ -55,6 +55,30 @@ namespace BusinessLayer.Services.CustomerOperationServices
             await _customerOperationRepository.Add(customerOperation);
         }
 
+        public async Task CancelOperationAsync(int operationId, string cancelReason)
+        {
+            var operation = await _customerOperationRepository.GetById(operationId);
+            if (operation == null)
+                throw new Exception("Operation not found");
+
+            operation.Status = "İptal Edildi";
+            operation.CancelReason = cancelReason;
+
+            await _customerOperationRepository.Update(operation);
+        }
+
+        public async Task CompleteOperationAsync(int operationId, DateTime actualDate)
+        {
+            var operation = await _customerOperationRepository.GetById(operationId);
+            if (operation == null)
+                throw new Exception("Operation not found");
+
+            operation.Status = "Tamamlandı";
+            operation.ActualDate = actualDate;
+
+            await _customerOperationRepository.Update(operation);
+        }
+
         public async Task DeleteCustomerOperationsAsync(int id)
         {
             var operation = await _customerOperationRepository.GetById(id);

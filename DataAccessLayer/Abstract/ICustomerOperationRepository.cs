@@ -10,9 +10,10 @@ namespace DataAccessLayer.Abstract
 {
     public interface ICustomerOperationRepository : IRepository<CustomerOperation>
     {
-        public Task<List<CustomerOperation>> GetOperationsByCustomerId(int customerId);
+        Task<List<CustomerOperation>> GetOperationsByCustomerId(int customerId);
         Task<(List<CustomerOperation>, int)> GetOperationsByUserId(int userId, int pageNumber, int pageSize);
-        public Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
-        public Task<List<CustomerOperation>> GetAllPagedAsync(int pageNumber, int pageSize);
+        Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
+        Task<List<CustomerOperation>> GetAllPagedAsync(int pageNumber, int pageSize);
+        
     }
 }

@@ -25,7 +25,7 @@ namespace DataAccessLayer.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async void Delete(User entity)
+        public async Task Delete(User entity)
         {
             _context.Set<User>().Remove(entity);
             _context.SaveChanges();
@@ -45,7 +45,7 @@ namespace DataAccessLayer.EntityFramework
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
-        public async void Update(User entity)
+        public async Task Update(User entity)
         {
             _context.Set<User>().Update(entity);
             _context.SaveChanges();

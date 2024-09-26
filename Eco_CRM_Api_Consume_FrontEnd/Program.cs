@@ -8,6 +8,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+
 // Add services to the container.
 
 var app = builder.Build();

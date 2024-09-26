@@ -24,6 +24,29 @@
             flex-direction: column;
             padding: 0 20px;
         }
+
+        .modal-header .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background-color: #444; /* Modal ile uyumlu gri tonları */
+            color: #fff;
+            border: none;
+            border-radius: 50%; /* Yuvarlak buton */
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+            .modal-header .close:hover {
+                background-color: #777; /* Hover durumunda daha açık gri */
+                transform: scale(1.1); /* Hover'da hafif büyüme efekti */
+            }
         .navbar {
             background-color: #444; 
             padding: 15px 20px;
@@ -39,6 +62,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
+
         .sidebar {
             background-color: #333;
             padding: 20px;
@@ -162,6 +186,7 @@
                 <th>Sebep</th>
                 <th>Durum</th>
                 <th>Açıklama</th>
+                <th>Düzenle</th>
             </tr>
         </thead>
         <tbody>
@@ -182,10 +207,50 @@
                     <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
                         @operation.Description
                     </td>
+
                 </tr>
             }
         </tbody>
     </table>
+    <!-- Düzenleme Modali -->
+    <!-- Modal -->
+    <div class="modal fade" id="editOperationModal" tabindex="-1" aria-labelledby="editOperationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #333; color: #fff;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Operasyon Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Durum</label>
+                        <select id="status" class="form-control">
+                            <option value="">Seçiniz</option>
+                            <option value="Gerçekleşti">Gerçekleşti</option>
+                            <option value="İptal">İptal</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="cancelReasonDiv" style="display: none;">
+                        <label for="cancelReason" class="form-label">İptal Sebebi</label>
+                        <textarea id="cancelReason" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3" id="actualDateDiv" style="display: none;">
+                        <label for="actualDate" class="form-label">Gerçekleşme Tarihi</label>
+                        <input type="datetime-local" id="actualDate" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="button" id="saveChangesBtn" class="btn btn-primary" style="background-color: #555; border: none;">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
         Designed by Eco Software Development ℗
     </div>
@@ -202,9 +267,11 @@
         let currentPage = 1;
         const pageSize = 10;
         const token = '@ViewBag.Token';
+
         $(document).ready(function () {
             fetchData(currentPage);
         });
+
         function fetchData(page) {
             $.ajax({
                 url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${page}&pageSize=${pageSize}`,
@@ -222,6 +289,7 @@
                 }
             });
         }
+
         function updateTable(data) {
             let tbody = $('table tbody');
             tbody.empty();
@@ -236,26 +304,40 @@
                 const actualDate = operation.actualDate
                     ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
                     : '';
+
                 tbody.append(`
-                                    <tr>
-                                        <td>${operationDate}</td>
-                                        <td>${operation.createdByUser || ''}</td>
-                                        <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                                        <td>${operation.customerName || ''}</td>
-                                        <td>${operation.address || ''}</td>
-                                        <td>${operation.method || ''}</td>
-                                        <td>${operation.contactPerson || ''}</td>
-                                        <td>${plannedDate}</td>
-                                        <td>${actualDate}</td>
-                                        <td>${operation.reason || ''}</td>
-                                        <td>${operation.status || ''}</td>
-                                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                            ${operation.description || ''}
-                                        </td>
-                                    </tr>
-                                `);
+                        <tr>
+                            <td>${operationDate}</td>
+                            <td>${operation.createdByUser || ''}</td>
+                            <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                            <td>${operation.customerName || ''}</td>
+                            <td>${operation.address || ''}</td>
+                            <td>${operation.method || ''}</td>
+                            <td>${operation.contactPerson || ''}</td>
+                            <td>${plannedDate}</td>
+                            <td>${actualDate}</td>
+                            <td>${operation.reason || ''}</td>
+                            <td>${operation.status || ''}</td>
+                            <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                ${operation.description || ''}
+                            </td>
+                            <td><button class="btn btn-sm edit-btn" style="background-color: #555; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;" data-operation-id="${operation.id}">Düzenle</button></td>
+                        </tr>
+                    `);
+            });
+
+            $('.edit-btn').off('click').on('click', function () {
+                const operationId = $(this).data('operation-id');
+                $('#editOperationModal').data('operation-id', operationId);
+                $('#editOperationModal').modal('show');
+                $('#cancelReasonDiv').hide();
+                $('#actualDateDiv').hide();
+                $('#status').val('');
+                $('#cancelReason').val('');
+                $('#actualDate').val('');
             });
         }
+
         function changePage(direction) {
             if (direction === 'next') {
                 fetchData(currentPage + 1);
@@ -263,9 +345,83 @@
                 fetchData(currentPage - 1);
             }
         }
+
+        $('#saveChangesBtn').click(function () {
+            const operationId = $('#editOperationModal').data('operation-id');
+            const status = $('#status').val();
+            const cancelReason = $('#cancelReason').val();
+            const actualDate = $('#actualDate').val();
+
+            if (status === "İptal" && !cancelReason) {
+                alert('Lütfen iptal sebebini giriniz.');
+                return;
+            }
+            if (status === "Gerçekleşti" && !actualDate) {
+                alert('Lütfen gerçekleşen tarih bilgisini giriniz.');
+                return;
+            }       
+            let requestData;
+            let endpointUrl;
+
+            if (status === "İptal") {
+                requestData = JSON.stringify({
+                    operationId: operationId,
+                    cancelReason: cancelReason,
+                    status: status
+                });
+                endpointUrl = "https://localhost:44309/api/CustomerOperations/cancel-operation";
+            } else if (status === "Gerçekleşti") {
+                requestData = JSON.stringify({
+                    operationId: operationId,
+                    actualDate: actualDate,
+                    status: status
+                });
+                endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
+            }
+
+            $.ajax({
+                url: endpointUrl,
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                data: requestData,
+                success: function () {
+                    $('#editOperationModal').modal('hide');
+                    fetchData(currentPage); 
+                },
+                error: function () {
+                    $('#editOperationModal').modal('hide');
+                    fetchData(currentPage); 
+                }
+            });
+        });
+
+        $('#status').change(function () {
+            const status = $(this).val();
+            if (status === 'İptal') {
+                $('#cancelReasonDiv').show();
+                $('#actualDateDiv').hide();
+            } else if (status === 'Gerçekleşti') {
+                $('#actualDateDiv').show();
+                $('#cancelReasonDiv').hide();
+            } else {
+                $('#cancelReasonDiv, #actualDateDiv').hide();
+            }
+        });
+
+        $('#editOperationModal .close, #editOperationModal .btn-secondary').click(function () {
+            $('#editOperationModal').modal('hide');
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;
         });
     </script>
+
+
+
+
 </body>
 </html>

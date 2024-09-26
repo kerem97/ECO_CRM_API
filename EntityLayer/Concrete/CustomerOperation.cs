@@ -21,6 +21,7 @@ namespace EntityLayer.Concrete
         public string Reason { get; set; }
         public string Address { get; set; }
         public string Status { get; set; }
+        public string? CancelReason { get; set; }
         public User User { get; set; }
         public Customer Customer { get; set; }
     }

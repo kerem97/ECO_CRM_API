@@ -26,7 +26,7 @@ namespace DataAccessLayer.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async void Delete(Customer entity)
+        public async Task Delete(Customer entity)
         {
             _context.Set<Customer>().Remove(entity);
             _context.SaveChanges();
@@ -59,7 +59,7 @@ namespace DataAccessLayer.EntityFramework
        .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async void Update(Customer entity)
+        public async Task Update(Customer entity)
         {
             _context.Set<Customer>().Update(entity);
             _context.SaveChanges();
