@@ -67,14 +67,26 @@ namespace BusinessLayer.Services.CustomerOperationServices
             await _customerOperationRepository.Update(operation);
         }
 
-        public async Task CompleteOperationAsync(int operationId, DateTime actualDate)
+        public async Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription)
         {
             var operation = await _customerOperationRepository.GetById(operationId);
             if (operation == null)
                 throw new Exception("Operation not found");
 
+            if (operation.Status != "Planlandı")
+                throw new Exception("Sadece planlanan işlemler güncellenebilir!");
+
             operation.Status = "Gerçekleşti";
-            operation.ActualDate = actualDate;
+            if (isMeetingOnPlannedDate == true)
+            {
+                operation.ActualDate = operation.PlannedDate;
+            }
+            else if (isMeetingOnPlannedDate == false && actualDate != null)
+            {
+                operation.ActualDate = actualDate;
+            }
+
+            operation.UpdatedStatusDescription = updatedStatusDescription;
 
             await _customerOperationRepository.Update(operation);
         }

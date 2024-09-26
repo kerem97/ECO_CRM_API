@@ -247,10 +247,6 @@
                 <input asp-for="OperationRequest.PlannedDate" class="form-control" type="datetime-local" />
             </div>
             <div>
-                <label asp-for="OperationRequest.ActualDate" class="form-label">Gerçekleşen Tarih</label>
-                <input asp-for="OperationRequest.ActualDate" class="form-control" type="datetime-local" />
-            </div>
-            <div>
                 <label asp-for="OperationRequest.Description" class="form-label">Açıklama</label>
                 <textarea asp-for="OperationRequest.Description" class="form-control"></textarea>
             </div>
@@ -262,7 +258,6 @@
                 <label asp-for="OperationRequest.Reason" class="form-label">Sebep</label>
                 <select asp-for="OperationRequest.Reason" class="form-control custom-dropdown">
                     <option value="Randevu">Randevu</option>
-                    <option value="Teklif">Teklif</option>
                     <option value="Sipariş Sorgulama">Sipariş Sorgulama</option>
                     <option value="Ziyaret">Ziyaret</option>
                     <option value="Fuar">Fuar</option>
@@ -278,8 +273,6 @@
         Designed by Eco Software Development ℗
     </div>
     <script>
-       
-
             $.ajax({
                 url: 'https://localhost:44309/api/Customers',
                 method: 'GET',

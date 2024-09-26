@@ -12,7 +12,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
             crossorigin="anonymous"></script>
-
     <style>
         body {
             background: linear-gradient(to bottom, #3a3a3a, #1f1f1f);
@@ -28,51 +27,15 @@
 
         .form-header {
             display: flex;
-            justify-content: space-between; 
+            justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
             margin-left: 100px;
             width: 100%;
-            margin-top: 80px; 
+            margin-top: 80px;
         }
-
-        .header-title h3 {
-            margin: 0; 
-            color: #fff;
-        }
-
-        .header-button {
-            display: flex;
-            align-items: center;
-        }
-
-        .add-operation-btn {
-            background-color: #555; 
-            color: #fff; 
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none; 
-            transition: background-color 0.3s, transform 0.2s;
-            margin-right: 20px; 
-        }
-
-            .add-operation-btn:hover {
-                background-color: #777; 
-                transform: translateY(-2px); 
-                color: #fff; 
-            }
-
-            .add-operation-btn:focus {
-                outline: none;
-            }
-
-
-
         .navbar {
-            background-color: #444; 
+            background-color: #444;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
@@ -203,14 +166,7 @@
     </div>
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
     <div class="form-header">
-        <div class="header-title">
-            <h3>Tüm İşlem Hareketleri</h3>
-        </div>
-        <div class="header-button">
-            <a href="/CustomerOperation/AddOperation" class="add-operation-btn">Yeni İşlem Ekle</a>
-        </div>
     </div>
-
     <table style="width: 100%;">
         <thead>
             <tr>
@@ -304,23 +260,23 @@
                     : '';
 
                 tbody.append(`
-                                                        <tr>
-                                                            <td>${operationDate}</td>
-                                                            <td>${operation.createdByUser || ''}</td>
-                                                            <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                                                            <td>${operation.customerName || ''}</td>
-                                                            <td>${operation.address || ''}</td>
-                                                            <td>${operation.method || ''}</td>
-                                                            <td>${operation.contactPerson || ''}</td>
-                                                            <td>${plannedDate}</td>
-                                                            <td>${actualDate}</td>
-                                                            <td>${operation.reason || ''}</td>
-                                                            <td>${operation.status || ''}</td>
-                                                            <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                                                ${operation.description || ''}
-                                                            </td>
-                                                        </tr>
-                                                    `);
+                                                                <tr>
+                                                                    <td>${operationDate}</td>
+                                                                    <td>${operation.createdByUser || ''}</td>
+                                                                    <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                    <td>${operation.customerName || ''}</td>
+                                                                    <td>${operation.address || ''}</td>
+                                                                    <td>${operation.method || ''}</td>
+                                                                    <td>${operation.contactPerson || ''}</td>
+                                                                    <td>${plannedDate}</td>
+                                                                    <td>${actualDate}</td>
+                                                                    <td>${operation.reason || ''}</td>
+                                                                    <td>${operation.status || ''}</td>
+                                                                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                        ${operation.description || ''}
+                                                                    </td>
+                                                                </tr>
+                                                            `);
             });
         }
 
@@ -331,8 +287,6 @@
                 fetchData(currentPage - 1);
             }
         }
-
-        
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;
         });

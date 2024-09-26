@@ -115,10 +115,10 @@ public class CustomerOperationsController : ControllerBase
     {
         try
         {
-            if (request.ActualDate == null)
-                return BadRequest(new { message = "Actual date is required for completion." });
+            if (request.IsMeetingOnPlannedDate == null)
+                return BadRequest(new { message = "Planned date meeting status is required." });
 
-            await _customerOperationService.CompleteOperationAsync(request.OperationId, request.ActualDate);
+            await _customerOperationService.CompleteOperationAsync(request.OperationId, request.ActualDate, request.IsMeetingOnPlannedDate, request.UpdatedStatusDescription);
             return Ok(new { message = "Operation completed successfully." });
         }
         catch (Exception ex)

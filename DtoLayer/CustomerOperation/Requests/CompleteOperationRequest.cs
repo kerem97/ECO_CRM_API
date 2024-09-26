@@ -11,5 +11,7 @@ namespace DtoLayer.CustomerOperation.Requests
         public int OperationId { get; set; }
         public string Status { get; set; }
         public DateTime ActualDate { get; set; }
+        public bool? IsMeetingOnPlannedDate { get; set; }
+        public string? UpdatedStatusDescription { get; set; }
     }
 }

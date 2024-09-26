@@ -25,6 +25,49 @@
             padding: 0 20px;
         }
 
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            margin-left: 100px;
+            width: 100%;
+            margin-top: 80px;
+        }
+
+        .header-title h3 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .header-button {
+            display: flex;
+            align-items: center;
+        }
+
+        .add-operation-btn {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-right: 20px;
+        }
+
+            .add-operation-btn:hover {
+                background-color: #777;
+                transform: translateY(-2px);
+                color: #fff;
+            }
+
+            .add-operation-btn:focus {
+                outline: none;
+            }
+
         .modal-header .close {
             position: absolute;
             right: 15px;
@@ -47,8 +90,9 @@
                 background-color: #777; /* Hover durumunda daha açık gri */
                 transform: scale(1.1); /* Hover'da hafif büyüme efekti */
             }
+
         .navbar {
-            background-color: #444; 
+            background-color: #444;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
@@ -77,6 +121,7 @@
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
             overflow-y: auto;
         }
+
             .sidebar a {
                 color: #fff;
                 text-decoration: none;
@@ -88,17 +133,21 @@
                 display: flex;
                 align-items: center;
             }
+
                 .sidebar a:hover {
                     background-color: #575757;
                     padding-left: 15px;
                 }
+
         .arrow {
             margin-left: 10px;
             transition: transform 0.3s;
         }
+
         .rotate {
             transform: rotate(90deg);
         }
+
         h2, h3 {
             margin-left: 220px;
             margin-top: 80px;
@@ -106,6 +155,7 @@
             text-align: left;
             padding: 0;
         }
+
         h3 {
             margin-left: 220px;
             margin-bottom: 10px;
@@ -113,6 +163,7 @@
             text-align: left;
             font-size: 18px;
         }
+
         table {
             width: calc(100% - 220px);
             margin-left: 100px;
@@ -124,11 +175,13 @@
             color: #fff;
             font-size: 12px;
         }
+
         th, td {
             padding: 6px;
             text-align: left;
             color: #fff;
         }
+
         th {
             background-color: #555;
             color: #fff;
@@ -136,20 +189,25 @@
             letter-spacing: 0.05em;
             font-size: 12px;
         }
+
         td {
             background-color: #666;
             font-size: 12px;
             box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
         }
+
         tbody tr:hover {
             background-color: #777;
         }
+
         tbody tr:nth-child(odd) td {
             background-color: #444;
         }
+
         tbody tr:nth-child(even) td {
             background-color: #666;
         }
+
         .btn:active,
         .btn:focus {
             outline: none;
@@ -170,7 +228,14 @@
         <div class="user-info">@ViewBag.FullName</div>
     </div>
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
-    <h3 style="margin-left:100px;">@ViewBag.FullName , Size Ait İşlemler</h3>
+    <div class="form-header">
+        <div class="header-title">
+            <h3>@ViewBag.FullName Size Ait İşlemler</h3>
+        </div>
+        <div class="header-button">
+            <a href="/CustomerOperation/AddOperation" class="add-operation-btn">Yeni İşlem Ekle</a>
+        </div>
+    </div>
     <table style="width: 100%;">
         <thead>
             <tr>
@@ -232,10 +297,23 @@
                             <option value="İptal">İptal</option>
                         </select>
                     </div>
+                    <div id="meetingStatusDiv" class="mb-3" style="display: none;">
+                        <label for="meetingStatus" class="form-label">Planlanan tarihte görüşme gerçekleşti mi?</label>
+                        <select id="meetingStatus" class="form-control">
+                            <option value="">Seçiniz</option>
+                            <option value="yes">Evet</option>
+                            <option value="no">Hayır</option>
+                        </select>
+                    </div>
                     <div class="mb-3" id="cancelReasonDiv" style="display: none;">
                         <label for="cancelReason" class="form-label">İptal Sebebi</label>
                         <textarea id="cancelReason" class="form-control"></textarea>
                     </div>
+                    <div class="mb-3" id="updatedStatusDescriptionDiv" style="display: none;">
+                        <label for="updatedStatusDescription" class="form-label">Güncellenmiş Durum Açıklaması</label>
+                        <textarea id="updatedStatusDescription" class="form-control"></textarea>
+                    </div>
+
                     <div class="mb-3" id="actualDateDiv" style="display: none;">
                         <label for="actualDate" class="form-label">Gerçekleşme Tarihi</label>
                         <input type="datetime-local" id="actualDate" class="form-control">
@@ -306,24 +384,24 @@
                     : '';
 
                 tbody.append(`
-                        <tr>
-                            <td>${operationDate}</td>
-                            <td>${operation.createdByUser || ''}</td>
-                            <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                            <td>${operation.customerName || ''}</td>
-                            <td>${operation.address || ''}</td>
-                            <td>${operation.method || ''}</td>
-                            <td>${operation.contactPerson || ''}</td>
-                            <td>${plannedDate}</td>
-                            <td>${actualDate}</td>
-                            <td>${operation.reason || ''}</td>
-                            <td>${operation.status || ''}</td>
-                            <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                ${operation.description || ''}
-                            </td>
-                            <td><button class="btn btn-sm edit-btn" style="background-color: #555; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;" data-operation-id="${operation.id}">Düzenle</button></td>
-                        </tr>
-                    `);
+                                <tr>
+                                    <td>${operationDate}</td>
+                                    <td>${operation.createdByUser || ''}</td>
+                                    <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                    <td>${operation.customerName || ''}</td>
+                                    <td>${operation.address || ''}</td>
+                                    <td>${operation.method || ''}</td>
+                                    <td>${operation.contactPerson || ''}</td>
+                                    <td>${plannedDate}</td>
+                                    <td>${actualDate}</td>
+                                    <td>${operation.reason || ''}</td>
+                                    <td>${operation.status || ''}</td>
+                                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                        ${operation.description || ''}
+                                    </td>
+                                    <td><button class="btn btn-sm edit-btn" style="background-color: #555; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;" data-operation-id="${operation.id}">Düzenle</button></td>
+                                </tr>
+                            `);
             });
 
             $('.edit-btn').off('click').on('click', function () {
@@ -331,10 +409,14 @@
                 $('#editOperationModal').data('operation-id', operationId);
                 $('#editOperationModal').modal('show');
                 $('#cancelReasonDiv').hide();
+                $('#updatedStatusDescriptionDiv').hide();
                 $('#actualDateDiv').hide();
+                $('#meetingStatusDiv').hide(); 
                 $('#status').val('');
                 $('#cancelReason').val('');
                 $('#actualDate').val('');
+                $('#meetingStatus').val('');
+                $('#updatedStatusDescription').val('');
             });
         }
 
@@ -350,34 +432,53 @@
             const operationId = $('#editOperationModal').data('operation-id');
             const status = $('#status').val();
             const cancelReason = $('#cancelReason').val();
-            const actualDate = $('#actualDate').val();
+            const updatedStatusDescription = $('#updatedStatusDescription').val();
+            let actualDate = $('#actualDate').val();
+            const meetingStatus = $('#meetingStatus').val();
+
+
+            let requestData;
+            let endpointUrl;
 
             if (status === "İptal" && !cancelReason) {
                 alert('Lütfen iptal sebebini giriniz.');
                 return;
             }
-            if (status === "Gerçekleşti" && !actualDate) {
-                alert('Lütfen gerçekleşen tarih bilgisini giriniz.');
-                return;
-            }       
-            let requestData;
-            let endpointUrl;
 
-            if (status === "İptal") {
-                requestData = JSON.stringify({
-                    operationId: operationId,
-                    cancelReason: cancelReason,
-                    status: status
-                });
-                endpointUrl = "https://localhost:44309/api/CustomerOperations/cancel-operation";
-            } else if (status === "Gerçekleşti") {
+            if (status === "Gerçekleşti") {
+                const meetingStatus = $('#meetingStatus').val();
+
+                if (meetingStatus === 'yes') {
+                    actualDate = $('#plannedDate').val();
+                } else if (meetingStatus === 'no' && !actualDate) {
+                    alert('Lütfen gerçekleşen tarih bilgisini giriniz.');
+                    return;
+                }
+
+                const updatedStatusDescription = $('#updatedStatusDescription').val(); 
+
+                if (!updatedStatusDescription) {
+                    alert('Lütfen güncellenmiş durum açıklamasını giriniz.');
+                    return;
+                }
+
                 requestData = JSON.stringify({
                     operationId: operationId,
                     actualDate: actualDate,
-                    status: status
+                    status: status,
+                    updatedStatusDescription: updatedStatusDescription,
+                    isMeetingOnPlannedDate: meetingStatus === 'yes'
                 });
                 endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
             }
+                else if (status === "İptal") {
+                    requestData = JSON.stringify({
+                        operationId: operationId,
+                        cancelReason: cancelReason,
+                        status: status
+                    });
+                    endpointUrl = "https://localhost:44309/api/CustomerOperations/cancel-operation";
+                }
 
             $.ajax({
                 url: endpointUrl,
@@ -389,11 +490,11 @@
                 data: requestData,
                 success: function () {
                     $('#editOperationModal').modal('hide');
-                    fetchData(currentPage); 
+                    fetchData(currentPage);
                 },
                 error: function () {
                     $('#editOperationModal').modal('hide');
-                    fetchData(currentPage); 
+                    fetchData(currentPage);
                 }
             });
         });
@@ -403,11 +504,27 @@
             if (status === 'İptal') {
                 $('#cancelReasonDiv').show();
                 $('#actualDateDiv').hide();
+                $('#meetingStatusDiv').hide();
+                $('#updatedStatusDescriptionDiv').hide();
             } else if (status === 'Gerçekleşti') {
-                $('#actualDateDiv').show();
                 $('#cancelReasonDiv').hide();
+                $('#actualDateDiv').hide();
+                $('#meetingStatusDiv').show();
+                $('#updatedStatusDescriptionDiv').show();
             } else {
-                $('#cancelReasonDiv, #actualDateDiv').hide();
+                $('#cancelReasonDiv, #actualDateDiv, #meetingStatusDiv, #updatedStatusDescriptionDiv').hide();
+            }
+        });
+
+        $('#meetingStatus').change(function () {
+            const meetingStatus = $(this).val();
+            if (meetingStatus === 'yes') {
+                const plannedDate = $('#plannedDate').val();
+                $('#actualDate').val(plannedDate);
+                $('#actualDateDiv').hide();
+            } else if (meetingStatus === 'no') {
+                $('#actualDateDiv').show();
+                $('#actualDate').val('');
             }
         });
 
@@ -419,6 +536,7 @@
             document.body.style.opacity = 1;
         });
     </script>
+
 
 
 
