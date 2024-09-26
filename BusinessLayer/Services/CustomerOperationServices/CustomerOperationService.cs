@@ -73,7 +73,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
             if (operation == null)
                 throw new Exception("Operation not found");
 
-            operation.Status = "Tamamlandı";
+            operation.Status = "Gerçekleşti";
             operation.ActualDate = actualDate;
 
             await _customerOperationRepository.Update(operation);
