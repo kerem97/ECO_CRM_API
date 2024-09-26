@@ -24,6 +24,7 @@ namespace BusinessLayer.Mapping
             CreateMap<Customer, GetByIdCustomerResponse>().ReverseMap();
 
             CreateMap<CustomerOperation, AddCustomerOperationRequest>().ReverseMap();
+            CreateMap<CustomerOperation, FilterCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, CompleteOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, CancelOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, UpdateCustomerOperationRequest>().ReverseMap();

@@ -165,6 +165,38 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             _customerOperationRepository.Update(existingOperation);
         }
+
+        public async Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest)
+        {
+            var filteredOperations = await _customerOperationRepository.GetFilteredOperationsAsync(
+                filterRequest.CompanyName,
+                filterRequest.Month,
+                filterRequest.Year,
+                filterRequest.Method,
+                filterRequest.PerformedBy,
+                filterRequest.Reason,
+                filterRequest.Status
+            );
+
+            return filteredOperations.Select(co => new DisplayCustomerOperationResponse
+            {
+                Id = co.Id,
+                CustomerName = co.Customer.CompanyName,
+                CreatedByUser = co.User.FullName,
+                PlannedDate = co.PlannedDate,
+                ActualDate = co.ActualDate,
+                Status = co.Status,
+                Method = co.Method,
+                Reason = co.Reason,
+                Address = co.Address,
+                ContactPerson = co.ContactPerson,
+                OperationDate = co.OperationDate,
+                Description = co.Description
+            }).ToList();
+        }
+
+
+
     }
 }
 

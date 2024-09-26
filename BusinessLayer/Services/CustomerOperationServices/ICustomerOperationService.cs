@@ -23,5 +23,8 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsPagedAsync(int pageNumber, int pageSize);
         Task CancelOperationAsync(int operationId, string cancelReason);
         Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription);
+        Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest);
+
+
     }
 }

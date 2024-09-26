@@ -126,6 +126,33 @@ public class CustomerOperationsController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+    [HttpPost("filtered-operations")]
+    public async Task<IActionResult> GetFilteredOperations([FromBody] FilterCustomerOperationRequest filterRequest)
+    {
+        try
+        {
+            var operations = await _customerOperationService.GetFilteredOperationsAsync(filterRequest);
+            return Ok(operations);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+    [HttpGet("get-dropdown-data")]
+    public async Task<IActionResult> GetDropdownData()
+    {
+        var allOperations = await _customerOperationService.GetAllCustomerOperationsAsync();
+
+        var companies = allOperations.Select(o => o.CustomerName).Distinct().ToList();
+        var methods = allOperations.Select(o => o.Method).Distinct().ToList();
+        var personnel = allOperations.Select(o => o.CreatedByUser).Distinct().ToList();
+        var reasons = allOperations.Select(o => o.Reason).Distinct().ToList();
+
+        return Ok(new { companies, methods, personnel, reasons });
+    }
+
+
     private int GetCurrentUserId()
     {
         var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
