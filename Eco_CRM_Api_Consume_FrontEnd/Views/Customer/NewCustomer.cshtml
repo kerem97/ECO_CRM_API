@@ -21,8 +21,30 @@
             flex-direction: column;
             padding: 0;
             overflow: hidden;
+            overflow-y: auto; /* Dikey scroll'u etkinleştir */
             box-sizing: border-box;
+            scrollbar-width: thin; /* İnce scrollbar genişliği */
+            scrollbar-color: #555 #333;
         }
+
+            body::-webkit-scrollbar {
+                width: 10px; /* Scrollbar genişliği */
+            }
+
+            body::-webkit-scrollbar-track {
+                background: #333; /* Arka plan rengi */
+                border-radius: 10px;
+            }
+
+            body::-webkit-scrollbar-thumb {
+                background-color: #555; /* Scrollbar thumb rengi */
+                border-radius: 10px;
+                border: 2px solid #333; /* Thumb'ın çevresindeki boşluk */
+            }
+
+                body::-webkit-scrollbar-thumb:hover {
+                    background-color: #777; /* Hover durumunda daha açık gri */
+                }
 
         .navbar {
             background-color: #444; 
@@ -97,7 +119,7 @@
             right: 20px;
             bottom: 20px;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: auto;
             margin-top: 3px;
             display: flex;
             flex-direction: column;
