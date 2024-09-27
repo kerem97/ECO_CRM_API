@@ -20,30 +20,31 @@
             <button type="submit" class="btn-custom" form="operationForm">Kaydet ve Devam Et</button>
         </div>
         <form asp-action="AddOperation" method="post" id="operationForm">
-            <div>
+            <div class="form-group dropdown-wrapper">
                 <label class="form-label">Firma</label>
-                <select asp-for="OperationRequest.CustomerId" class="form-control custom-dropdown" id="customerDropdown">
-                    <option value="">Firma Seçin</option>
-                    @foreach (var customer in Model.Customers)
-                    {
-                        <option value="@customer.Id">@customer.CompanyName</option>
-                    }
-                </select>
+                <div id="customDropdown" class="custom-dropdown">Firma Seçin</div>
+                <div id="dropdownList" class="dropdown-list" style="display: none;"></div>
+                <input type="hidden" asp-for="OperationRequest.CustomerId" />
             </div>
-            <div>
-                <label asp-for="OperationRequest.Method" class="form-label">Yöntem</label>
-                <select asp-for="OperationRequest.Method" class="form-control custom-dropdown">
-                    <option value="Telefon">Telefon</option>
-                    <option value="Yüz Yüze">Yüz Yüze</option>
-                    <option value="E-Mail">E-Mail</option>
-                </select>
+
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Yöntem</label>
+                <div id="methodDropdown" class="custom-dropdown">Yöntem Seçin</div>
+                <div id="methodDropdownList" class="dropdown-list" style="display: none;">
+                    <div class="dropdown-item" data-value="Telefon">Telefon</div>
+                    <div class="dropdown-item" data-value="Yüz Yüze">Yüz Yüze</div>
+                    <div class="dropdown-item" data-value="E-Mail">E-Mail</div>
+                </div>
+                <input type="hidden" asp-for="OperationRequest.Method" />
             </div>
-            <div>
-                <label asp-for="OperationRequest.IsNew" class="form-label">Yeni Mi?</label>
-                <select asp-for="OperationRequest.IsNew" class="form-control">
-                    <option value="true">Evet</option>
-                    <option value="false">Hayır</option>
-                </select>
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Yeni Mi?</label>
+                <div id="isNewDropdown" class="custom-dropdown">Evet / Hayır</div>
+                <div id="isNewDropdownList" class="dropdown-list" style="display: none;">
+                    <div class="dropdown-item" data-value="true">Evet</div>
+                    <div class="dropdown-item" data-value="false">Hayır</div>
+                </div>
+                <input type="hidden" asp-for="OperationRequest.IsNew" />
             </div>
             <div>
                 <label asp-for="OperationRequest.PlannedDate" class="form-label">Planlanan Tarih</label>
@@ -57,15 +58,17 @@
                 <label asp-for="OperationRequest.ContactPerson" class="form-label">Görüşülen Kişi</label>
                 <input asp-for="OperationRequest.ContactPerson" class="form-control" />
             </div>
-            <div>
-                <label asp-for="OperationRequest.Reason" class="form-label">Sebep</label>
-                <select asp-for="OperationRequest.Reason" class="form-control custom-dropdown">
-                    <option value="Randevu">Randevu</option>
-                    <option value="Sipariş Sorgulama">Sipariş Sorgulama</option>
-                    <option value="Ziyaret">Ziyaret</option>
-                    <option value="Fuar">Fuar</option>
-                    <option value="Teklif">Teklif</option>
-                </select>
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Sebep</label>
+                <div id="reasonDropdown" class="custom-dropdown">Sebep Seçin</div>
+                <div id="reasonDropdownList" class="dropdown-list" style="display: none;">
+                    <div class="dropdown-item" data-value="Randevu">Randevu</div>
+                    <div class="dropdown-item" data-value="Sipariş Sorgulama">Sipariş Sorgulama</div>
+                    <div class="dropdown-item" data-value="Ziyaret">Ziyaret</div>
+                    <div class="dropdown-item" data-value="Fuar">Fuar</div>
+                    <div class="dropdown-item" data-value="Teklif">Teklif</div>
+                </div>
+                <input type="hidden" asp-for="OperationRequest.Reason" />
             </div>
             <div>
                 <label asp-for="OperationRequest.Address" class="form-label">Adres</label>
