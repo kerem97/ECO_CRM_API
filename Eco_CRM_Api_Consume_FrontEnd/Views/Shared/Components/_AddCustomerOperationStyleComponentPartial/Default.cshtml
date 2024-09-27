@@ -1,0 +1,207 @@
+﻿<style>
+    body {
+        background: linear-gradient(to bottom, #3a3a3a, #1f1f1f);
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        padding: 0;
+        overflow: hidden;
+        overflow-y: auto; /* Dikey scroll'u etkinleştir */
+        box-sizing: border-box;
+        scrollbar-width: thin; /* İnce scrollbar genişliği */
+        scrollbar-color: #555 #333;
+    }
+
+        body::-webkit-scrollbar {
+            width: 10px; /* Scrollbar genişliği */
+        }
+
+        body::-webkit-scrollbar-track {
+            background: #333; /* Arka plan rengi */
+            border-radius: 10px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #555; /* Scrollbar thumb rengi */
+            border-radius: 10px;
+            border: 2px solid #333; /* Thumb'ın çevresindeki boşluk */
+        }
+
+            body::-webkit-scrollbar-thumb:hover {
+                background-color: #777; /* Hover durumunda daha açık gri */
+            }
+
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .btn-custom {
+        background-color: #666;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s, transform 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+        .btn-custom:hover {
+            background-color: #888;
+            transform: translateY(-2px);
+        }
+
+    .custom-dropdown {
+        padding: 8px;
+        font-size: 14px;
+        background-color: #555;
+        color: #fff;
+        border: 1px solid #666;
+        border-radius: 4px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        outline: none;
+        cursor: pointer;
+        width: 100%;
+        height: 36px;
+    }
+
+        .custom-dropdown option {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-dropdown option:hover {
+                background-color: #444;
+            }
+
+        .custom-dropdown:focus {
+            border: 1px solid #888;
+            box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.2);
+        }
+
+    .navbar {
+        background-color: #444;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        font-weight: bold;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .sidebar {
+        background-color: #333;
+        padding: 20px;
+        width: 200px;
+        position: fixed;
+        top: 60px;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        z-index: 900;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+    }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            font-size: 16px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 5px;
+            transition: background-color 0.3s, padding-left 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+            .sidebar a:hover {
+                background-color: #575757;
+                padding-left: 15px;
+            }
+
+    .form-container {
+        padding: 20px;
+        background-color: #333;
+        border-radius: 10px;
+        position: absolute;
+        left: 220px;
+        top: 65px;
+        right: 20px;
+        bottom: 20px;
+        box-sizing: border-box;
+        overflow: auto;
+        margin-top: 3px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+        padding: 10px;
+        background-color: #444;
+        border-radius: 10px;
+        box-sizing: border-box;
+    }
+
+    .form-label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        padding: 3.5px;
+        font-size: 13px;
+        border-radius: 4px;
+        border: 1px solid #666;
+        background-color: #555;
+        color: #fff;
+        height: 28px;
+    }
+
+    .btn-custom {
+        background-color: #666;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s, transform 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+        .btn-custom:hover {
+            background-color: #888;
+            transform: translateY(-2px);
+        }
+</style>

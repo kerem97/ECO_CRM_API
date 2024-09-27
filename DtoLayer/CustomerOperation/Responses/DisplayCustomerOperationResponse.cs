@@ -21,5 +21,6 @@ namespace DtoLayer.CustomerOperation.Responses
         public string Reason { get; set; }
         public string Address { get; set; }
         public string Status { get; set; }
+        public string UpdatedStatusDescription { get; set; }
     }
 }

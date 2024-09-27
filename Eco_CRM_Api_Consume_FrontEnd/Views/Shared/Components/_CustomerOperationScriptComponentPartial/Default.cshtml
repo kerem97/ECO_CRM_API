@@ -1,0 +1,304 @@
+﻿<script>
+    let currentPage = 1;
+    const pageSize = 10;
+    const token = '@ViewBag.Token';
+
+    $(document).ready(function () {
+        fetchDropdownData();
+        fetchData(currentPage);
+    });
+    function fetchDropdownData() {
+        $.ajax({
+            url: 'https://localhost:44309/api/CustomerOperations/get-dropdown-data',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (data) {
+                data.companies.forEach(function (company) {
+                    $('#companyFilter').append(`<option value="${company}">${company}</option>`);
+                });
+                data.methods.forEach(function (method) {
+                    $('#methodFilter').append(`<option value="${method}">${method}</option>`);
+                });
+                data.personnel.forEach(function (person) {
+                    $('#personnelFilter').append(`<option value="${person}">${person}</option>`);
+                });
+                data.reasons.forEach(function (reason) {
+                    $('#reasonFilter').append(`<option value="${reason}">${reason}</option>`);
+                });
+                for (let i = 1; i <= 12; i++) {
+                    $('#monthFilter').append(`<option value="${i}">${i}</option>`);
+                }
+                const currentYear = new Date().getFullYear();
+                for (let i = currentYear; i >= currentYear - 10; i--) {
+                    $('#yearFilter').append(`<option value="${i}">${i}</option>`);
+                }
+            },
+            error: function () {
+                alert('Dropdown verileri alınırken hata oluştu.');
+            }
+        });
+    }
+
+    $('#applyFilters').click(function () {
+        const filterRequest = {
+            companyName: $('#companyFilter').val(),
+            month: $('#monthFilter').val() ? parseInt($('#monthFilter').val()) : null,
+            year: $('#yearFilter').val() ? parseInt($('#yearFilter').val()) : null,
+            method: $('#methodFilter').val() || null,
+            performedBy: $('#personnelFilter').val() || null,
+            reason: $('#reasonFilter').val() || null,
+            status: $('#statusFilter').val() || null
+        };
+        $.ajax({
+            url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(filterRequest),
+            success: function (data) {
+                updateTable(data);
+            },
+            error: function () {
+                alert('Filtreleme işlemi sırasında hata oluştu.');
+            }
+        });
+    });
+    $('#resetFilters').click(function () {
+        $('#companyFilter').val('');
+        $('#methodFilter').val('');
+        $('#reasonFilter').val('');
+        $('#monthFilter').val('');
+        $('#yearFilter').val('');
+        $('#statusFilter').val('');
+
+        fetchData(currentPage);
+    });
+    function fetchData(page) {
+        $.ajax({
+            url: `https://localhost:44309/api/CustomerOperations/paged-operations?pageNumber=${page}&pageSize=${pageSize}`,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (data) {
+                currentPage = page;
+                $('#currentPage').text(currentPage);
+                updateTable(data);
+            },
+            error: function () {
+                alert('Veri alınırken hata oluştu.');
+            }
+        });
+    }
+
+    function updateTable(data) {
+        let tbody = $('table tbody');
+        tbody.empty();
+
+        data.forEach(operation => {
+            const operationDate = operation.operationDate
+                ? new Date(operation.operationDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.operationDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                : '';
+            const plannedDate = operation.plannedDate
+                ? new Date(operation.plannedDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.plannedDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                : '';
+            const actualDate = operation.actualDate
+                ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                : '';
+
+            tbody.append(`
+                                                                            <tr>
+                                                                                <td>${operationDate}</td>
+                                                                                <td>${operation.createdByUser || ''}</td>
+                                                                                <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                                <td>${operation.customerName || ''}</td>
+                                                                                <td>${operation.address || ''}</td>
+                                                                                <td>${operation.method || ''}</td>
+                                                                                <td>${operation.contactPerson || ''}</td>
+                                                                                <td>${plannedDate}</td>
+                                                                                <td>${actualDate}</td>
+                                                                                <td>${operation.reason || ''}</td>
+                                                                                <td>${operation.status || ''}</td>
+                                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                                    ${operation.description || ''}
+                                                                                </td>
+                                                                            </tr>
+                                                                        `);
+        });
+    }
+
+    function changePage(direction) {
+        const filterRequest = {
+            companyName: $('#companySearchInput').val() || null,
+            month: $('#monthFilter').val() ? parseInt($('#monthFilter').val()) : null,
+            year: $('#yearFilter').val() ? parseInt($('#yearFilter').val()) : null,
+            method: $('#methodFilter').val() || null,
+            performedBy: $('#personnelFilter').val() || null,
+            reason: $('#reasonFilter').val() || null,
+            status: $('#statusFilter').val() || null
+        };
+
+        if (direction === 'next') {
+            currentPage++;
+        } else if (direction === 'prev' && currentPage > 1) {
+            currentPage--;
+        }
+
+        $.ajax({
+            url: `https://localhost:44309/api/CustomerOperations/filtered-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(filterRequest),
+            success: function (data) {
+                $('#currentPage').text(currentPage);
+                updateTable(data);
+            },
+            error: function () {
+                alert('Sayfa verileri alınırken hata oluştu.');
+            }
+        });
+    }
+    $(document).ready(function () {
+        // Firma searchbox için event handler
+        function searchCompanyNames(searchTerm) {
+            const encodedSearchTerm = encodeURIComponent(searchTerm);
+
+            $.ajax({
+                url: `https://localhost:44309/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (data) {
+                    console.log(data); // Gelen verileri kontrol edin
+                    $('#companySearchBox').empty();
+                    data.forEach(function (company) {
+                        $('#companySearchBox').append(`<option value="${company}">${company}</option>`);
+                    });
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText); // Hataları konsolda görüntüleyin
+                    alert('Firma arama sırasında hata oluştu.');
+                }
+            });
+        }
+
+        // Firma adını searchbox'a yazınca otomatik tamamlamayı tetikle
+        $('#companySearchInput').on('input', function () {
+            const searchTerm = $(this).val().trim();
+
+            if (searchTerm.length >= 2) {
+                searchCompanyNames(searchTerm);
+            } else {
+                $('#companySearchBox').empty(); // Searchbox sonuçlarını temizle
+            }
+        });
+
+        $('#companySearchInput').on('change', function () {
+            const selectedCompanyName = $(this).val().trim(); // Seçilen firmanın adı
+
+            if (selectedCompanyName) {
+                filterOperationsByCompanyName(selectedCompanyName);
+            }
+        });
+
+
+        // Belirtilen firma adına göre filtreleme işlemi
+        function filterOperationsByCompanyName(companyName) {
+            $.ajax({
+                url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({ companyName: companyName }), // Firma adına göre filtreleme
+                success: function (data) {
+                    updateTable(data); // Tabloda filtrelenmiş verileri göster
+                },
+                error: function () {
+                    alert('Firma operasyonları alınırken hata oluştu.');
+                }
+            });
+        }
+
+        function updateTable(data) {
+            let tbody = $('table tbody');
+            tbody.empty();
+
+            data.forEach(operation => {
+                const operationDate = operation.operationDate
+                    ? new Date(operation.operationDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.operationDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                    : '';
+                const plannedDate = operation.plannedDate
+                    ? new Date(operation.plannedDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.plannedDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                    : '';
+                const actualDate = operation.actualDate
+                    ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                    : '';
+                const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
+                tbody.append(`
+                                                            <tr>
+                                                                <td>${operationDate}</td>
+                                                                <td>${operation.createdByUser || ''}</td>
+                                                                <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                <td>${operation.customerName || ''}</td>
+                                                                <td>${operation.address || ''}</td>
+                                                                <td>${operation.method || ''}</td>
+                                                                <td>${operation.contactPerson || ''}</td>
+                                                                <td>${plannedDate}</td>
+                                                                <td>${actualDate}</td>
+                                                                <td>${operation.reason || ''}</td>
+                                                                <td>${operation.status || ''}</td>
+                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                    ${operation.description || ''}
+                                                                </td>
+                                                                        <td>
+                                                        <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
+                                                            data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
+                                                    </td>
+                                                            </tr>
+                                                        `);
+            });
+            $('.edit-btn').off('click').on('click', function () {
+                const operationId = $(this).data('operation-id');
+                const operationStatus = $(this).closest('tr').find('td:nth-child(11)').text().trim();
+
+                if (operationStatus === "Gerçekleşti" || operationStatus === "İptal Edildi") {
+                    alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "İptal Edildi".');
+                    return;
+                }
+                $('#editOperationModal').data('operation-id', operationId);
+                $('#editOperationModal').modal('show');
+                $('#cancelReasonDiv').hide();
+                $('#updatedStatusDescriptionDiv').hide();
+                $('#actualDateDiv').hide();
+                $('#meetingStatusDiv').hide();
+                $('#status').val('');
+                $('#cancelReason').val('');
+                $('#actualDate').val('');
+                $('#meetingStatus').val('');
+                $('#updatedStatusDescription').val('');
+            });
+            $('#resetFilters').click(function () {
+                $('#methodFilter').val('');
+                $('#reasonFilter').val('');
+                $('#monthFilter').val('');
+                $('#yearFilter').val('');
+                $('#statusFilter').val('');
+
+                fetchData(currentPage);
+            });
+        }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        document.body.style.opacity = 1;
+    });
+</script>
