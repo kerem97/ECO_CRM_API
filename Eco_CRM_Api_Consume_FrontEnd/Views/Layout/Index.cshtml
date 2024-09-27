@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ECO CRM</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @await Component.InvokeAsync("_LayoutStyleComponentPartial")
+</head>
+<body>
+    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
+    <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
+    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
+
+    <div class="content">
+        @RenderBody()
+    </div>
+    <footer>
+        Designed by Eco Software Development ℗
+    </footer>
+</body>
+</html>

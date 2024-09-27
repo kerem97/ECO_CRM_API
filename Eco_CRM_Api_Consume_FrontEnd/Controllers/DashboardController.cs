@@ -42,7 +42,9 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
                 }
             }
             ViewBag.CurrentPage = pageNumber;
-            return View(userOperations); 
+            return View(userOperations);
         }
+
+      
     }
 }
