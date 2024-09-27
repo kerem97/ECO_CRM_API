@@ -59,7 +59,7 @@ namespace DataAccessLayer.EntityFramework
        .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<string>> SearchCompaniesByName(string searchTerm)
+        public async Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return new List<string>();
@@ -68,7 +68,10 @@ namespace DataAccessLayer.EntityFramework
 
             return await _context.Customers
                 .Where(c => c.CompanyName.ToLower().Contains(searchTerm))
-                .Select(c => c.CompanyName)
+                .OrderBy(c => c.CompanyName)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => c.CompanyName) // Sadece CompanyName alanını seçiyoruz
                 .ToListAsync();
         }
 

@@ -14,7 +14,7 @@ namespace DataAccessLayer.Abstract
         Task<(List<CustomerOperation>, int)> GetOperationsByUserId(int userId, int pageNumber, int pageSize);
         Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
         Task<List<CustomerOperation>> GetAllPagedAsync(int pageNumber, int pageSize);
-        Task<List<CustomerOperation>> GetFilteredOperationsAsync(string companyName, int? month, int? year, string method, string performedBy, string reason, string status);
+        Task<List<CustomerOperation>> GetFilteredOperationsAsync(string companyName, int? month, int? year, string method, string performedBy, string reason, string status, int pageNumber, int pageSize);
 
     }
 }

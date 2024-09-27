@@ -102,9 +102,9 @@ namespace BusinessLayer.Services.CustomerServices
             return (customerResponses, totalCustomers);
         }
 
-        public async Task<List<string>> SearchCompaniesByName(string searchTerm)
+        public async Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
         {
-            return await _customerRepository.SearchCompaniesByName(searchTerm);
+            return await _customerRepository.SearchCompaniesByName(searchTerm, pageNumber, pageSize);
         }
 
         public async Task UpdateCustomersAsync(UpdateCustomerRequest updateCustomerRequest, int updatedByUserId)

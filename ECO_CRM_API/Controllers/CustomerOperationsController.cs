@@ -127,16 +127,17 @@ public class CustomerOperationsController : ControllerBase
         }
     }
     [HttpPost("filtered-operations")]
-    public async Task<IActionResult> GetFilteredOperations([FromBody] FilterCustomerOperationRequest filterRequest)
+    public async Task<IActionResult> GetFilteredOperations([FromBody] FilterCustomerOperationRequest filterRequest, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
-            var operations = await _customerOperationService.GetFilteredOperationsAsync(filterRequest);
-            return Ok(operations);
+            var filteredOperations = await _customerOperationService.GetFilteredOperationsAsync(filterRequest, pageNumber, pageSize);
+
+            return Ok(filteredOperations);
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
     [HttpGet("get-dropdown-data")]

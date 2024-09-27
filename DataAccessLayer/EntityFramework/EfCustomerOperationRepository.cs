@@ -56,7 +56,7 @@ namespace DataAccessLayer.EntityFramework
             return await _context.Set<CustomerOperation>().FindAsync(id);
         }
 
-        public async Task<List<CustomerOperation>> GetFilteredOperationsAsync(string companyName, int? month, int? year, string method, string performedBy, string reason, string status)
+        public async Task<List<CustomerOperation>> GetFilteredOperationsAsync(string companyName, int? month, int? year, string method, string performedBy, string reason, string status, int pageNumber, int pageSize)
         {
             var query = _context.CustomerOperations.Include(co => co.Customer).Include(co => co.User).AsQueryable();
 
@@ -81,7 +81,11 @@ namespace DataAccessLayer.EntityFramework
             if (!string.IsNullOrEmpty(status))
                 query = query.Where(co => co.Status == status);
 
-            return await query.ToListAsync();
+            return await query
+        .OrderByDescending(co => co.OperationDate)
+        .Skip((pageNumber - 1) * pageSize)
+        .Take(pageSize)
+        .ToListAsync();
         }
 
 

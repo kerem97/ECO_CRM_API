@@ -166,8 +166,9 @@ namespace BusinessLayer.Services.CustomerOperationServices
             _customerOperationRepository.Update(existingOperation);
         }
 
-        public async Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest)
+        public async Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize)
         {
+
             var filteredOperations = await _customerOperationRepository.GetFilteredOperationsAsync(
                 filterRequest.CompanyName,
                 filterRequest.Month,
@@ -175,7 +176,9 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 filterRequest.Method,
                 filterRequest.PerformedBy,
                 filterRequest.Reason,
-                filterRequest.Status
+                filterRequest.Status,
+                 pageNumber,
+                 pageSize
             );
 
             return filteredOperations.Select(co => new DisplayCustomerOperationResponse
