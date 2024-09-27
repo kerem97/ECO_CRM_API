@@ -59,6 +59,18 @@ namespace DataAccessLayer.EntityFramework
        .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<List<string>> SearchCompaniesByName(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return new List<string>();
+
+            searchTerm = searchTerm.Trim().ToLower();
+
+            return await _context.Customers
+                .Where(c => c.CompanyName.ToLower().Contains(searchTerm))
+                .Select(c => c.CompanyName)
+                .ToListAsync();
+        }
 
         public async Task Update(Customer entity)
         {

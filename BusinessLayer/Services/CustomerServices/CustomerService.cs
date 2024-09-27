@@ -102,6 +102,11 @@ namespace BusinessLayer.Services.CustomerServices
             return (customerResponses, totalCustomers);
         }
 
+        public async Task<List<string>> SearchCompaniesByName(string searchTerm)
+        {
+            return await _customerRepository.SearchCompaniesByName(searchTerm);
+        }
+
         public async Task UpdateCustomersAsync(UpdateCustomerRequest updateCustomerRequest, int updatedByUserId)
         {
             var customerEntity = await _customerRepository.GetById(updateCustomerRequest.Id);

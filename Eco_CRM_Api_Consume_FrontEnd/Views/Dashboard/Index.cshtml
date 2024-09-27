@@ -25,6 +25,47 @@
             padding: 0 20px;
         }
 
+        #companySearchInput {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            width: 200px;
+            outline: none;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+            #companySearchInput::placeholder {
+                color: #aaa; /* Placeholder rengi */
+            }
+
+            #companySearchInput:focus {
+                border-color: #777;
+                background-color: #333;
+            }
+
+        /* Datalist stili */
+        #companySearchBox {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            max-height: 150px; /* Maksimum yüksekliği belirleyin */
+            overflow-y: auto; /* Dikey kaydırma ekleyin */
+        }
+
+            #companySearchBox option {
+                padding: 5px;
+                background-color: #333;
+                color: #fff;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                #companySearchBox option:hover {
+                    background-color: #555;
+                }
+
         .form-header {
             display: flex;
             justify-content: space-between;
@@ -298,9 +339,8 @@
     </div>
 
     <div class="filter-container">
-        <select id="companyFilter" class="filter-dropdown">
-            <option value="">Firma Seç</option>
-        </select>
+        <input type="text" id="companySearchInput" placeholder="Firma Ara" list="companySearchBox" autocomplete="off" />
+        <datalist id="companySearchBox"></datalist>
         <select id="methodFilter" class="filter-dropdown">
             <option value="">Yöntem Seç</option>
         </select>
@@ -322,10 +362,6 @@
         <button id="applyFilters" class="filter-btn">Filtrele</button>
         <button id="resetFilters" class="reset-btn">Sıfırla</button>
     </div>
-
-
-    
-
 
     <table style="width: 100%;">
         <thead>
@@ -438,7 +474,6 @@
             fetchData(currentPage);
         });
         $('#resetFilters').click(function () {
-            $('#companyFilter').val('');
             $('#methodFilter').val('');
             $('#reasonFilter').val('');
             $('#monthFilter').val('');
@@ -455,9 +490,7 @@
                     'Authorization': 'Bearer ' + token
                 },
                 success: function (data) {
-                    data.companies.forEach(function (company) {
-                        $('#companyFilter').append(`<option value="${company}">${company}</option>`);
-                    });
+                  
                     data.methods.forEach(function (method) {
                         $('#methodFilter').append(`<option value="${method}">${method}</option>`);
                     });
@@ -587,11 +620,38 @@
         }
 
         function changePage(direction) {
+            const filterRequest = {
+                companyName: $('#companySearchInput').val() || null,
+                month: $('#monthFilter').val() ? parseInt($('#monthFilter').val()) : null,
+                year: $('#yearFilter').val() ? parseInt($('#yearFilter').val()) : null,
+                method: $('#methodFilter').val() || null,
+                performedBy: $('#personnelFilter').val() || null,
+                reason: $('#reasonFilter').val() || null,
+                status: $('#statusFilter').val() || null
+            };
+
             if (direction === 'next') {
-                fetchData(currentPage + 1);
+                currentPage++;
             } else if (direction === 'prev' && currentPage > 1) {
-                fetchData(currentPage - 1);
+                currentPage--;
             }
+
+            $.ajax({
+                url: `https://localhost:44309/api/CustomerOperations/filtered-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(filterRequest),
+                success: function (data) {
+                    $('#currentPage').text(currentPage);
+                    updateTable(data);
+                },
+                error: function () {
+                    alert('Sayfa verileri alınırken hata oluştu.');
+                }
+            });
         }
 
         $('#saveChangesBtn').click(function () {
@@ -697,6 +757,140 @@
         $('#editOperationModal .close, #editOperationModal .btn-secondary').click(function () {
             $('#editOperationModal').modal('hide');
         });
+        $(document).ready(function () {
+            // Firma searchbox için event handler
+            function searchCompanyNames(searchTerm) {
+                const encodedSearchTerm = encodeURIComponent(searchTerm);
+
+                $.ajax({
+                    url: `https://localhost:44309/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    success: function (data) {
+                        console.log(data); // Gelen verileri kontrol edin
+                        $('#companySearchBox').empty();
+                        data.forEach(function (company) {
+                            $('#companySearchBox').append(`<option value="${company}">${company}</option>`);
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error(xhr.responseText); // Hataları konsolda görüntüleyin
+                        alert('Firma arama sırasında hata oluştu.');
+                    }
+                });
+            }
+
+            // Firma adını searchbox'a yazınca otomatik tamamlamayı tetikle
+            $('#companySearchInput').on('input', function () {
+                const searchTerm = $(this).val().trim();
+
+                if (searchTerm.length >= 2) {
+                    searchCompanyNames(searchTerm);
+                } else {
+                    $('#companySearchBox').empty(); // Searchbox sonuçlarını temizle
+                }
+            });
+
+            $('#companySearchInput').on('change', function () {
+                const selectedCompanyName = $(this).val().trim(); // Seçilen firmanın adı
+
+                if (selectedCompanyName) {
+                    filterOperationsByCompanyName(selectedCompanyName);
+                }
+            });
+
+
+            // Belirtilen firma adına göre filtreleme işlemi
+            function filterOperationsByCompanyName(companyName) {
+                $.ajax({
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({ companyName: companyName }), // Firma adına göre filtreleme
+                    success: function (data) {
+                        updateTable(data); // Tabloda filtrelenmiş verileri göster
+                    },
+                    error: function () {
+                        alert('Firma operasyonları alınırken hata oluştu.');
+                    }
+                });
+            }
+
+            function updateTable(data) {
+                let tbody = $('table tbody');
+                tbody.empty();
+
+                data.forEach(operation => {
+                    const operationDate = operation.operationDate
+                        ? new Date(operation.operationDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.operationDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                        : '';
+                    const plannedDate = operation.plannedDate
+                        ? new Date(operation.plannedDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.plannedDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                        : '';
+                    const actualDate = operation.actualDate
+                        ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                        : '';
+                    const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
+                    tbody.append(`
+                                        <tr>
+                                            <td>${operationDate}</td>
+                                            <td>${operation.createdByUser || ''}</td>
+                                            <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                            <td>${operation.customerName || ''}</td>
+                                            <td>${operation.address || ''}</td>
+                                            <td>${operation.method || ''}</td>
+                                            <td>${operation.contactPerson || ''}</td>
+                                            <td>${plannedDate}</td>
+                                            <td>${actualDate}</td>
+                                            <td>${operation.reason || ''}</td>
+                                            <td>${operation.status || ''}</td>
+                                            <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                ${operation.description || ''}
+                                            </td>
+                                                    <td>
+                                    <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
+                                        data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
+                                </td>
+                                        </tr>
+                                    `);
+                });
+                $('.edit-btn').off('click').on('click', function () {
+                    const operationId = $(this).data('operation-id');
+                    const operationStatus = $(this).closest('tr').find('td:nth-child(11)').text().trim();
+
+                    if (operationStatus === "Gerçekleşti" || operationStatus === "İptal Edildi") {
+                        alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "İptal Edildi".');
+                        return;
+                    }
+                    $('#editOperationModal').data('operation-id', operationId);
+                    $('#editOperationModal').modal('show');
+                    $('#cancelReasonDiv').hide();
+                    $('#updatedStatusDescriptionDiv').hide();
+                    $('#actualDateDiv').hide();
+                    $('#meetingStatusDiv').hide();
+                    $('#status').val('');
+                    $('#cancelReason').val('');
+                    $('#actualDate').val('');
+                    $('#meetingStatus').val('');
+                    $('#updatedStatusDescription').val('');
+                });
+                $('#resetFilters').click(function () {
+                    $('#methodFilter').val('');
+                    $('#reasonFilter').val('');
+                    $('#monthFilter').val('');
+                    $('#yearFilter').val('');
+                    $('#statusFilter').val('');
+
+                    fetchData(currentPage);
+                });
+            }
+        });
+
 
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;

@@ -51,11 +51,16 @@ namespace ECO_CRM_API.Controllers
 
             return Ok("Customer added successfully");
         }
-
+        [HttpGet("search-companies")]
+        public async Task<IActionResult> SearchCompanies([FromQuery] string searchTerm)
+        {
+            var customerDtos = await _customerService.SearchCompaniesByName(searchTerm);
+            return Ok(customerDtos);
+        }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(int id, [FromBody] UpdateCustomerRequest customerDto)
         {
-            customerDto.Id = id; // Gelen ID'yi DTO'ya ekliyoruz
+            customerDto.Id = id; 
 
             var userId = GetCurrentUserId();
 
