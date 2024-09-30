@@ -9,7 +9,7 @@
         overflow: hidden;
         flex-direction: column;
         padding: 0 20px;
-        overflow-y: auto; /* Scrollbar'ı etkinleştir */
+        overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: #555 #333;
     }
@@ -21,8 +21,8 @@
         background-color: #444;
         color: #fff;
         outline: none;
-        vertical-align: middle; /* Dikey ortalama */
-        height: 36px; /* Yüksekliği dropdown'larla eşleştir */
+        vertical-align: middle;
+        height: 36px;
         transition: border-color 0.3s, background-color 0.3s;
     }
 
@@ -59,8 +59,8 @@
         display: flex;
         margin-left: 100px;
         padding: 10px 20px;
-        width: calc(100% - 240px); /* Sayfa genişliğine göre ayar */
-        margin-top: 80px; /* Navbarın altında biraz boşluk bırak */
+        width: calc(100% - 240px);
+        margin-top: 80px;
         position: relative;
         z-index: 1;
     }
@@ -85,11 +85,11 @@
         cursor: pointer;
         text-decoration: none;
         transition: background-color 0.3s, transform 0.2s;
-        margin-left: 10px; /* Filter elemanlarıyla arasında boşluk bırak */
-        height: 36px; /* Dropdown ve input ile aynı hizada */
+        margin-left: 10px;
+        height: 36px;
         display: flex;
         align-items: center;
-        white-space: nowrap; /* Butonun tek satırda kalmasını sağlar */
+        white-space: nowrap;
         width: auto;
     }
 
@@ -307,26 +307,26 @@
             background-color: #888;
             color: #fff;
         }
-    /* Info Box ve Progress Bar Container */
+
     .info-container {
         display: flex;
         justify-content: space-between;
         gap: 10px;
-        margin-top: 5px; /* Yukarı hizalama */
+        margin-top: 5px;
         margin-bottom: 30px;
         padding: 10px 0;
-        margin-left: 220px; /* Mevcut sayfa düzeninize göre sol kenardan uzaklaştırma */
-        width: calc(100% - 240px); /* Yan yana düzgün bir şekilde sığdırmak için */
+        margin-left: 220px;
+        width: calc(100% - 240px);
     }
 
     .info-box {
-        margin-top: 20px; /* Üst boşluğu azaltmak için ayarlandı */
-        width: 22%; /* Yan yana daha iyi sığması için genişlik ayarlandı */
+        margin-top: 20px;
+        width: 22%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
-        background-color: #666; /* Daha belirgin bir arka plan rengi */
-        border: 2px solid #888; /* Çevresine bir çerçeve ekleyerek belirginleştir */
+        background-color: #666;
+        border: 2px solid #888;
         padding: 10px;
         border-radius: 8px;
     }
@@ -355,10 +355,9 @@
         }
 
             .info-box li span {
-                flex-shrink: 0; /* Sayının yerinde kalmasını sağlar */
+                flex-shrink: 0;
             }
 
-    /* Donut Chart Container - Info box'larla aynı boyutta ve hizada olacak şekilde */
     .donut-chart-wrapper {
         display: flex;
         align-items: center;
