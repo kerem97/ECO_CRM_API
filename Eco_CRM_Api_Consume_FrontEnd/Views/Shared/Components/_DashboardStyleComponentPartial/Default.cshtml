@@ -20,8 +20,9 @@
         border: 1px solid #555;
         background-color: #444;
         color: #fff;
-        width: 200px;
         outline: none;
+        vertical-align: middle; /* Dikey ortalama */
+        height: 36px; /* Yüksekliği dropdown'larla eşleştir */
         transition: border-color 0.3s, background-color 0.3s;
     }
 
@@ -84,7 +85,12 @@
         cursor: pointer;
         text-decoration: none;
         transition: background-color 0.3s, transform 0.2s;
-        margin-right: 20px;
+        margin-left: 10px; /* Filter elemanlarıyla arasında boşluk bırak */
+        height: 36px; /* Dropdown ve input ile aynı hizada */
+        display: flex;
+        align-items: center;
+        white-space: nowrap; /* Butonun tek satırda kalmasını sağlar */
+        width: auto;
     }
 
         .add-operation-btn:hover {
@@ -100,11 +106,12 @@
 
     .filter-container {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
         gap: 10px;
         padding-right: 20px;
         flex-wrap: nowrap;
-        overflow-x: auto;
+        margin-left: 100px;
+        align-items: center;
     }
 
     .filter-dropdown {
@@ -393,7 +400,6 @@
         align-items: center;
         justify-content: center;
         position: absolute;
-
     }
 
     .donut-chart-text {
