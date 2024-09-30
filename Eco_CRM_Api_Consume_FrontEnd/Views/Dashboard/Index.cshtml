@@ -13,6 +13,7 @@
     @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
     @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
+    @await Component.InvokeAsync("_DashboardFormHeaderComponentPartial")
     <div class="info-container">
         <div class="info-box">
             <h4>En Çok Ziyaret Edilen</h4>
@@ -55,7 +56,6 @@
 
     </div>
 
-    @await Component.InvokeAsync("_DashboardFormHeaderComponentPartial")
     @await Component.InvokeAsync("_DashboardFilterContainerComponentPartial")
     <table style="width: 100%;">
         <thead>

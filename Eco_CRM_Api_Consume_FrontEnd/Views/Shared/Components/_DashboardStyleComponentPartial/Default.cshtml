@@ -57,12 +57,12 @@
 
     .form-header {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
         margin-left: 100px;
-        width: 100%;
-        margin-top: 10px;
+        padding: 10px 20px;
+        width: calc(100% - 240px); /* Sayfa genişliğine göre ayar */
+        margin-top: 80px; /* Navbarın altında biraz boşluk bırak */
+        position: relative;
+        z-index: 1;
     }
 
     .header-title h3 {
@@ -112,6 +112,7 @@
         flex-wrap: nowrap;
         margin-left: 100px;
         align-items: center;
+        margin-top: 10px;
     }
 
     .filter-dropdown {
@@ -229,7 +230,7 @@
     table {
         width: calc(100% - 220px);
         margin-left: 100px;
-        margin-top: 40px;
+        margin-top: 10px;
         border-collapse: collapse;
         background-color: #444;
         border-radius: 8px;
@@ -311,7 +312,8 @@
         display: flex;
         justify-content: space-between;
         gap: 10px;
-        margin-top: 60px; /* Yukarı hizalama */
+        margin-top: 5px; /* Yukarı hizalama */
+        margin-bottom: 30px;
         padding: 10px 0;
         margin-left: 220px; /* Mevcut sayfa düzeninize göre sol kenardan uzaklaştırma */
         width: calc(100% - 240px); /* Yan yana düzgün bir şekilde sığdırmak için */
@@ -375,7 +377,7 @@
         width: 120px;
         height: 120px;
         border-radius: 50%;
-        background: conic-gradient(#003366 0% 60%, #222 60% 100%);
+        background: conic-gradient(#4caf50 0% 60%, #222 60% 100%);
         display: flex;
         align-items: center;
         justify-content: center;
