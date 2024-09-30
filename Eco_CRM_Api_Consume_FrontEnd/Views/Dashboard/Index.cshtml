@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Index";
     var userOperations = Model as List<DisplayCustomerOperationResponse>;
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +13,48 @@
     @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
     @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
+    <div class="info-container">
+        <div class="info-box">
+            <h4>En Çok Ziyaret Edilen</h4>
+            <ul id="mostVisitedList">
+                <li>Müşteri A<span>5</span></li>
+                <li>Müşteri B<span>5</span></li>
+                <li>Müşteri C<span>5</span></li>
+                <li>Müşteri D<span>5</span></li>
+                <li>Müşteri E<span>5</span></li>
+            </ul>
+        </div>
+        <div class="info-box">
+            <h4>En Çok Telefonla Aranan</h4>
+            <ul id="mostCalledList">
+                <li>Müşteri D<span>5</span></li>
+                <li>Müşteri E<span>5</span></li>
+                <li>Müşteri F<span>5</span></li>
+                <li>Müşteri F<span>5</span></li>
+                <li>Müşteri F<span>5</span></li>
+            </ul>
+        </div>
+        <div class="info-box">
+            <h4>En Çok Mail Atılan</h4>
+            <ul id="mostEmailedList">
+                <li>Müşteri G<span>5</span></li>
+                <li>Müşteri H<span>5</span></li>
+                <li>Müşteri I<span>5</span></li>
+                <li>Müşteri I<span>5</span></li>
+                <li>Müşteri I<span>5</span></li>
+            </ul>
+        </div>
+        <div class="donut-chart-wrapper">
+            <div class="donut-chart-label">Gerçekleşen / Planlanan</div>
+            <div class="donut-chart-container">
+                <div class="donut-chart-inner">
+                    <span class="donut-chart-text">60%</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     @await Component.InvokeAsync("_DashboardFormHeaderComponentPartial")
     @await Component.InvokeAsync("_DashboardFilterContainerComponentPartial")
     <table style="width: 100%;">

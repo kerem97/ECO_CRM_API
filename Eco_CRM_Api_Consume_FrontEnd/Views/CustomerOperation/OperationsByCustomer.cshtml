@@ -17,7 +17,12 @@
     @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
     @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
-    <h3 style="margin-left:85px;">Müşteriye Ait İşlemler</h3>
+    <div class="form-header">
+        <div class="header-title">
+            <h3>Müşteriye Ait Tüm Hareketler</h3>
+        </div>
+
+    </div>
     <table style="width: 100%;">
         <thead>
             <tr>

@@ -27,7 +27,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Login", "Account"); 
+                return RedirectToAction("Login", "Account");
             }
 
             var customerList = new List<DisplayCustomerResponse>();
@@ -85,6 +85,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
                 return View(request);
             }
         }
+        
     }
 
 }
