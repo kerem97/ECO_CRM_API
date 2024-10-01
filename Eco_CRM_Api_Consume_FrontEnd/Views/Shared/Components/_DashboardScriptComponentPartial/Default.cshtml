@@ -50,7 +50,7 @@
 
     $('#applyFilters').click(function () {
         const filterRequest = {
-            companyName: $('#companyFilter').val(),
+            companyName: $('#companySearchInput').val() || null,
             month: $('#monthFilter').val() ? parseInt($('#monthFilter').val()) : null,
             year: $('#yearFilter').val() ? parseInt($('#yearFilter').val()) : null,
             method: $('#methodFilter').val() || null,
@@ -58,8 +58,9 @@
             reason: $('#reasonFilter').val() || null,
             status: $('#statusFilter').val() || null
         };
+
         $.ajax({
-            url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+            url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token,
@@ -74,6 +75,9 @@
             }
         });
     });
+
+
+
     function fetchData(page) {
         $.ajax({
             url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${page}&pageSize=${pageSize}`,
@@ -154,39 +158,70 @@
     }
 
     function changePage(direction) {
-        const filterRequest = {
-            companyName: $('#companySearchInput').val() || null,
-            month: $('#monthFilter').val() ? parseInt($('#monthFilter').val()) : null,
-            year: $('#yearFilter').val() ? parseInt($('#yearFilter').val()) : null,
-            method: $('#methodFilter').val() || null,
-            performedBy: $('#personnelFilter').val() || null,
-            reason: $('#reasonFilter').val() || null,
-            status: $('#statusFilter').val() || null
-        };
-
+        // Sayfa numarasını güncelle
         if (direction === 'next') {
             currentPage++;
         } else if (direction === 'prev' && currentPage > 1) {
             currentPage--;
         }
 
-        $.ajax({
-            url: `https://localhost:44309/api/CustomerOperations/filtered-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json'
-            },
-            data: JSON.stringify(filterRequest),
-            success: function (data) {
-                $('#currentPage').text(currentPage);
-                updateTable(data);
-            },
-            error: function () {
-                alert('Sayfa verileri alınırken hata oluştu.');
-            }
-        });
+        // Filtre alanlarının boş olup olmadığını kontrol et
+        const isFilterApplied = $('#companySearchInput').val() ||
+            $('#monthFilter').val() ||
+            $('#yearFilter').val() ||
+            $('#methodFilter').val() ||
+            $('#personnelFilter').val() ||
+            $('#reasonFilter').val() ||
+            $('#statusFilter').val();
+
+        // Filtre uygulanmışsa filtreli istek at, aksi halde kullanıcıya ait tüm verileri getir
+        if (isFilterApplied) {
+            const filterRequest = {
+                companyName: $('#companySearchInput').val() || null,
+                month: $('#monthFilter').val() ? parseInt($('#monthFilter').val()) : null,
+                year: $('#yearFilter').val() ? parseInt($('#yearFilter').val()) : null,
+                method: $('#methodFilter').val() || null,
+                performedBy: $('#personnelFilter').val() || null,
+                reason: $('#reasonFilter').val() || null,
+                status: $('#statusFilter').val() || null
+            };
+
+            $.ajax({
+                url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(filterRequest),
+                success: function (data) {
+                    $('#currentPage').text(currentPage);
+                    updateTable(data); // Filtrelenmiş verileri tabloya yansıtalım
+                },
+                error: function () {
+                    alert('Filtreli veriler alınırken hata oluştu.');
+                }
+            });
+        } else {
+            // Filtre uygulanmadıysa giriş yapan kullanıcıya ait tüm işlemleri getir
+            $.ajax({
+                url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (data) {
+                    $('#currentPage').text(currentPage);
+                    updateTable(data);
+                },
+                error: function () {
+                    alert('Veriler alınırken hata oluştu.');
+                }
+            });
+        }
     }
+
+
 
     $('#saveChangesBtn').click(function () {
         const operationId = $('#editOperationModal').data('operation-id');
@@ -292,7 +327,6 @@
         $('#editOperationModal').modal('hide');
     });
     $(document).ready(function () {
-        // Firma searchbox için event handler
         function searchCompanyNames(searchTerm) {
             const encodedSearchTerm = encodeURIComponent(searchTerm);
 

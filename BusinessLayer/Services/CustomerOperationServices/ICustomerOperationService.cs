@@ -24,6 +24,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task CancelOperationAsync(int operationId, string cancelReason);
         Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription);
         Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize);
+        Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsByUserIdAsync(int userId, FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize);
         Task<List<DisplayEmailInteractionCountResponse>> GetTopEmailInteractions();
         Task<List<DisplayFaceToFaceInteractionCountResponse>> GetTopFaceToFaceInteractions();
         Task<List<DisplayPhoneInteractionCountResponse>> GetTopPhoneInteractions();

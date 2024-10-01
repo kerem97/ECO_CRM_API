@@ -141,6 +141,15 @@ public class CustomerOperationsController : ControllerBase
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+    [HttpPost("filtered-user-operations")]
+    public async Task<IActionResult> GetFilteredOperationsByUserId([FromBody] FilterCustomerOperationRequest filterRequest, int pageNumber = 1, int pageSize = 10)
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.GetFilteredOperationsByUserIdAsync(userId, filterRequest, pageNumber, pageSize);
+
+        return Ok(result);
+    }
+
     [HttpGet("get-dropdown-data")]
     public async Task<IActionResult> GetDropdownData()
     {

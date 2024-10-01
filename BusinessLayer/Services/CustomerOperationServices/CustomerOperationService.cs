@@ -186,6 +186,24 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 Description = co.Description
             }).ToList();
         }
+        public async Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsByUserIdAsync(int userId, FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize)
+        {
+            var filteredOperations = await _customerOperationRepository.GetFilteredOperationsByUserIdAsync(
+                userId,
+                filterRequest.CompanyName,
+                filterRequest.Month,
+                filterRequest.Year,
+                filterRequest.Method,
+                filterRequest.PerformedBy,
+                filterRequest.Reason,
+                filterRequest.Status,
+                pageNumber,
+                pageSize
+            );
+
+            return _mapper.Map<List<DisplayCustomerOperationResponse>>(filteredOperations);
+        }
+
         public async Task<List<DisplayEmailInteractionCountResponse>> GetTopEmailInteractions()
         {
             var data = await _customerOperationRepository.GetTopEmailInteractions();
