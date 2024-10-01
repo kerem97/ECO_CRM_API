@@ -1,0 +1,11 @@
+﻿@model List<DisplayFaceToFaceInteractionCountResponse>
+
+<div class="info-box">
+    <h4>En Çok Yüz Yüze Görüşülen</h4>
+    <ul id="mostFaceToFaceList">
+        @foreach (var x in Model)
+        {
+            <li>@x.CompanyName<span>@x.InteractionCount</span></li>
+        }
+    </ul>
+</div>

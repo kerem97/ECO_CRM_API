@@ -38,6 +38,31 @@ namespace BusinessLayer.Mapping
              .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown"))
               .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer != null ? src.Customer.CompanyName : "Unknown"));
 
+            CreateMap<CustomerOperation, DisplayEmailInteractionCountResponse>()
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) // Customer tablosundan CompanyName alıyoruz
+            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
+
+            CreateMap<CustomerOperation, DisplayPhoneInteractionCountResponse>()
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) // Customer tablosundan CompanyName alıyoruz
+            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
+
+            CreateMap<CustomerOperation, DisplayFaceToFaceInteractionCountResponse>()
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) // Customer tablosundan CompanyName alıyoruz
+            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
+
+            CreateMap<CustomerOperation, DisplayUserEmailInteractionCountResponse>()
+           .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) // Customer tablosundan CompanyName alıyoruz
+           .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
+
+            CreateMap<CustomerOperation, DisplayUserPhoneInteractionCountResponse>()
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) // Customer tablosundan CompanyName alıyoruz
+            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
+
+            CreateMap<CustomerOperation, DisplayUserFaceToFaceInteractionCountResponse>()
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) // Customer tablosundan CompanyName alıyoruz
+            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
+
+
             CreateMap<User, AddUserRequest>().ReverseMap()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
             CreateMap<User, UpdateUserRequest>().ReverseMap();

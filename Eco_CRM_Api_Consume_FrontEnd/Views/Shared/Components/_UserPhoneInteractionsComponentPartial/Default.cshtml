@@ -1,0 +1,13 @@
+﻿@model List<DisplayUserPhoneInteractionCountResponse>
+
+
+<div class="info-box">
+    <h4>En Çok Telefonla Aranan</h4>
+    <ul id="mostCalledList">
+        @foreach (var x in Model)
+        {
+            <li>@x.CompanyName<span>@x.InteractionCount</span></li>
+
+        }
+    </ul>
+</div>

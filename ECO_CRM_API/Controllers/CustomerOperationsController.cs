@@ -1,5 +1,6 @@
-﻿using BusinessLayer.Services.CustomerOperationServices;
+﻿    using BusinessLayer.Services.CustomerOperationServices;
 using DtoLayer.CustomerOperation.Requests;
+using DtoLayer.CustomerOperation.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -151,6 +152,48 @@ public class CustomerOperationsController : ControllerBase
         var reasons = allOperations.Select(o => o.Reason).Distinct().ToList();
 
         return Ok(new { companies, methods, personnel, reasons });
+    }
+
+    [HttpGet("top-email-interactions")]
+    public IActionResult GetTopEmailInteractions()
+    {
+        var result = _customerOperationService.GetTopEmailInteractions();
+        return Ok(result);
+    }
+    [HttpGet("top-phone-interactions")]
+    public IActionResult GetTopPhoneInteractions()
+    {
+        var result = _customerOperationService.GetTopPhoneInteractions();
+        return Ok(result);
+    }
+    [HttpGet("top-face-to-face-interactions")]
+    public IActionResult GetTopFaceToFaceInteractions()
+    {
+        var result = _customerOperationService.GetTopFaceToFaceInteractions();
+        return Ok(result);
+    }
+    [HttpGet("user-email-interactions")]
+    public async Task<IActionResult> GetUserEmailInteractions()
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.GetUserEmailInteractions(userId);
+        return Ok(result);
+    }
+
+    [HttpGet("user-phone-interactions")]
+    public async Task<IActionResult> GetUserPhoneInteractions()
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.GetUserPhoneInteractions(userId);
+        return Ok(result);
+    }
+
+    [HttpGet("user-face-to-face-interactions")]
+    public async Task<IActionResult> GetUserFaceToFaceInteractions()
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.GetUserFaceToFaceInteractions(userId);
+        return Ok(result);
     }
 
 

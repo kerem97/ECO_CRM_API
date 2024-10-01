@@ -1,0 +1,11 @@
+﻿@model List<DisplayUserEmailInteractionCountResponse>
+
+<div class="info-box">
+    <h4>En Çok Mail Atılan</h4>
+    <ul id="mostVisitedList">
+        @foreach (var x in Model)
+        {
+            <li>@x.CompanyName<span>@x.InteractionCount</span></li>
+        }
+    </ul>
+</div>

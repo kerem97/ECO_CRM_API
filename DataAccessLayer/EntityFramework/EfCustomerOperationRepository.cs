@@ -128,6 +128,96 @@ namespace DataAccessLayer.EntityFramework
        .ToListAsync();
         }
 
+        public async Task<List<(string companyName, int count)>> GetTopEmailInteractions()
+        {
+            var result = _context.CustomerOperations
+                .Where(co => co.Method == "E-Mail")
+                .GroupBy(co => co.Customer.CompanyName)
+                .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .Take(5)
+                .ToList()
+                .Select(x => (x.CompanyName, x.Count))
+                .ToList();
+
+            return result;
+        }
+
+        public async Task<List<(string companyName, int count)>> GetTopFaceToFaceInteractions()
+        {
+            var result = _context.CustomerOperations
+                .Where(co => co.Method == "Yüz Yüze")
+                .GroupBy(co => co.Customer.CompanyName)
+                .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .Take(5)
+                .ToList()
+                .Select(x => (x.CompanyName, x.Count))
+                .ToList();
+
+            return result;
+        }
+
+        public async Task<List<(string companyName, int count)>> GetTopPhoneInteractions()
+        {
+            var result = _context.CustomerOperations
+               .Where(co => co.Method == "Telefon")
+               .GroupBy(co => co.Customer.CompanyName)
+               .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+               .OrderByDescending(g => g.Count)
+               .Take(5)
+               .ToList()
+               .Select(x => (x.CompanyName, x.Count))
+               .ToList();
+
+            return result;
+        }
+
+        public async Task<List<(string companyName, int count)>> GetUserEmailInteractions(int userId)
+        {
+            var result = _context.CustomerOperations
+          .Where(co => co.Method == "E-Mail" && co.UserId == userId)
+          .GroupBy(co => co.Customer.CompanyName)
+          .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+          .OrderByDescending(g => g.Count)
+          .Take(5)
+          .ToList()
+          .Select(x => (x.CompanyName, x.Count))
+          .ToList();
+
+            return result;
+        }
+
+        public async Task<List<(string companyName, int count)>> GetUserFaceToFaceInteractions(int userId)
+        {
+            var result = _context.CustomerOperations
+          .Where(co => co.Method == "Yüz Yüze" && co.UserId == userId)
+          .GroupBy(co => co.Customer.CompanyName)
+          .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+          .OrderByDescending(g => g.Count)
+          .Take(5)
+          .ToList()
+          .Select(x => (x.CompanyName, x.Count))
+          .ToList();
+
+            return result;
+        }
+
+        public async Task<List<(string companyName, int count)>> GetUserPhoneInteractions(int userId)
+        {
+            var result = _context.CustomerOperations
+          .Where(co => co.Method == "Telefon" && co.UserId == userId)
+          .GroupBy(co => co.Customer.CompanyName)
+          .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+          .OrderByDescending(g => g.Count)
+          .Take(5)
+          .ToList()
+          .Select(x => (x.CompanyName, x.Count))
+          .ToList();
+
+            return result;
+        }
+
         public async Task Update(CustomerOperation entity)
         {
             _context.Set<CustomerOperation>().Update(entity);

@@ -54,7 +54,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             await _customerOperationRepository.Add(customerOperation);
         }
-
         public async Task CancelOperationAsync(int operationId, string cancelReason)
         {
             var operation = await _customerOperationRepository.GetById(operationId);
@@ -66,7 +65,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             await _customerOperationRepository.Update(operation);
         }
-
         public async Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription)
         {
             var operation = await _customerOperationRepository.GetById(operationId);
@@ -90,7 +88,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             await _customerOperationRepository.Update(operation);
         }
-
         public async Task DeleteCustomerOperationsAsync(int id)
         {
             var operation = await _customerOperationRepository.GetById(id);
@@ -99,38 +96,31 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 _customerOperationRepository.Delete(operation);
             }
         }
-
         public async Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsAsync()
         {
             var operations = await _customerOperationRepository.GetAll();
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
         }
-
         public async Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsPagedAsync(int pageNumber, int pageSize)
         {
             var operations = await _customerOperationRepository.GetAllPagedAsync(pageNumber, pageSize);
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
         }
-
-
         public async Task<GetByIdCustomerOperationResponse> GetCustomerOperationByIdAsync(int id)
         {
             var operation = await _customerOperationRepository.GetById(id);
             return _mapper.Map<GetByIdCustomerOperationResponse>(operation);
         }
-
         public async Task<List<DisplayCustomerOperationByCustomerResponse>> GetOperationsByCustomerIdAsync(int customerId)
         {
             var operations = await _customerOperationRepository.GetOperationsByCustomerId(customerId);
             return _mapper.Map<List<DisplayCustomerOperationByCustomerResponse>>(operations);
         }
-
         public async Task<List<DisplayCustomerOperationResponse>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize)
         {
             var operations = await _customerOperationRepository.GetPagedCustomerOperationsAsync(pageNumber, pageSize);
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
         }
-
         public async Task<(List<DisplayCustomerOperationResponse>, int)> GetUserOperationsAsync(int userId, int pageNumber, int pageSize)
         {
             var (operations, totalOperations) = await _customerOperationRepository.GetOperationsByUserId(userId, pageNumber, pageSize);
@@ -165,7 +155,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             _customerOperationRepository.Update(existingOperation);
         }
-
         public async Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize)
         {
 
@@ -195,6 +184,65 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 ContactPerson = co.ContactPerson,
                 OperationDate = co.OperationDate,
                 Description = co.Description
+            }).ToList();
+        }
+        public async Task<List<DisplayEmailInteractionCountResponse>> GetTopEmailInteractions()
+        {
+            var data = await _customerOperationRepository.GetTopEmailInteractions();
+            return data.Select(d => new DisplayEmailInteractionCountResponse
+            {
+                CompanyName = d.companyName,
+                InteractionCount = d.count
+            }).ToList();
+        }
+
+        public async Task<List<DisplayFaceToFaceInteractionCountResponse>> GetTopFaceToFaceInteractions()
+        {
+            var data = await _customerOperationRepository.GetTopFaceToFaceInteractions();
+            return data.Select(d => new DisplayFaceToFaceInteractionCountResponse
+            {
+                CompanyName = d.companyName,
+                InteractionCount = d.count
+            }).ToList();
+        }
+
+        public async Task<List<DisplayPhoneInteractionCountResponse>> GetTopPhoneInteractions()
+        {
+            var data = await _customerOperationRepository.GetTopPhoneInteractions();
+            return data.Select(d => new DisplayPhoneInteractionCountResponse
+            {
+                CompanyName = d.companyName,
+                InteractionCount = d.count
+            }).ToList();
+        }
+
+        public async Task<List<DisplayUserEmailInteractionCountResponse>> GetUserEmailInteractions(int userId)
+        {
+            var data = await _customerOperationRepository.GetUserEmailInteractions(userId);
+            return data.Select(d => new DisplayUserEmailInteractionCountResponse
+            {
+                CompanyName = d.companyName,
+                InteractionCount = d.count
+            }).ToList();
+        }
+
+        public async Task<List<DisplayUserPhoneInteractionCountResponse>> GetUserPhoneInteractions(int userId)
+        {
+            var data = await _customerOperationRepository.GetUserPhoneInteractions(userId);
+            return data.Select(d => new DisplayUserPhoneInteractionCountResponse
+            {
+                CompanyName = d.companyName,
+                InteractionCount = d.count
+            }).ToList();
+        }
+
+        public async Task<List<DisplayUserFaceToFaceInteractionCountResponse>> GetUserFaceToFaceInteractions(int userId)
+        {
+            var data = await _customerOperationRepository.GetUserFaceToFaceInteractions(userId);
+            return data.Select(d => new DisplayUserFaceToFaceInteractionCountResponse
+            {
+                CompanyName = d.companyName,
+                InteractionCount = d.count
             }).ToList();
         }
 

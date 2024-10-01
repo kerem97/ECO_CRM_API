@@ -1,3 +1,9 @@
+using BusinessLayer.Services.CustomerOperationServices;
+using BusinessLayer.Services.CustomerServices;
+using DataAccessLayer.Abstract;
+using DataAccessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient(); // HttpClient'ý ekliyoruz
@@ -8,10 +14,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-
 // Add services to the container.
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

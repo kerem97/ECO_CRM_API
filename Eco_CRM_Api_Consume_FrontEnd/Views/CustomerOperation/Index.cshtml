@@ -14,6 +14,21 @@
     @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
     <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
     @await Component.InvokeAsync("_CustomerOperationFormHeaderComponentPartial")
+    <div class="info-container">
+        @await Component.InvokeAsync("_FaceToFaceInteractionsComponentPartial")
+        @await Component.InvokeAsync("_PhoneInteractionsComponentPartial")
+        @await Component.InvokeAsync("_EmailInteractionsComponentPartial")
+
+        <div class="donut-chart-wrapper">
+            <div class="donut-chart-label">Gerçekleşen / Planlanan</div>
+            <div class="donut-chart-container">
+                <div class="donut-chart-inner">
+                    <span class="donut-chart-text">60%</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
     @await Component.InvokeAsync("_CustomerOperationFilterContainerComponentPartial")
     <table style="width: 100%;">
         <thead>
