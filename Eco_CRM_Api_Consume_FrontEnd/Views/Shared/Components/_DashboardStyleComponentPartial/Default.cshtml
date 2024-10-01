@@ -382,6 +382,8 @@
         justify-content: center;
         position: relative;
         margin-top: 10px;
+        transition: background 2s cubic-bezier(0.4, 0, 0.2, 1); /* Dolum için daha yumuşak animasyon */
+        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 5px rgba(0, 0, 0, 0.3);
     }
 
     .donut-chart-label {
@@ -401,10 +403,11 @@
         align-items: center;
         justify-content: center;
         position: absolute;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
     }
 
     .donut-chart-text {
-        font-size: 15px;
+        font-size: 10px;
         font-weight: bold;
         color: #fff;
         margin-bottom: 5px;
