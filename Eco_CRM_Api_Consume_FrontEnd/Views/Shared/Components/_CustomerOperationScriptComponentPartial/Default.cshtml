@@ -8,6 +8,11 @@
         fetchData(currentPage);
     });
     function fetchDropdownData() {
+        $('#methodFilter').empty().append('<option value="">Yöntem Seç</option>');
+        $('#personnelFilter').empty().append('<option value="">Personel Seç</option>');
+        $('#reasonFilter').empty().append('<option value="">Sebep Seç</option>');
+        $('#monthFilter').empty().append('<option value="">Ay Seç</option>');
+        $('#yearFilter').empty().append('<option value="">Yıl Seç</option>');
         $.ajax({
             url: 'https://localhost:44309/api/CustomerOperations/get-dropdown-data',
             method: 'GET',
