@@ -12,7 +12,6 @@
 <body>
     @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
     @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
-    <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
     @await Component.InvokeAsync("_CustomerOperationFormHeaderComponentPartial")
     <div class="info-container">
         @await Component.InvokeAsync("_FaceToFaceInteractionsComponentPartial")
@@ -60,7 +59,6 @@
             }
         </tbody>
     </table>
-    <div class="footer-text">Designed by Eco Software Development ℗</div>
     <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
         <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
             ◀ Önceki
@@ -71,5 +69,8 @@
         </button>
     </div>
     @await Component.InvokeAsync("_CustomerOperationScriptComponentPartial")
+    <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
+        Designed by Eco Software Development ℗
+    </div>
 </body>
 </html>
