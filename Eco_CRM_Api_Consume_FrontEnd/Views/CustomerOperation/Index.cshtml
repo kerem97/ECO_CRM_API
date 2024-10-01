@@ -20,7 +20,7 @@
         @await Component.InvokeAsync("_TotalOperationStatsComponentPartial")
     </div>
     @await Component.InvokeAsync("_CustomerOperationFilterContainerComponentPartial")
-    <table style="width: 100%;">
+    <table >
         <thead>
             <tr>
                 <th>Tarih</th>
@@ -69,8 +69,8 @@
         </button>
     </div>
     @await Component.InvokeAsync("_CustomerOperationScriptComponentPartial")
-    <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
+    @* <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
         Designed by Eco Software Development ℗
-    </div>
+    </div> *@
 </body>
 </html>
