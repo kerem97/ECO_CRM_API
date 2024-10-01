@@ -204,6 +204,20 @@ public class CustomerOperationsController : ControllerBase
         var result = await _customerOperationService.GetUserFaceToFaceInteractions(userId);
         return Ok(result);
     }
+    [HttpGet("total-operation-stats")]
+    public async Task<IActionResult> GetTotalOperationStats()
+    {
+        var result = await _customerOperationService.GetTotalOperationStatsAsync();
+        return Ok(result);
+    }
+
+    [HttpGet("user-operation-stats")]
+    public async Task<IActionResult> GetUserOperationStats()
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.GetUserOperationStatsAsync(userId);
+        return Ok(result);
+    }
 
 
     private int GetCurrentUserId()

@@ -18,15 +18,7 @@
         @await Component.InvokeAsync("_UserFaceToFaceInteractionsComponentPartial")
         @await Component.InvokeAsync("_UserPhoneInteractionsComponentPartial")
         @await Component.InvokeAsync("_UserEmailInteractionsComponentPartial")
-
-        <div class="donut-chart-wrapper">
-            <div class="donut-chart-label">Gerçekleşen / Planlanan</div>
-            <div class="donut-chart-container">
-                <div class="donut-chart-inner">
-                    <span class="donut-chart-text">60%</span>
-                </div>
-            </div>
-        </div>
+        @await Component.InvokeAsync("_UserOperationStatsComponentPartial")
 
     </div>
 

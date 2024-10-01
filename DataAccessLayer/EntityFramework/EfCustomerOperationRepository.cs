@@ -200,7 +200,6 @@ namespace DataAccessLayer.EntityFramework
 
             return result;
         }
-
         public async Task<List<(string companyName, int count)>> GetUserEmailInteractions(int userId)
         {
             var result = _context.CustomerOperations
@@ -215,7 +214,6 @@ namespace DataAccessLayer.EntityFramework
 
             return result;
         }
-
         public async Task<List<(string companyName, int count)>> GetUserFaceToFaceInteractions(int userId)
         {
             var result = _context.CustomerOperations
@@ -230,7 +228,6 @@ namespace DataAccessLayer.EntityFramework
 
             return result;
         }
-
         public async Task<List<(string companyName, int count)>> GetUserPhoneInteractions(int userId)
         {
             var result = _context.CustomerOperations
@@ -245,7 +242,24 @@ namespace DataAccessLayer.EntityFramework
 
             return result;
         }
+        public async Task<(int plannedCount, int completedCount)> GetTotalOperationStatsAsync()
+        {
+            var plannedCount = await _context.CustomerOperations
+                                     .Where(co => co.Status == "Planlandı")
+                                     .CountAsync();
+            var completedCount = await _context.CustomerOperations
+                                               .Where(co => co.Status == "Gerçekleşti")
+                                               .CountAsync();
 
+            return (plannedCount, completedCount);
+        }
+        public async Task<(int plannedCount, int completedCount)> GetUserOperationStatsAsync(int userId)
+        {
+            var plannedCount = await _context.CustomerOperations.CountAsync(co => co.UserId == userId && co.Status == "Planlandı");
+            var completedCount = await _context.CustomerOperations.CountAsync(co => co.UserId == userId && co.Status == "Gerçekleşti");
+
+            return (plannedCount, completedCount);
+        }
         public async Task Update(CustomerOperation entity)
         {
             _context.Set<CustomerOperation>().Update(entity);

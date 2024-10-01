@@ -31,6 +31,9 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task<List<DisplayUserEmailInteractionCountResponse>> GetUserEmailInteractions(int userId);
         Task<List<DisplayUserPhoneInteractionCountResponse>> GetUserPhoneInteractions(int userId);
         Task<List<DisplayUserFaceToFaceInteractionCountResponse>> GetUserFaceToFaceInteractions(int userId);
+        Task<DisplayOperationStatsResponse> GetTotalOperationStatsAsync();
+        Task<DisplayUserOperationStatsResponse> GetUserOperationStatsAsync(int userId);
+
 
     }
 }

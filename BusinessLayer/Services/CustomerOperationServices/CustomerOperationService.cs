@@ -203,7 +203,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(filteredOperations);
         }
-
         public async Task<List<DisplayEmailInteractionCountResponse>> GetTopEmailInteractions()
         {
             var data = await _customerOperationRepository.GetTopEmailInteractions();
@@ -213,7 +212,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 InteractionCount = d.count
             }).ToList();
         }
-
         public async Task<List<DisplayFaceToFaceInteractionCountResponse>> GetTopFaceToFaceInteractions()
         {
             var data = await _customerOperationRepository.GetTopFaceToFaceInteractions();
@@ -223,7 +221,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 InteractionCount = d.count
             }).ToList();
         }
-
         public async Task<List<DisplayPhoneInteractionCountResponse>> GetTopPhoneInteractions()
         {
             var data = await _customerOperationRepository.GetTopPhoneInteractions();
@@ -233,7 +230,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 InteractionCount = d.count
             }).ToList();
         }
-
         public async Task<List<DisplayUserEmailInteractionCountResponse>> GetUserEmailInteractions(int userId)
         {
             var data = await _customerOperationRepository.GetUserEmailInteractions(userId);
@@ -243,7 +239,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 InteractionCount = d.count
             }).ToList();
         }
-
         public async Task<List<DisplayUserPhoneInteractionCountResponse>> GetUserPhoneInteractions(int userId)
         {
             var data = await _customerOperationRepository.GetUserPhoneInteractions(userId);
@@ -253,7 +248,6 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 InteractionCount = d.count
             }).ToList();
         }
-
         public async Task<List<DisplayUserFaceToFaceInteractionCountResponse>> GetUserFaceToFaceInteractions(int userId)
         {
             var data = await _customerOperationRepository.GetUserFaceToFaceInteractions(userId);
@@ -263,9 +257,36 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 InteractionCount = d.count
             }).ToList();
         }
+        public async Task<DisplayOperationStatsResponse> GetTotalOperationStatsAsync()
+        {
+            var (plannedCount, completedCount) = await _customerOperationRepository.GetTotalOperationStatsAsync();
 
+            if (plannedCount == 0 && completedCount == 0)
+            {
+                return new DisplayOperationStatsResponse();
+            }
 
+            return new DisplayOperationStatsResponse
+            {
+                PlannedCount = plannedCount,
+                CompletedCount = completedCount
+            };
+        }
+        public async Task<DisplayUserOperationStatsResponse> GetUserOperationStatsAsync(int userId)
+        {
+            var (plannedCount, completedCount) = await _customerOperationRepository.GetUserOperationStatsAsync(userId);
 
+            if (plannedCount == 0 && completedCount == 0)
+            {
+                return new DisplayUserOperationStatsResponse();
+            }
+
+            return new DisplayUserOperationStatsResponse
+            {
+                PlannedCount = plannedCount,
+                CompletedCount = completedCount
+            };
+        }
     }
 }
 

@@ -45,7 +45,6 @@
             }
         });
     }
-
     $('#applyFilters').click(function () {
         const filterRequest = {
             companyName: $('#companyFilter').val(),
@@ -99,7 +98,6 @@
             }
         });
     }
-
     function updateTable(data) {
         let tbody = $('table tbody');
         tbody.empty();
@@ -135,7 +133,6 @@
                                                                         `);
         });
     }
-
     function changePage(direction) {
         const filterRequest = {
             companyName: $('#companySearchInput').val() || null,
@@ -171,7 +168,6 @@
         });
     }
     $(document).ready(function () {
-        // Firma searchbox için event handler
         function searchCompanyNames(searchTerm) {
             const encodedSearchTerm = encodeURIComponent(searchTerm);
 
@@ -182,40 +178,34 @@
                     'Authorization': 'Bearer ' + token
                 },
                 success: function (data) {
-                    console.log(data); // Gelen verileri kontrol edin
+                    console.log(data); 
                     $('#companySearchBox').empty();
                     data.forEach(function (company) {
                         $('#companySearchBox').append(`<option value="${company}">${company}</option>`);
                     });
                 },
                 error: function (xhr) {
-                    console.error(xhr.responseText); // Hataları konsolda görüntüleyin
+                    console.error(xhr.responseText); 
                     alert('Firma arama sırasında hata oluştu.');
                 }
             });
         }
-
-        // Firma adını searchbox'a yazınca otomatik tamamlamayı tetikle
         $('#companySearchInput').on('input', function () {
             const searchTerm = $(this).val().trim();
 
             if (searchTerm.length >= 2) {
                 searchCompanyNames(searchTerm);
             } else {
-                $('#companySearchBox').empty(); // Searchbox sonuçlarını temizle
+                $('#companySearchBox').empty(); 
             }
         });
-
         $('#companySearchInput').on('change', function () {
-            const selectedCompanyName = $(this).val().trim(); // Seçilen firmanın adı
+            const selectedCompanyName = $(this).val().trim(); 
 
             if (selectedCompanyName) {
                 filterOperationsByCompanyName(selectedCompanyName);
             }
         });
-
-
-        // Belirtilen firma adına göre filtreleme işlemi
         function filterOperationsByCompanyName(companyName) {
             $.ajax({
                 url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
@@ -224,16 +214,15 @@
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
                 },
-                data: JSON.stringify({ companyName: companyName }), // Firma adına göre filtreleme
+                data: JSON.stringify({ companyName: companyName }), 
                 success: function (data) {
-                    updateTable(data); // Tabloda filtrelenmiş verileri göster
+                    updateTable(data); 
                 },
                 error: function () {
                     alert('Firma operasyonları alınırken hata oluştu.');
                 }
             });
         }
-
         function updateTable(data) {
             let tbody = $('table tbody');
             tbody.empty();
@@ -303,6 +292,15 @@
             });
         }
     });
+    document.addEventListener('scroll', function () {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
         document.body.style.opacity = 1;
     });

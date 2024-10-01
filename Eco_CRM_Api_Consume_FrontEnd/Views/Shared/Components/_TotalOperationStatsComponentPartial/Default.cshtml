@@ -1,0 +1,9 @@
+﻿@model DisplayOperationStatsResponse
+<div class="donut-chart-wrapper">
+    <div class="donut-chart-label">Toplam Gerçekleşen / Planlanan</div>
+    <div class="donut-chart-container" style="background: conic-gradient(#228B22 0% @(Model.CompletedCount * 100 / (Model.PlannedCount == 0 ? 1 : Model.PlannedCount))%, #222 @(Model.CompletedCount * 100 / (Model.PlannedCount == 0 ? 1 : Model.PlannedCount))% 100%)">
+        <div class="donut-chart-inner">
+            <span class="donut-chart-text">@Model.CompletedCount / @Model.PlannedCount</span>
+        </div>
+    </div>
+</div>
