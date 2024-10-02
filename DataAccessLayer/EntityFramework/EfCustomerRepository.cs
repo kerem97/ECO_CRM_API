@@ -71,7 +71,7 @@ namespace DataAccessLayer.EntityFramework
                 .OrderBy(c => c.CompanyName)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(c => c.CompanyName) // Sadece CompanyName alanını seçiyoruz
+                .Select(c => c.CompanyName) 
                 .ToListAsync();
         }
 
