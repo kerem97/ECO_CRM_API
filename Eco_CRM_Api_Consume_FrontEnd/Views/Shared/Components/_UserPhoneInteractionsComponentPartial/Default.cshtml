@@ -6,7 +6,10 @@
     <ul id="mostCalledList">
         @foreach (var x in Model)
         {
-            <li>@x.CompanyName<span>@x.InteractionCount</span></li>
+            <li>
+                <a href="/CustomerOperation/OperationsByCustomer/@x.CustomerId">@x.CompanyName</a>
+                <span>@x.InteractionCount</span>
+            </li>
 
         }
     </ul>

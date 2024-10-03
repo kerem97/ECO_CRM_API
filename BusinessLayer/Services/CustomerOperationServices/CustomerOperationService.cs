@@ -218,7 +218,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return data.Select(d => new DisplayFaceToFaceInteractionCountResponse
             {
                 CompanyName = d.companyName,
-                InteractionCount = d.count
+                InteractionCount = d.count,
             }).ToList();
         }
         public async Task<List<DisplayPhoneInteractionCountResponse>> GetTopPhoneInteractions()
@@ -227,7 +227,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return data.Select(d => new DisplayPhoneInteractionCountResponse
             {
                 CompanyName = d.companyName,
-                InteractionCount = d.count
+                InteractionCount = d.count,
             }).ToList();
         }
         public async Task<List<DisplayUserEmailInteractionCountResponse>> GetUserEmailInteractions(int userId)
@@ -236,7 +236,9 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return data.Select(d => new DisplayUserEmailInteractionCountResponse
             {
                 CompanyName = d.companyName,
-                InteractionCount = d.count
+                InteractionCount = d.count,
+                CustomerId = d.customerId
+
             }).ToList();
         }
         public async Task<List<DisplayUserPhoneInteractionCountResponse>> GetUserPhoneInteractions(int userId)
@@ -245,7 +247,8 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return data.Select(d => new DisplayUserPhoneInteractionCountResponse
             {
                 CompanyName = d.companyName,
-                InteractionCount = d.count
+                InteractionCount = d.count,
+                CustomerId = d.customerId
             }).ToList();
         }
         public async Task<List<DisplayUserFaceToFaceInteractionCountResponse>> GetUserFaceToFaceInteractions(int userId)
@@ -254,7 +257,8 @@ namespace BusinessLayer.Services.CustomerOperationServices
             return data.Select(d => new DisplayUserFaceToFaceInteractionCountResponse
             {
                 CompanyName = d.companyName,
-                InteractionCount = d.count
+                InteractionCount = d.count,
+                CustomerId = d.customerId
             }).ToList();
         }
         public async Task<DisplayOperationStatsResponse> GetTotalOperationStatsAsync()

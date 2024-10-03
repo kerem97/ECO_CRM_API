@@ -169,7 +169,11 @@ namespace DataAccessLayer.EntityFramework
                 .ToList();
 
             return result;
+
+
         }
+
+
 
         public async Task<List<(string companyName, int count)>> GetTopFaceToFaceInteractions()
         {
@@ -189,67 +193,60 @@ namespace DataAccessLayer.EntityFramework
         public async Task<List<(string companyName, int count)>> GetTopPhoneInteractions()
         {
             var result = _context.CustomerOperations
-               .Where(co => co.Method == "Telefon")
-               .GroupBy(co => co.Customer.CompanyName)
-               .Select(g => new { CompanyName = g.Key, Count = g.Count() })
-               .OrderByDescending(g => g.Count)
-               .Take(5)
-               .ToList()
-               .Select(x => (x.CompanyName, x.Count))
-               .ToList();
+             .Where(co => co.Method == "Telefon")
+             .GroupBy(co => co.Customer.CompanyName)
+             .Select(g => new { CompanyName = g.Key, Count = g.Count() })
+             .OrderByDescending(g => g.Count)
+             .Take(5)
+             .ToList()
+             .Select(x => (x.CompanyName, x.Count))
+             .ToList();
 
             return result;
         }
-        public async Task<List<(string companyName, int count)>> GetUserEmailInteractions(int userId)
+        public async Task<List<(string companyName, int customerId, int count)>> GetUserEmailInteractions(int userId)
         {
-            var result = _context.CustomerOperations
-          .Where(co => co.Method == "E-Mail" && co.UserId == userId)
-          .GroupBy(co => co.Customer.CompanyName)
-          .Select(g => new { CompanyName = g.Key, Count = g.Count() })
-          .OrderByDescending(g => g.Count)
-          .Take(5)
-          .ToList()
-          .Select(x => (x.CompanyName, x.Count))
-          .ToList();
+            var result = await _context.CustomerOperations
+                .Where(co => co.Method == "E-Mail" && co.UserId == userId)
+                .GroupBy(co => new { co.Customer.CompanyName, co.Customer.Id })
+                .Select(g => new { g.Key.CompanyName, g.Key.Id, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .Take(5)
+                .ToListAsync();
 
-            return result;
+            return result.Select(x => (x.CompanyName, x.Id, x.Count)).ToList();
         }
-        public async Task<List<(string companyName, int count)>> GetUserFaceToFaceInteractions(int userId)
+        public async Task<List<(string companyName, int customerId, int count)>> GetUserFaceToFaceInteractions(int userId)
         {
-            var result = _context.CustomerOperations
-          .Where(co => co.Method == "Yüz Yüze" && co.UserId == userId)
-          .GroupBy(co => co.Customer.CompanyName)
-          .Select(g => new { CompanyName = g.Key, Count = g.Count() })
-          .OrderByDescending(g => g.Count)
-          .Take(5)
-          .ToList()
-          .Select(x => (x.CompanyName, x.Count))
-          .ToList();
+            var result = await _context.CustomerOperations
+       .Where(co => co.Method == "Yüz Yüze" && co.UserId == userId)
+       .Include(co => co.Customer)
+       .GroupBy(co => new { co.Customer.CompanyName, co.Customer.Id })
+       .Select(g => new { g.Key.CompanyName, g.Key.Id, Count = g.Count() })
+       .OrderByDescending(g => g.Count)
+       .Take(5)
+       .ToListAsync();
 
-            return result;
+            return result.Select(x => (x.CompanyName, x.Id, x.Count)).ToList();
         }
-        public async Task<List<(string companyName, int count)>> GetUserPhoneInteractions(int userId)
+        public async Task<List<(string companyName, int customerId, int count)>> GetUserPhoneInteractions(int userId)
         {
-            var result = _context.CustomerOperations
-          .Where(co => co.Method == "Telefon" && co.UserId == userId)
-          .GroupBy(co => co.Customer.CompanyName)
-          .Select(g => new { CompanyName = g.Key, Count = g.Count() })
-          .OrderByDescending(g => g.Count)
-          .Take(5)
-          .ToList()
-          .Select(x => (x.CompanyName, x.Count))
-          .ToList();
+            var result = await _context.CustomerOperations
+         .Where(co => co.Method == "Telefon" && co.UserId == userId)
+         .Include(co => co.Customer)
+         .GroupBy(co => new { co.Customer.CompanyName, co.Customer.Id })
+         .Select(g => new { g.Key.CompanyName, g.Key.Id, Count = g.Count() })
+         .OrderByDescending(g => g.Count)
+         .Take(5)
+         .ToListAsync();
 
-            return result;
+            return result.Select(x => (x.CompanyName, x.Id, x.Count)).ToList();
         }
         public async Task<(int plannedCount, int completedCount)> GetTotalOperationStatsAsync()
         {
-            var plannedCount = await _context.CustomerOperations
-                                     .Where(co => co.Status == "Planlandı")
-                                     .CountAsync();
-            var completedCount = await _context.CustomerOperations
-                                               .Where(co => co.Status == "Gerçekleşti")
-                                               .CountAsync();
+            var plannedCount = await _context.CustomerOperations.CountAsync(co => co.Status == "Planlandı");
+            var completedCount = await _context.CustomerOperations.CountAsync(co => co.Status == "Gerçekleşti");
+
 
             return (plannedCount, completedCount);
         }

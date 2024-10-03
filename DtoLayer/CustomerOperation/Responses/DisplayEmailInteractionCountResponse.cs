@@ -10,5 +10,6 @@ namespace DtoLayer.CustomerOperation.Responses
     {
         public string CompanyName { get; set; }
         public int InteractionCount { get; set; }
+        public int CustomerId { get; set; }
     }
 }

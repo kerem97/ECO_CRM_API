@@ -40,26 +40,34 @@ namespace BusinessLayer.Mapping
 
             CreateMap<CustomerOperation, DisplayEmailInteractionCountResponse>()
             .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName))
+             .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
+
+
             CreateMap<CustomerOperation, DisplayPhoneInteractionCountResponse>()
-            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) 
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName))
+             .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
             CreateMap<CustomerOperation, DisplayFaceToFaceInteractionCountResponse>()
-            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) 
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName))
+             .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
             CreateMap<CustomerOperation, DisplayUserEmailInteractionCountResponse>()
            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) 
+           .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id)) 
            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
             CreateMap<CustomerOperation, DisplayUserPhoneInteractionCountResponse>()
-            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) 
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName))
+             .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
             CreateMap<CustomerOperation, DisplayUserFaceToFaceInteractionCountResponse>()
-            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) 
+            .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName))
+             .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
 
