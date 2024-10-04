@@ -1,0 +1,63 @@
+@@include('./partials/html.html')
+
+    <head>
+        @@include("./partials/title-meta.html", {"title": "Rizz"})
+        <link rel="stylesheet" href="assets/libs/quill/quill.snow.css">
+        @@include('./partials/head-css.html')
+    </head>
+    
+    <body>
+        <!-- Top Bar Start -->
+        @@include('./partials/topbar.html')
+        <!-- Top Bar End -->
+        <!-- leftbar-tab-menu -->
+        @@include('./partials/startbar.html')
+        <!-- end leftbar-tab-menu-->
+
+
+        <div class="page-wrapper">
+
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <div class="row justify-content-center">                        
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Quill Editor</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="editor">
+                                        <p>Hello World!</p>
+                                        <p>Some initial <strong>bold</strong> text</p>
+                                        <p><br /></p>
+                                    </div> 
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col-->                                                       
+                    </div><!--end row-->                    
+                </div><!-- container -->
+                <!--Start Rightbar-->
+                @@include('./partials/endbar.html')
+                <!--end Rightbar-->
+                <!--Start Footer-->
+                @@include('./partials/footer.html')                
+                <!--end footer-->
+            </div>
+            <!-- end page content -->
+        </div>
+        <!-- end page-wrapper -->
+
+        <!-- Javascript  -->  
+        <!-- vendor js -->
+        @@include('./partials/vendorjs.html')
+        <script src="assets/libs/quill/quill.js"></script>
+        <script src="assets/js/pages/form-editor.init.js"></script>
+        <script src="assets/js/app.js"></script>
+    </body>
+    <!--end body-->
+</html>

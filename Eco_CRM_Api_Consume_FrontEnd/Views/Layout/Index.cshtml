@@ -1,23 +1,100 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - ECO CRM</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    @await Component.InvokeAsync("_LayoutStyleComponentPartial")
-</head>
-<body>
-    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
-    <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div>
-    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
+<html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
 
-    <div class="content">
-        @RenderBody()
+@await Component.InvokeAsync("_LayoutHeadComponentPartial")
+
+<body>
+    <div class="topbar d-print-none">
+        <div class="container-xxl">
+            <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                    <li>
+                        <button class="nav-link mobile-menu-btn nav-icon" id="togglemenu">
+                            <i class="iconoir-menu-scale"></i>
+                        </button>
+                    </li>
+                    <li class="mx-3 welcome-text">
+                        <h3 class="mb-0 fw-bold text-truncate">Hoş Geldiniz, @ViewBag.FullName!</h3>
+                    </li>
+                </ul>
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
+                    <li class="topbar-item">
+                        <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
+                            <i class="icofont-sun dark-mode"></i>
+                            <i class="icofont-moon light-mode"></i>
+                        </a>
+                    </li>
+
+                    <li class="dropdown topbar-item">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="icofont-bell-alt"></i>
+                            <span class="alert-badge"></span>
+                        </a>
+                        @await Component.InvokeAsync("_LayoutNotificationComponentPartial")
+                    </li>
+
+                    <li class="dropdown topbar-item">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <img src="~/HTML/dist/assets/images/users/avatar-1.jpg" alt="" class="thumb-lg rounded-circle">
+                        </a>
+                        
+                    </li>
+                </ul><!--end topbar-nav-->
+            </nav>
+            <!-- end navbar-->
+        </div>
     </div>
-    <footer>
-        Designed by Eco Software Development ℗
-    </footer>
+
+    <!-- Startbar (Sidebar) -->
+    <div class="startbar d-print-none">
+        <div class="brand">
+            <a href="index.html" class="logo">
+                <span style="font-size: 28px; font-weight: bold; color: #888888; font-family: Arial, sans-serif;">ECO CRM</span>
+            </a>
+        </div>
+        @await Component.InvokeAsync("_LayoutSidebarComponentPartial")
+    </div>
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content">
+            <!-- Sayfa içeriği burada gösterilecek -->
+            @RenderBody()
+
+            <!-- Footer -->
+            <footer class="footer text-center text-sm-start d-print-none">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mb-0 rounded-bottom-0">
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">
+                                        ©
+                                        <script>document.write(new Date().getFullYear())</script>
+                                        Rizz
+                                        <span class="text-muted d-none d-sm-inline-block float-end">
+                                            Crafted with
+                                            <i class="iconoir-heart text-danger"></i>
+                                            by Mannatthemes
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+    <!-- Javascript  -->
+    <!-- vendor js -->
+    <script src="~/HTML/dist/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/HTML/dist/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/HTML/dist/assets/js/app.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Layout
 {
-    public class _LayoutSideBarComponentPartial : ViewComponent
+    public class _LayoutSidebarComponentPartial : ViewComponent
     {
         public IViewComponentResult Invoke()
         {

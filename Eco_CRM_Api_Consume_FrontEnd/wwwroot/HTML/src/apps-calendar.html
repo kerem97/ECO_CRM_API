@@ -1,0 +1,56 @@
+@@include('./partials/html.html')
+
+    <head>
+        @@include("./partials/title-meta.html", {"title": "Rizz"})
+
+        @@include('./partials/head-css.html')
+    </head>
+
+    <body>
+
+        <!-- Top Bar Start -->
+        @@include('./partials/topbar.html')
+        <!-- Top Bar End -->
+
+        <!-- leftbar-tab-menu -->
+        @@include('./partials/startbar.html')
+        <!-- end leftbar-tab-menu-->
+
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <div class="card-body">
+                                    <div id='calendar'></div>
+                                    <div style='clear:both'></div>
+                                </div>
+                            </div>
+                        </div> <!-- end col -->
+                    </div> <!-- end row -->
+                </div><!-- container -->
+
+                <!--Start Rightbar-->
+                @@include('./partials/endbar.html')
+                <!--end Rightbar-->
+                <!--Start Footer-->
+                @@include('./partials/footer.html')
+                <!--end footer-->
+            </div>
+            <!-- end page content -->
+        </div>
+        <!-- end page-wrapper -->
+
+        <!-- Javascript  -->
+        <!-- vendor js -->
+        @@include('./partials/vendorjs.html')
+
+        <script src="assets/libs/fullcalendar/index.global.min.js"></script>
+        <script src="assets/js/pages/calendar.init.js"></script>
+        <script src="assets/js/app.js"></script>
+
+    </body>
+    <!--end body-->
+</html>

@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Tüm İşlemler";
+    var allOperations = Model as List<DisplayCustomerOperationResponse>;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    @await Component.InvokeAsync("_CustomerOperationHeadComponentPartial")
+    @await Component.InvokeAsync("_CustomerOperationStyleComponentPartial")
+</head>
+<body>
+    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
+    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
+    @await Component.InvokeAsync("_CustomerOperationFormHeaderComponentPartial")
+    <div class="info-container">
+        @await Component.InvokeAsync("_FaceToFaceInteractionsComponentPartial")
+        @await Component.InvokeAsync("_PhoneInteractionsComponentPartial")
+        @await Component.InvokeAsync("_EmailInteractionsComponentPartial")
+        @await Component.InvokeAsync("_TotalOperationStatsComponentPartial")
+    </div>
+    @await Component.InvokeAsync("_CustomerOperationFilterContainerComponentPartial")
+    <table >
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Personel</th>
+                <th>Firma</th>
+                <th>Müşteri</th>
+                <th>Adres</th>
+                <th>Yöntem</th>
+                <th>Görüşülen</th>
+                <th>Planlanan Tarih</th>
+                <th>Görüşülen Tarih</th>
+                <th>Sebep</th>
+                <th>Durum</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var operation in allOperations)
+            {
+                <tr>
+                    <td>@operation.OperationDate</td>
+                    <td>@operation.CreatedByUser</td>
+                    <td>@operation.IsNew</td>
+                    <td>@operation.CustomerName</td>
+                    <td>@operation.Address</td>
+                    <td>@operation.Method</td>
+                    <td>@operation.ContactPerson</td>
+                    <td>@operation.PlannedDate</td>
+                    <td>@operation.ActualDate</td>
+                    <td>@operation.Reason</td>
+                    <td>@operation.Status</td>
+                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                        @operation.Description
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
+        <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+            ◀ Önceki
+        </button>
+        <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #fff;">1</span>
+        <button class="btn btn-sm mx-1" onclick="changePage('next')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+            Sonraki ▶
+        </button>
+    </div>
+    @await Component.InvokeAsync("_CustomerOperationScript2ComponentPartial")
+    @* <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
+        Designed by Eco Software Development ℗
+    </div> *@
+</body>
+</html>

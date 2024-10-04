@@ -1,0 +1,192 @@
+@@include('./partials/html.html')
+
+    <head>
+        @@include("./partials/title-meta.html", {"title": "Rizz"})
+
+        @@include('./partials/head-css.html')
+    </head>
+    
+    <body>
+        <!-- Top Bar Start -->
+        @@include('./partials/topbar.html')
+        <!-- Top Bar End -->
+        <!-- leftbar-tab-menu -->
+        @@include('./partials/startbar.html')
+        <!-- end leftbar-tab-menu-->
+
+
+        <div class="page-wrapper">
+
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-xxl">
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Line Chart-1</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="line_1" class="h-80"></div>             
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col--> 
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Line Chart-2</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="line_2" class="h-80"></div>
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col-->                                                       
+                    </div><!--end row-->
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Bar Chart-1</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="bar_1" class="h-80"></div>           
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col--> 
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Bar Chart-2</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="bar_2" class="h-80"></div>        
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col-->                                                       
+                    </div><!--end row-->
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Bar Chart-3</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">                                    
+                                    <div id="bar_3" class="h-80"></div>    
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col--> 
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Bar Chart-4</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="bar_4" class="h-80"></div>  
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col-->                                                       
+                    </div><!--end row--> 
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Pie Chart-1</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">                                    
+                                    <div id="pie_1" class="h-80"></div>   
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col--> 
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Pie Chart-2</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">
+                                    <div id="pie_2" class="h-80"></div> 
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col-->                                                       
+                    </div><!--end row--> 
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Pie Chart-3</h4>                      
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body pt-0">                                    
+                                    <div id="pie_3" class="h-80"></div>   
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col--> 
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="fw-medium fs-16">You can use more echarts.</h3>
+                                    <a href="https://echarts.apache.org/examples/en/index.html" target="_blank" class="btn btn-primary">More Charts</a>
+                                </div><!--end card-body--> 
+                            </div><!--end card--> 
+                        </div> <!--end col-->                                                       
+                    </div><!--end row--> 
+                </div><!-- container -->
+                <!--Start Rightbar-->
+                @@include('./partials/endbar.html')
+                <!--end Rightbar-->
+                <!--Start Footer-->
+                @@include('./partials/footer.html')                
+                <!--end footer-->
+            </div>
+            <!-- end page content -->
+        </div>
+        <!-- end page-wrapper -->
+
+        <!-- Javascript  -->  
+        <!-- vendor js -->
+        @@include('./partials/vendorjs.html')
+        <script src="assets/libs/echarts/echarts.min.js"></script>
+        <script src="assets/js/pages/echarts.init.js"></script>
+        <script src="assets/js/app.js"></script>
+    </body>
+    <!--end body-->
+</html>

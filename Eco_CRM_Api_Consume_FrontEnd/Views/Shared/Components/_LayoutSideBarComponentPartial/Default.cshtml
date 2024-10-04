@@ -1,7 +1,47 @@
-﻿<div class="sidebar">
-    <a href="/Dashboard/Index/">Ana Sayfa</a>
-    <a href="/CustomerOperation/Index/">Tüm İşlemler</a>
-    <a href="/Customer/Index">Müşteriler</a>
-    <a href="/Account/Logout/">Çıkış</a>    
+﻿
+<div class="startbar-menu">
+    <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+        <div class="d-flex align-items-start flex-column w-100">
+            <ul class="navbar-nav mb-auto w-100">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Dashboard/Index/">
+                        <i class="iconoir-home-simple menu-icon"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarApplications">
+                        <i class="iconoir-view-grid menu-icon"></i>
+                        <span>
+                            İşlem Hareketleri
+                        </span>
+                    </a>
+                    <div class="collapse" id="sidebarApplications">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="/CustomerOperation/Index" class="nav-link">Planlananlar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/CustomerOperation/CanceledOperations" class="nav-link">İptal Edilenler</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/CustomerOperation/CompletedOperations" class="nav-link">Gerçekleşenler</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/Customer/Index">
+                        <i class="iconoir-calendar menu-icon"></i>
+                        <span>Müşteriler</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+<div class="startbar-overlay d-print-none"></div>

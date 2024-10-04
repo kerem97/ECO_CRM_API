@@ -1,0 +1,82 @@
+﻿@model AddCustomerOperationWithDisplayRequest
+@{
+    ViewBag.Title = "Operasyon Ekle";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    @await Component.InvokeAsync("_AddCustomerOperationHeadComponentPartial")
+    @await Component.InvokeAsync("_AddCustomerOperationStyleComponentPartial")
+</head>
+<body>
+    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
+    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
+    <div class="form-container">
+        <div class="form-header">
+            <h3>Yeni Operasyon Ekleme Formu</h3>
+            <button type="submit" class="btn-custom" form="operationForm">Kaydet ve Devam Et</button>
+        </div>
+        <form asp-action="AddOperation" method="post" id="operationForm">
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Firma</label>
+                <div id="customDropdown" class="custom-dropdown">Firma Seçin</div>
+                <div id="dropdownList" class="dropdown-list" style="display: none;"></div>
+                <input type="hidden" asp-for="OperationRequest.CustomerId" />
+            </div>
+
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Yöntem</label>
+                <div id="methodDropdown" class="custom-dropdown">Yöntem Seçin</div>
+                <div id="methodDropdownList" class="dropdown-list" style="display: none;">
+                    <div class="dropdown-item" data-value="Telefon">Telefon</div>
+                    <div class="dropdown-item" data-value="Yüz Yüze">Yüz Yüze</div>
+                    <div class="dropdown-item" data-value="E-Mail">E-Mail</div>
+                </div>
+                <input type="hidden" asp-for="OperationRequest.Method" />
+            </div>
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Yeni Mi?</label>
+                <div id="isNewDropdown" class="custom-dropdown">Evet / Hayır</div>
+                <div id="isNewDropdownList" class="dropdown-list" style="display: none;">
+                    <div class="dropdown-item" data-value="true">Evet</div>
+                    <div class="dropdown-item" data-value="false">Hayır</div>
+                </div>
+                <input type="hidden" asp-for="OperationRequest.IsNew" />
+            </div>
+            <div>
+                <label asp-for="OperationRequest.PlannedDate" class="form-label">Planlanan Tarih</label>
+                <input asp-for="OperationRequest.PlannedDate" class="form-control" type="datetime-local" />
+            </div>
+            <div class="form-group dropdown-wrapper">
+                <label class="form-label">Sebep</label>
+                <div id="reasonDropdown" class="custom-dropdown">Sebep Seçin</div>
+                <div id="reasonDropdownList" class="dropdown-list" style="display: none;">
+                    <div class="dropdown-item" data-value="Randevu">Randevu</div>
+                    <div class="dropdown-item" data-value="Sipariş Sorgulama">Sipariş Sorgulama</div>
+                    <div class="dropdown-item" data-value="Ziyaret">Ziyaret</div>
+                    <div class="dropdown-item" data-value="Fuar">Fuar</div>
+                    <div class="dropdown-item" data-value="Teklif">Teklif</div>
+                </div>
+                <input type="hidden" asp-for="OperationRequest.Reason" />
+            </div>
+            <div>
+                <label asp-for="OperationRequest.ContactPerson" class="form-label">Görüşülen Kişi</label>
+                <input asp-for="OperationRequest.ContactPerson" class="form-control" />
+            </div>
+            
+            <div>
+                <label asp-for="OperationRequest.Description" class="form-label">Açıklama</label>
+                <textarea asp-for="OperationRequest.Description" class="form-control"></textarea>
+            </div>
+            <div>
+                <label asp-for="OperationRequest.Address" class="form-label">Adres</label>
+                <textarea asp-for="OperationRequest.Address" class="form-control"></textarea>
+            </div>
+        </form>
+    </div>
+    
+    @await Component.InvokeAsync("_AddCustomerOperationScriptComponentPartial")
+</body>
+</html>

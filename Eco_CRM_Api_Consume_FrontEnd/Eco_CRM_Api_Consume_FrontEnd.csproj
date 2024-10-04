@@ -7,12 +7,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Shared\Components\_LayoutNavbarComponentPartial\**" />
+    <Compile Remove="Views\Shared\Components\_LayoutStyleComponentPartial\**" />
+    <Content Remove="Views\Shared\Components\_LayoutNavbarComponentPartial\**" />
+    <Content Remove="Views\Shared\Components\_LayoutStyleComponentPartial\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\_LayoutNavbarComponentPartial\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\_LayoutStyleComponentPartial\**" />
+    <None Remove="Views\Shared\Components\_LayoutNavbarComponentPartial\**" />
+    <None Remove="Views\Shared\Components\_LayoutStyleComponentPartial\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.17" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
     <ProjectReference Include="..\DtoLayer\DtoLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\HTML\dist\assets\libs\gmaps\docs\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\gmaps\examples\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\gmaps\test\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\raphael\dev\test\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\simple-datatables\dts\column_filter\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\simple-datatables\dts\convert\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\simple-datatables\dts\editing\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\simple-datatables\dts\export\" />
+    <Folder Include="wwwroot\HTML\dist\assets\libs\starability\starability-scss\starability\" />
   </ItemGroup>
 
 </Project>
