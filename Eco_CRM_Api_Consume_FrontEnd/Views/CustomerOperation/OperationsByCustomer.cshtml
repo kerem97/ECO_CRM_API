@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Customer Operations";
-    var customerOperations = Model as List<DisplayCustomerOperationResponse>;
+    Layout = "~/Views/Layout/Index.cshtml";
+    var customerOperations = Model as List<DisplayCustomerOperationByCustomerResponse>;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -10,59 +11,66 @@
     <title>ECO CRM - Müşteri Hareketleri</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    @await Component.InvokeAsync("_CustomerOperationByCustomerStyleComponentPartial")
 
 </head>
 <body>
-    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
-    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
-    <div class="form-header">
-        <div class="header-title">
-            <h3>Müşteriye Ait Tüm Hareketler</h3>
-        </div>
+    <div class="col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Müşteriye Ait Tüm Hareketler</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <div class="table-responsive-sm">
+                    <table class="table table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Personel</th>
+                                <th scope="col">Yöntem</th>
+                                <th scope="col">Firma</th>
+                                <th scope="col">Planlanan Tarih</th>
+                                <th scope="col">Görüşülen Tarih</th>
+                                <th scope="col">Görüşülen</th>
+                                <th scope="col">Sebep</th>
+                                <th scope="col">Durum</th>
+                                <th scope="col">İptal Sebebi</th>
+                                <th scope="col">Güncellenen Açıklama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var operation in customerOperations)
+                            {
+                                <tr>
+                                    <td>@operation.OperationDate</td>
+                                    <td>@operation.CreatedByUser</td>
+                                    <td>@operation.Method</td>
+                                    <td>@operation.IsNew</td>
+                                    <td>@operation.PlannedDate</td>
+                                    <td>@operation.ActualDate</td>
+                                    <td>@operation.ContactPerson</td>
+                                    <td>@operation.Reason</td>
+                                    <td>@operation.Status</td>
+                                    <td class="description-cell" style="white-space: normal; word-wrap: break-word; max-width: 200px;">
+                                        @operation.CancelReason
+                                    </td>
+                                    <td class="description-cell" style="white-space: normal; word-wrap: break-word; max-width: 200px;">
+                                        @operation.UpdatedStatusDescription
+                                    </td>
 
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <table style="width: 100%;">
-        <thead>
-            <tr>
-                <th>Tarih</th>
-                <th>Personel</th>
-                <th>Yöntem</th>
-                <th>Firma</th>
-                <th>Planlanan Tarih</th>
-                <th>Görüşülen Tarih</th>
-                <th>Görüşülen</th>
-                <th>Sebep</th>
-                <th>Durum</th>
-                <th>Açıklama</th>
-                <th>Güncellenen Açıklama</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var operation in customerOperations)
-            {
-                <tr>
-                    <td>@operation.OperationDate</td>
-                    <td>@operation.CreatedByUser</td>
-                    <td>@operation.Method</td>
-                    <td>@operation.IsNew</td>
-                    <td>@operation.PlannedDate</td>
-                    <td>@operation.ActualDate</td>
-                    <td>@operation.ContactPerson</td>
-                    <td>@operation.Reason</td>
-                    <td>@operation.Status</td>
-                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                        @operation.Description
-                    </td>
-                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                        @operation.UpdatedStatusDescription
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+
     <script>
-       
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;
         });

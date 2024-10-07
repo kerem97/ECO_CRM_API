@@ -219,12 +219,12 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ViewBag.Token}");
 
             var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/by-customer/{id}");
-            var customerOperations = new List<DisplayCustomerOperationResponse>();
+            var customerOperations = new List<DisplayCustomerOperationByCustomerResponse>();
 
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStringAsync();
-                customerOperations = JsonConvert.DeserializeObject<List<DisplayCustomerOperationResponse>>(apiResponse);
+                customerOperations = JsonConvert.DeserializeObject<List<DisplayCustomerOperationByCustomerResponse>>(apiResponse);
             }
 
             return View(customerOperations);
