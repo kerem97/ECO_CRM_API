@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Müşteri Listesi";
+    var customers = Model as List<DisplayCustomerResponse>;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @await Component.InvokeAsync("_CustomerIndexHeadComponentPartial")
+    @await Component.InvokeAsync("_CustomerIndexStyleComponentPartial")
+</head>
+<body>
+    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
+    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
+    @* <div style="height: 5px; background-color: #000; width: 100%; position: fixed; top: 60px; left: 0; z-index: 999;"></div> *@
+    <div class="form-header">
+        <div class="header-title">
+            <h3>Müşteri Listesi</h3>
+        </div>
+        <div class="header-button">
+            <a href="/Customer/NewCustomer" class="add-operation-btn">Yeni Müşteri Ekle</a>
+        </div>
+    </div>
+    <table style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Müşteri Adı</th>
+                <th>Şehir</th>
+                <th>İlçe</th>
+                <th>Adres</th>
+                <th>Ülke</th>
+                <th>Yetkili Kişi</th>
+                <th>Telefon</th>
+                <th>E-Posta</th>
+                <th>Yurt içi</th>
+                <th>Açıklama</th>
+                <th>Durum</th>
+                <th>Grup</th>
+                <th>İşlem Detayları</th>
+            </tr>
+        </thead>
+        <tbody id="customer-table-body">
+            @foreach (var customer in customers)
+            {
+                <tr>
+                    <td>@customer.CompanyName</td>
+                    <td>@customer.City</td>
+                    <td>@customer.District</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.Country</td>
+                    <td>@customer.ContactName</td>
+                    <td>@customer.ContactPhone1</td>
+                    <td>@customer.ContactEmail</td>
+                    <td>@(customer.IsDomestic ? "Evet" : "Hayır")</td>
+                    <td>@customer.Description</td>
+                    <td>@customer.Status</td>
+                    <td>@customer.Group</td>
+                    <td>
+                        <a href="/CustomerOperation/OperationsByCustomer/@customer.Id" class="btn-sm" style="background-color: #000 !; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+                            Detaylar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+    <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
+        <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+            ◀ Önceki
+        </button>
+        <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #fff;">1</span>
+        <button class="btn btn-sm mx-1" onclick="changePage('next')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+            Sonraki ▶
+        </button>
+    </div>
+    @await Component.InvokeAsync("_CustomerIndexScriptComponentPartial")
+
+</body>
+</html>
