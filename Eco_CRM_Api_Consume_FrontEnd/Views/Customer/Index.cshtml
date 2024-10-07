@@ -53,7 +53,7 @@
                                             <td>@x.ContactName</td>
                                             <td>@x.ContactPhone1</td>
                                             <td>@x.ContactEmail</td>
-                                            <td>@(x.IsDomestic ? "Evet" : "Hayır")</td>
+                                            <td>@x.IsDomestic</td>
                                             <td>@x.Description</td>
                                             <td>@x.Status</td>
                                             <td>@x.Group</td>
@@ -117,27 +117,27 @@
             if (data && data.length > 0) {
                 data.forEach(customer => {
                     tbody.append(`
-                        <tr>
-                            <td>${customer.companyName || ""}</td>
-                            <td>${customer.city || ""}</td>
-                            <td>${customer.district || ""}</td>
-                            <td>${customer.address || ""}</td>
-                            <td>${customer.country || ""}</td>
-                            <td>${customer.contactName || ""}</td>
-                            <td>${customer.contactPhone1 || ""}</td>
-                            <td>${customer.contactEmail || ""}</td>
-                            <td>${customer.isDomestic ? "Evet" : "Hayır"}</td>
-                            <td>${customer.description || ""}</td>
-                            <td>${customer.status || ""}</td>
-                            <td>${customer.group || ""}</td>
-                            <td>
-                                <a href="/CustomerOperation/OperationsByCustomer/${customer.id}" class="btn btn-primary btn-sm"
-                                   style="background-color: #555; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                    Detaylar
-                                </a>
-                            </td>
-                        </tr>
-                    `);
+                                <tr>
+                                    <td>${customer.companyName || ""}</td>
+                                    <td>${customer.city || ""}</td>
+                                    <td>${customer.district || ""}</td>
+                                    <td>${customer.address || ""}</td>
+                                    <td>${customer.country || ""}</td>
+                                    <td>${customer.contactName || ""}</td>
+                                    <td>${customer.contactPhone1 || ""}</td>
+                                    <td>${customer.contactEmail || ""}</td>
+                                    <td>${customer.isDomestic ? "Evet" : "Hayır"}</td>
+                                    <td>${customer.description || ""}</td>
+                                    <td>${customer.status || ""}</td>
+                                    <td>${customer.group || ""}</td>
+                                    <td>
+                                        <a href="/CustomerOperation/OperationsByCustomer/${customer.id}" class="btn btn-primary btn-sm"
+                                           style="background-color: #555; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                            Detaylar
+                                        </a>
+                                    </td>
+                                </tr>
+                            `);
                 });
             } else {
                 tbody.append('<tr><td colspan="13">Kayıt bulunamadı.</td></tr>');

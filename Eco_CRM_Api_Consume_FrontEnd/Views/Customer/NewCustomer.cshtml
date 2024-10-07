@@ -1,88 +1,136 @@
 ﻿@model AddCustomerRequest
 @{
     ViewBag.Title = "Müşteri Ekle";
+    Layout = "~/Views/Layout/Index.cshtml";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    @await Component.InvokeAsync("_NewCustomerHeadComponentPartial")
-    @await Component.InvokeAsync("_NewCustomerStyleComponentPartial")
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 </head>
+
 <body>
-    @await Component.InvokeAsync("_LayoutSideBarComponentPartial")
-    @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
-    <div class="form-container">
-        <div class="form-header">
-            <h3>Yeni Müşteri Ekleme Formu</h3>
-            <button type="submit" class="btn-custom" form="customerForm">Kaydet ve Devam Et</button>
-        </div>
-        <form asp-action="NewCustomer" method="post" id="customerForm">
-            <div>
-                <label asp-for="CompanyName" class="form-label">Şirket Adı</label>
-                <input asp-for="CompanyName" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="City" class="form-label">Şehir</label>
-                <input asp-for="City" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="District" class="form-label">İlçe</label>
-                <input asp-for="District" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="Country" class="form-label">Ülke</label>
-                <input asp-for="Country" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="ContactName" class="form-label">Yetkili Kişi</label>
-                <input asp-for="ContactName" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="ContactPhone1" class="form-label">Telefon 1</label>
-                <input asp-for="ContactPhone1" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="ContactPhone2" class="form-label">Telefon 2</label>
-                <input asp-for="ContactPhone2" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="ContactEmail" class="form-label">E-Posta</label>
-                <input asp-for="ContactEmail" class="form-control" />
-            </div>
-            <div style="grid-column: span 2;">
-                <label asp-for="Address" class="form-label">Adres</label>
-                <textarea asp-for="Address" class="form-control"></textarea>
-            </div>
-            <div style="grid-column: span 2;">
-                <label asp-for="IsDomestic" class="form-label">Yurt İçi</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input asp-for="IsDomestic" type="radio" class="form-check-input" value="true" id="evet">
-                    <label class="form-check-label" for="evet" style="color: #fff">Evet</label>
-                    <input asp-for="IsDomestic" type="radio" class="form-check-input" value="false" id="hayir">
-                    <label class="form-check-label" for="hayir" style="color: #fff">Hayır</label>
+    <div class="col-md-12 col-lg-12">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="card-title">Yeni Müşteri Ekleme Formu</h4>
+                            <button type="submit" class="btn btn-primary" form="customerForm">Kaydet ve Devam Et</button>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <form asp-action="NewCustomer" method="post" id="customerForm">
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="CompanyName" class="form-label">Şirket Adı</label>
+                                <input asp-for="CompanyName" class="form-control" />
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Country" class="form-label">Ülke</label>
+                                <input asp-for="Country" id="countryInput" class="form-control" />
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="City" class="form-label">Şehir</label>
+                                <input asp-for="City" id="cityInput" class="form-control" />
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="District" class="form-label">İlçe</label>
+                                <input asp-for="District" id="districtInput" class="form-control" />
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="ContactName" class="form-label">Yetkili Kişi</label>
+                                <input asp-for="ContactName" class="form-control" />
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="ContactPhone1" class="form-label">Telefon 1</label>
+                                <input asp-for="ContactPhone1" class="form-control" />
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="ContactEmail" class="form-label">E-Posta</label>
+                                <input asp-for="ContactEmail" class="form-control" />
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Status" class="form-label">Durum</label>
+                                <select asp-for="Status" class="form-select">
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Pasif">Pasif</option>
+                                    <option value="Aday">Aday</option>
+                                    <option value="Mevcut">Mevcut</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" asp-for="IsDomestic" value="Yurt İçi" id="yurtIci" required>
+                                    <label class="form-check-label" for="yurtIci" asp-for="IsDomestic">
+                                        Yurt İçi
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="IsDomestic" value="Yurt Dışı" id="yurtDisi" required>
+                                    <label class="form-check-label" for="yurtDisi">
+                                        Yurt Dışı
+                                    </label>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Lütfen bir seçenek belirleyin.
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Group" class="form-label">Grup</label>
+                                <select asp-for="Group" class="form-select">
+                                    <option value="Denim">Denim</option>
+                                    <option value="Non-Denim">Non-Denim</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="Address" class="form-label">Adres</label>
+                                <textarea asp-for="Address" class="form-control"></textarea>
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label asp-for="LimitTl" class="form-label">Limit (TL)</label>
+                                <input asp-for="LimitTl" class="form-control" />
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div style="grid-column: span 2;">
-                <label asp-for="Description" class="form-label">Açıklama</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-            </div>
-            <div>
-                <label asp-for="Status" class="form-label">Durum</label>
-                <input asp-for="Status" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="LimitTl" class="form-label">Limit (TL)</label>
-                <input asp-for="LimitTl" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="Group" class="form-label">Grup</label>
-                <input asp-for="Group" class="form-control" />
-            </div>
-        </form>
+        </div>
     </div>
-  
-    @await Component.InvokeAsync("_NewCustomerScriptComponentPartial")
-
 </body>
 </html>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.body.style.opacity = 1;
+    });
+    $('#customerForm').on('submit', function (e) {
+        $('#countryInput').val(function () {
+            return $(this).val().toUpperCase();
+        });
+        $('#cityInput').val(function () {
+            return $(this).val().toUpperCase();
+        });
+        $('#districtInput').val(function () {
+            return $(this).val().toUpperCase();
+        });
+    });
+
+</script>
+
+

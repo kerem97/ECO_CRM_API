@@ -14,6 +14,8 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            var fullName = HttpContext.Session.GetString("FullName");
+            ViewBag.FullName = fullName;
             return View();
         }
 
