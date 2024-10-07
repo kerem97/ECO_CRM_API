@@ -459,7 +459,7 @@
             };
 
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/filtered-cancelled-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -578,7 +578,7 @@
                 };
 
                 $.ajax({
-                    url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-cancelled-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,

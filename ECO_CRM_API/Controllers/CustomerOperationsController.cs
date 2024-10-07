@@ -166,6 +166,30 @@ public class CustomerOperationsController : ControllerBase
 
         return Ok(result);
     }
+    [HttpPost("filtered-planned-user-operations")]
+    public async Task<IActionResult> GetPlannedFilteredOperationsByUserId([FromBody] FilterCustomerOperationRequest filterRequest, int pageNumber = 1, int pageSize = 10)
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.TGetPlannedFilteredOperationsByUserIdAsync(userId, filterRequest, pageNumber, pageSize);
+
+        return Ok(result);
+    }
+    [HttpPost("filtered-complated-user-operations")]
+    public async Task<IActionResult> GetComplatedFilteredOperationsByUserId([FromBody] FilterCustomerOperationRequest filterRequest, int pageNumber = 1, int pageSize = 10)
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.TGetComplatedFilteredOperationsByUserIdAsync(userId, filterRequest, pageNumber, pageSize);
+
+        return Ok(result);
+    }
+    [HttpPost("filtered-cancelled-user-operations")]
+    public async Task<IActionResult> GetCancelledFilteredOperationsByUserId([FromBody] FilterCustomerOperationRequest filterRequest, int pageNumber = 1, int pageSize = 10)
+    {
+        var userId = GetCurrentUserId();
+        var result = await _customerOperationService.TGetCancelledFilteredOperationsByUserIdAsync(userId, filterRequest, pageNumber, pageSize);
+
+        return Ok(result);
+    }
     [HttpGet("get-dropdown-data")]
     public async Task<IActionResult> GetDropdownData()
     {

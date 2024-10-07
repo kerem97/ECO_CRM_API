@@ -177,7 +177,6 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             TempData["ErrorMessage"] = "Operasyon ekleme sırasında hata oluştu.";
             return View(request);
         }
-
         public async Task<IActionResult> Index2()
         {
             var fullName = HttpContext.Session.GetString("FullName");
@@ -230,7 +229,6 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
 
             return View(customerOperations);
         }
-
         [HttpGet]
         public async Task<IActionResult> AddOperation2()
         {
@@ -267,9 +265,5 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
                 return View(new AddCustomerOperationWithDisplayRequest());
             }
         }
-        
-
-       
-
     }
 }

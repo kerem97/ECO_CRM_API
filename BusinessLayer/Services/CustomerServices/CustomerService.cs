@@ -22,7 +22,6 @@ namespace BusinessLayer.Services.CustomerServices
             _mapper = mapper;
             _userRepository = userRepository;
         }
-
         public async Task AddCustomersAsync(AddCustomerRequest addCustomerRequest, int createdByUserId)
         {
             addCustomerRequest.CreatedDate = DateTime.Now;
@@ -31,7 +30,6 @@ namespace BusinessLayer.Services.CustomerServices
 
             await _customerRepository.Add(customerEntity);
         }
-
         public async Task DeleteCustomersAsync(int id)
         {
             var customer = await _customerRepository.GetById(id);
@@ -40,7 +38,6 @@ namespace BusinessLayer.Services.CustomerServices
                 _customerRepository.Delete(customer);
             }
         }
-
         public async Task<List<DisplayCustomerResponse>> GetAllCustomersAsync()
         {
             var customers = await _customerRepository.GetAll();
@@ -66,7 +63,6 @@ namespace BusinessLayer.Services.CustomerServices
 
             return customerResponses;
         }
-
         public async Task<GetByIdCustomerResponse> GetCustomerByIdAsync(int id)
         {
             var customer = await _customerRepository.GetById(id);
@@ -92,7 +88,6 @@ namespace BusinessLayer.Services.CustomerServices
                 LimitTl = customer.LimitTl
             };
         }
-
         public async Task<(List<DisplayCustomerResponse>, int)> GetPagedCustomersAsync(int pageNumber, int pageSize)
         {
             var (customers, totalCustomers) = await _customerRepository.GetAllPaged(pageNumber, pageSize);
@@ -101,12 +96,26 @@ namespace BusinessLayer.Services.CustomerServices
 
             return (customerResponses, totalCustomers);
         }
+        public async Task<(List<DisplayCustomerResponse>, int)> TGetAllExistedCustomersPaged(int pageNumber, int pageSize)
+        {
+            var (customers, totalCustomers) = await _customerRepository.GetAllExistedCustomersPaged(pageNumber, pageSize);
 
+            var customerResponses = _mapper.Map<List<DisplayCustomerResponse>>(customers);
+
+            return (customerResponses, totalCustomers);
+        }
+        public async Task<(List<DisplayCustomerResponse>, int)> TGetAllPotentialCustomersPaged(int pageNumber, int pageSize)
+        {
+            var (customers, totalCustomers) = await _customerRepository.GetAllPotentialCustomersPaged(pageNumber, pageSize);
+
+            var customerResponses = _mapper.Map<List<DisplayCustomerResponse>>(customers);
+
+            return (customerResponses, totalCustomers);
+        }
         public async Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
         {
             return await _customerRepository.SearchCompaniesByName(searchTerm, pageNumber, pageSize);
         }
-
         public async Task UpdateCustomersAsync(UpdateCustomerRequest updateCustomerRequest, int updatedByUserId)
         {
             var customerEntity = await _customerRepository.GetById(updateCustomerRequest.Id);

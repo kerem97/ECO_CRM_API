@@ -325,11 +325,9 @@
                                     </td>
                                 </tr>
                             }
-
-
                         </tbody>
-                    </table><!--end /table-->
-                </div><!--end /tableresponsive-->
+                    </table>
+                </div>
                 <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
                     <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
                         ◀ Önceki
@@ -407,7 +405,6 @@
             $('#yearFilter').val('');
             $('#statusFilter').val('');
             $('#companySearchInput').val('');
-
             fetchData(currentPage);
         });
         function fetchDropdownData() {
@@ -446,7 +443,6 @@
                 }
             });
         }
-
         $('#applyFilters').click(function () {
             const filterRequest = {
                 companyName: $('#companySearchInput').val() || null,
@@ -459,7 +455,7 @@
             };
 
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/filtered-complated-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -491,7 +487,6 @@
                 }
             });
         }
-
         function updateTable(data) {
             let tbody = $('table tbody');
             tbody.empty();
@@ -578,7 +573,7 @@
                 };
 
                 $.ajax({
-                    url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-complated-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,

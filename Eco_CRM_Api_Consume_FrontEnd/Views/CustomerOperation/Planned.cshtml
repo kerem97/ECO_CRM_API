@@ -6,7 +6,6 @@
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
-
 <link href="~/HTML/dist/assets/libs/simple-datatables/style.css" rel="stylesheet" type="text/css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
@@ -279,8 +278,8 @@
                         <button id="resetFilters" class="reset-btn">Sıfırla</button>
                         <a href="/CustomerOperation/AddOperation" class="add-operation-btn">Yeni İşlem</a>
                     </div>
-                </div>  <!--end row-->
-            </div><!--end card-header-->
+                </div>  
+            </div>
             <div class="card-body pt-0">
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0 table-centered">
@@ -327,9 +326,8 @@
 
 
                         </tbody>
-                    </table><!--end /table-->
-                </div><!--end /tableresponsive-->
-                <!-- Pagination Kontrolleri -->
+                    </table>
+                </div>
                 <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
                     <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
                         ◀ Önceki
@@ -459,7 +457,7 @@
             };
 
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/filtered-planned-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -578,7 +576,7 @@
                 };
 
                 $.ajax({
-                    url: `https://localhost:44309/api/CustomerOperations/filtered-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-planned-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,

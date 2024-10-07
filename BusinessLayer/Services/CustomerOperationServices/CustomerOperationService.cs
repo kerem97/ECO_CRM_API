@@ -307,6 +307,57 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             return (mappedOperations, totalOperations);
         }
+        public async Task<List<DisplayCustomerOperationResponse>> TGetPlannedFilteredOperationsByUserIdAsync(int userId, FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize)
+        {
+            var filteredOperations = await _customerOperationRepository.GetPlannedFilteredOperationsByUserIdAsync(
+                userId,
+                filterRequest.CompanyName,
+                filterRequest.Month,
+                filterRequest.Year,
+                filterRequest.Method,
+                filterRequest.PerformedBy,
+                filterRequest.Reason,
+                filterRequest.Status,
+                pageNumber,
+                pageSize
+            );
+
+            return _mapper.Map<List<DisplayCustomerOperationResponse>>(filteredOperations);
+        }
+        public async Task<List<DisplayCustomerOperationResponse>> TGetComplatedFilteredOperationsByUserIdAsync(int userId, FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize)
+        {
+            var filteredOperations = await _customerOperationRepository.GetComplatedFilteredOperationsByUserIdAsync(
+               userId,
+               filterRequest.CompanyName,
+               filterRequest.Month,
+               filterRequest.Year,
+               filterRequest.Method,
+               filterRequest.PerformedBy,
+               filterRequest.Reason,
+               filterRequest.Status,
+               pageNumber,
+               pageSize
+           );
+
+            return _mapper.Map<List<DisplayCustomerOperationResponse>>(filteredOperations);
+        }
+        public async Task<List<DisplayCustomerOperationResponse>> TGetCancelledFilteredOperationsByUserIdAsync(int userId, FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize)
+        {
+            var filteredOperations = await _customerOperationRepository.GetCancelledFilteredOperationsByUserIdAsync(
+                userId,
+                filterRequest.CompanyName,
+                filterRequest.Month,
+                filterRequest.Year,
+                filterRequest.Method,
+                filterRequest.PerformedBy,
+                filterRequest.Reason,
+                filterRequest.Status,
+                pageNumber,
+                pageSize
+            );
+
+            return _mapper.Map<List<DisplayCustomerOperationResponse>>(filteredOperations);
+        }
     }
 }
 

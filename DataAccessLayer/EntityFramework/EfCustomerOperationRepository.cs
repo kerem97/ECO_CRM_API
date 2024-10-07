@@ -289,5 +289,104 @@ namespace DataAccessLayer.EntityFramework
 
             return (operations, totalRecords);
         }
+
+        public async Task<List<CustomerOperation>> GetPlannedFilteredOperationsByUserIdAsync(int userId, string companyName, int? month, int? year, string method, string performedBy, string reason, string status, int pageNumber, int pageSize)
+        {
+            var query = _context.CustomerOperations
+         .Include(co => co.Customer)
+         .Include(co => co.User)
+         .Where(co => co.UserId == userId && co.Status == "Planlandı")
+         .AsQueryable();
+
+            if (!string.IsNullOrEmpty(companyName))
+                query = query.Where(co => co.Customer.CompanyName == companyName);
+
+            if (month.HasValue)
+                query = query.Where(co => co.PlannedDate.HasValue && co.PlannedDate.Value.Month == month.Value);
+
+            if (year.HasValue)
+                query = query.Where(co => co.PlannedDate.HasValue && co.PlannedDate.Value.Year == year.Value);
+
+            if (!string.IsNullOrEmpty(method))
+                query = query.Where(co => co.Method == method);
+
+            if (!string.IsNullOrEmpty(performedBy))
+                query = query.Where(co => co.User.FullName == performedBy);
+
+            if (!string.IsNullOrEmpty(reason))
+                query = query.Where(co => co.Reason == reason);
+
+            return await query
+                .OrderByDescending(co => co.OperationDate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<List<CustomerOperation>> GetComplatedFilteredOperationsByUserIdAsync(int userId, string companyName, int? month, int? year, string method, string performedBy, string reason, string status, int pageNumber, int pageSize)
+        {
+            var query = _context.CustomerOperations
+         .Include(co => co.Customer)
+         .Include(co => co.User)
+         .Where(co => co.UserId == userId && co.Status == "Gerçekleşti")
+         .AsQueryable();
+
+            if (!string.IsNullOrEmpty(companyName))
+                query = query.Where(co => co.Customer.CompanyName == companyName);
+
+            if (month.HasValue)
+                query = query.Where(co => co.PlannedDate.HasValue && co.PlannedDate.Value.Month == month.Value);
+
+            if (year.HasValue)
+                query = query.Where(co => co.PlannedDate.HasValue && co.PlannedDate.Value.Year == year.Value);
+
+            if (!string.IsNullOrEmpty(method))
+                query = query.Where(co => co.Method == method);
+
+            if (!string.IsNullOrEmpty(performedBy))
+                query = query.Where(co => co.User.FullName == performedBy);
+
+            if (!string.IsNullOrEmpty(reason))
+                query = query.Where(co => co.Reason == reason);
+
+            return await query
+                .OrderByDescending(co => co.OperationDate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<List<CustomerOperation>> GetCancelledFilteredOperationsByUserIdAsync(int userId, string companyName, int? month, int? year, string method, string performedBy, string reason, string status, int pageNumber, int pageSize)
+        {
+            var query = _context.CustomerOperations
+         .Include(co => co.Customer)
+         .Include(co => co.User)
+         .Where(co => co.UserId == userId && co.Status == "İptal Edildi")
+         .AsQueryable();
+
+            if (!string.IsNullOrEmpty(companyName))
+                query = query.Where(co => co.Customer.CompanyName == companyName);
+
+            if (month.HasValue)
+                query = query.Where(co => co.PlannedDate.HasValue && co.PlannedDate.Value.Month == month.Value);
+
+            if (year.HasValue)
+                query = query.Where(co => co.PlannedDate.HasValue && co.PlannedDate.Value.Year == year.Value);
+
+            if (!string.IsNullOrEmpty(method))
+                query = query.Where(co => co.Method == method);
+
+            if (!string.IsNullOrEmpty(performedBy))
+                query = query.Where(co => co.User.FullName == performedBy);
+
+            if (!string.IsNullOrEmpty(reason))
+                query = query.Where(co => co.Reason == reason);
+
+            return await query
+                .OrderByDescending(co => co.OperationDate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }
