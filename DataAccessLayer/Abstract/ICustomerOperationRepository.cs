@@ -11,7 +11,9 @@ namespace DataAccessLayer.Abstract
     public interface ICustomerOperationRepository : IRepository<CustomerOperation>
     {
         Task<List<CustomerOperation>> GetOperationsByCustomerId(int customerId);
-        Task<(List<CustomerOperation>, int)> GetOperationsByUserId(int userId, int pageNumber, int pageSize);
+        Task<(List<CustomerOperation>, int)> GetPlannedOperationsByUserId(int userId, int pageNumber, int pageSize);
+        Task<(List<CustomerOperation>, int)> GetComplatedOperationsByUserId(int userId, int pageNumber, int pageSize);
+        Task<(List<CustomerOperation>, int)> GetCanceledOperationsByUserId(int userId, int pageNumber, int pageSize);
         Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
         Task<List<CustomerOperation>> GetAllPagedAsync(int pageNumber, int pageSize);
         Task<List<CustomerOperation>> GetFilteredOperationsAsync(string companyName, int? month, int? year, string method, string performedBy, string reason, string status, int pageNumber, int pageSize);

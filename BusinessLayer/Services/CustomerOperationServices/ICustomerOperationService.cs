@@ -15,7 +15,9 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsAsync();
         Task<GetByIdCustomerOperationResponse> GetCustomerOperationByIdAsync(int id);
         Task<List<DisplayCustomerOperationByCustomerResponse>> GetOperationsByCustomerIdAsync(int customerId);
-        Task<(List<DisplayCustomerOperationResponse>, int)> GetUserOperationsAsync(int userId, int pageNumber, int pageSize);
+        Task<(List<DisplayCustomerOperationResponse>, int)> GetUserPlannedOperationsAsync(int userId, int pageNumber, int pageSize);
+        Task<(List<DisplayCustomerOperationResponse>, int)> GetUserComplatedOperationsAsync(int userId, int pageNumber, int pageSize);
+        Task<(List<DisplayCustomerOperationResponse>, int)> GetUserCancelledOperationsAsync(int userId, int pageNumber, int pageSize);
         Task AddCustomerOperationsAsync(AddCustomerOperationRequest addCustomerOperationRequest, int userId);
         Task UpdateCustomerOperationsAsync(UpdateCustomerOperationRequest updateCustomerOperationRequest, int userId);
         Task DeleteCustomerOperationsAsync(int id);

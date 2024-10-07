@@ -9,8 +9,6 @@
         crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +16,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
 </head>
-
 <body>
     <div class="col-md-12 col-lg-12">
         <div class="row justify-content-center">
@@ -37,7 +34,7 @@
                                 <label for="firmSelector" class="form-label">Firma</label>
                                 <input type="text" id="firmSelector" class="form-control" placeholder="Firma Seçin">
                                 <ul id="firmDropdown" class="dropdown-menu" style="display: none; width: 25%; max-height: 200px; overflow-y: auto;"></ul>
-                                <input type="hidden" id="selectedCustomerId">
+                                <input type="hidden" id="selectedCustomerId" asp-for="OperationRequest.CustomerId">
                             </div>
                             <div class="mb-3 col-md-3">
                                 <label asp-for="OperationRequest.Method" class="form-label">Yöntem</label>

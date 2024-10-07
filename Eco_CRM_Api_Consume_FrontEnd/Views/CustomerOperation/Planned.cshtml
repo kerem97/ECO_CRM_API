@@ -269,12 +269,12 @@
                         <select id="yearFilter" class="filter-dropdown">
                             <option value="">Yıl Seç</option>
                         </select>
-                        <select id="statusFilter" class="filter-dropdown">
+                       @*  <select id="statusFilter" class="filter-dropdown">
                             <option value="">Durum Seç</option>
                             <option value="Planlandı">Planlandı</option>
                             <option value="Gerçekleşti">Gerçekleşti</option>
                             <option value="İptal Edildi">İptal Edildi</option>
-                        </select>
+                        </select> *@
                         <button id="applyFilters" class="filter-btn">Filtrele</button>
                         <button id="resetFilters" class="reset-btn">Sıfırla</button>
                         <a href="/CustomerOperation/AddOperation" class="add-operation-btn">Yeni İşlem</a>
@@ -476,7 +476,7 @@
         });
         function fetchData(page) {
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/user-planned-operations?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -595,7 +595,7 @@
                 });
             } else {
                 $.ajax({
-                    url: `https://localhost:44309/api/CustomerOperations/user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/user-planned-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token

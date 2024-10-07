@@ -117,7 +117,6 @@ namespace DataAccessLayer.EntityFramework
                 .Take(pageSize)
                 .ToListAsync();
         }
-
         public async Task<List<CustomerOperation>> GetOperationsByCustomerId(int customerId)
         {
             return await _context.CustomerOperations
@@ -127,12 +126,12 @@ namespace DataAccessLayer.EntityFramework
        .Where(co => co.CustomerId == customerId)
        .ToListAsync();
         }
-        public async Task<(List<CustomerOperation>, int)> GetOperationsByUserId(int userId, int pageNumber, int pageSize)
+        public async Task<(List<CustomerOperation>, int)> GetPlannedOperationsByUserId(int userId, int pageNumber, int pageSize)
         {
             var query = _context.CustomerOperations
                 .Include(co => co.User)
                 .Include(co => co.Customer)
-                .Where(co => co.UserId == userId)
+                .Where(co => co.UserId == userId && co.Status == "Planlandı")
                 .OrderByDescending(co => co.OperationDate);
 
             int totalRecords = await query.CountAsync();
@@ -144,7 +143,6 @@ namespace DataAccessLayer.EntityFramework
 
             return (operations, totalRecords);
         }
-
         public async Task<List<CustomerOperation>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize)
         {
             return await _context.CustomerOperations
@@ -155,7 +153,6 @@ namespace DataAccessLayer.EntityFramework
        .Take(pageSize)
        .ToListAsync();
         }
-
         public async Task<List<(string companyName, int count)>> GetTopEmailInteractions()
         {
             var result = _context.CustomerOperations
@@ -172,9 +169,6 @@ namespace DataAccessLayer.EntityFramework
 
 
         }
-
-
-
         public async Task<List<(string companyName, int count)>> GetTopFaceToFaceInteractions()
         {
             var result = _context.CustomerOperations
@@ -189,7 +183,6 @@ namespace DataAccessLayer.EntityFramework
 
             return result;
         }
-
         public async Task<List<(string companyName, int count)>> GetTopPhoneInteractions()
         {
             var result = _context.CustomerOperations
@@ -261,6 +254,40 @@ namespace DataAccessLayer.EntityFramework
         {
             _context.Set<CustomerOperation>().Update(entity);
             _context.SaveChanges();
+        }
+        public async Task<(List<CustomerOperation>, int)> GetComplatedOperationsByUserId(int userId, int pageNumber, int pageSize)
+        {
+            var query = _context.CustomerOperations
+               .Include(co => co.User)
+               .Include(co => co.Customer)
+               .Where(co => co.UserId == userId && co.Status == "Gerçekleşti")
+               .OrderByDescending(co => co.OperationDate);
+
+            int totalRecords = await query.CountAsync();
+
+            var operations = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (operations, totalRecords);
+        }
+        public async Task<(List<CustomerOperation>, int)> GetCanceledOperationsByUserId(int userId, int pageNumber, int pageSize)
+        {
+            var query = _context.CustomerOperations
+                 .Include(co => co.User)
+                 .Include(co => co.Customer)
+                 .Where(co => co.UserId == userId && co.Status == "İptal Edildi")
+                 .OrderByDescending(co => co.OperationDate);
+
+            int totalRecords = await query.CountAsync();
+
+            var operations = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (operations, totalRecords);
         }
     }
 }

@@ -121,9 +121,9 @@ namespace BusinessLayer.Services.CustomerOperationServices
             var operations = await _customerOperationRepository.GetPagedCustomerOperationsAsync(pageNumber, pageSize);
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
         }
-        public async Task<(List<DisplayCustomerOperationResponse>, int)> GetUserOperationsAsync(int userId, int pageNumber, int pageSize)
+        public async Task<(List<DisplayCustomerOperationResponse>, int)> GetUserPlannedOperationsAsync(int userId, int pageNumber, int pageSize)
         {
-            var (operations, totalOperations) = await _customerOperationRepository.GetOperationsByUserId(userId, pageNumber, pageSize);
+            var (operations, totalOperations) = await _customerOperationRepository.GetPlannedOperationsByUserId(userId, pageNumber, pageSize);
 
             var mappedOperations = _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
 
@@ -290,6 +290,22 @@ namespace BusinessLayer.Services.CustomerOperationServices
                 PlannedCount = plannedCount,
                 CompletedCount = completedCount
             };
+        }
+        public async Task<(List<DisplayCustomerOperationResponse>, int)> GetUserComplatedOperationsAsync(int userId, int pageNumber, int pageSize)
+        {
+            var (operations, totalOperations) = await _customerOperationRepository.GetComplatedOperationsByUserId(userId, pageNumber, pageSize);
+
+            var mappedOperations = _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
+
+            return (mappedOperations, totalOperations);
+        }
+        public async Task<(List<DisplayCustomerOperationResponse>, int)> GetUserCancelledOperationsAsync(int userId, int pageNumber, int pageSize)
+        {
+            var (operations, totalOperations) = await _customerOperationRepository.GetCanceledOperationsByUserId(userId, pageNumber, pageSize);
+
+            var mappedOperations = _mapper.Map<List<DisplayCustomerOperationResponse>>(operations);
+
+            return (mappedOperations, totalOperations);
         }
     }
 }

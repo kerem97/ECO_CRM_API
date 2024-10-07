@@ -17,7 +17,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-        public async Task<IActionResult> Index(int pageNumber = 1)
+        public async Task<IActionResult> Planned(int pageNumber = 1)
         {
             var fullName = HttpContext.Session.GetString("FullName");
 
@@ -32,7 +32,75 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-operations?pageNumber={pageNumber}&pageSize=10");
+            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-planned-operations?pageNumber={pageNumber}&pageSize=10");
+            var userOperations = new List<DisplayCustomerOperationResponse>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                userOperations = JsonConvert.DeserializeObject<List<DisplayCustomerOperationResponse>>(apiResponse);
+
+                var totalRecordsHeader = response.Headers.GetValues("X-Total-Count").FirstOrDefault();
+                if (int.TryParse(totalRecordsHeader, out int totalRecords))
+                {
+                    ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / 10);
+                }
+            }
+
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(userOperations);
+        }
+        public async Task<IActionResult> Complated(int pageNumber = 1)
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
+
+            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-complated-operations?pageNumber={pageNumber}&pageSize=10");
+            var userOperations = new List<DisplayCustomerOperationResponse>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                userOperations = JsonConvert.DeserializeObject<List<DisplayCustomerOperationResponse>>(apiResponse);
+
+                var totalRecordsHeader = response.Headers.GetValues("X-Total-Count").FirstOrDefault();
+                if (int.TryParse(totalRecordsHeader, out int totalRecords))
+                {
+                    ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / 10);
+                }
+            }
+
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(userOperations);
+        }
+        public async Task<IActionResult> Cancelled(int pageNumber = 1)
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
+
+            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-cancelled-operations?pageNumber={pageNumber}&pageSize=10");
             var userOperations = new List<DisplayCustomerOperationResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -199,28 +267,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
                 return View(new AddCustomerOperationWithDisplayRequest());
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> AddOperation2(AddCustomerOperationWithDisplayRequest request)
-        {
-            var token = HttpContext.Session.GetString("Token");
-
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-            var jsonContent = JsonConvert.SerializeObject(request.OperationRequest);
-            var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync("https://localhost:44309/api/CustomerOperations/add", httpContent);
-
-            if (response.IsSuccessStatusCode)
-            {
-                TempData["SuccessMessage"] = "Operasyon başarıyla eklendi!";
-                return RedirectToAction("Index");
-            }
-
-            TempData["ErrorMessage"] = "Operasyon ekleme sırasında hata oluştu.";
-            return View(request);
-        }
+        
 
        
 
