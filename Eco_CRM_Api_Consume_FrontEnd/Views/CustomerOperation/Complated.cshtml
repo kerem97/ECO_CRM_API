@@ -246,6 +246,12 @@
     <div class="col-md-12 col-lg-12">
         <div class="card">
             <div class="card-header">
+                <div id="noDataAlert" class="alert alert-danger shadow-sm border-theme-white-2" role="alert" style="display: none;">
+                    <div class="d-inline-flex justify-content-center align-items-center thumb-xs bg-danger rounded-circle mx-auto me-1">
+                        <i class="fas fa-xmark align-self-center mb-0 text-white"></i>
+                    </div>
+                    <strong>Maalesef</strong> Kayıt bulunamadı.
+                </div>
                 <div class="row align-items-center">
                     <div class="filter-container">
                         <input type="text" id="companySearchInput" placeholder="Firma Ara" list="companySearchBox" autocomplete="off" />
@@ -561,6 +567,19 @@
                 $('#reasonFilter').val() ||
                 $('#statusFilter').val();
 
+
+            function handleResponse(data) {
+                if (data.length === 0) {
+                    if (direction === 'next') {
+                        currentPage--;
+                    }
+                    $('#noDataAlert').show();
+                } else {
+                    $('#noDataAlert').hide();
+                    $('#currentPage').text(currentPage);
+                    updateTable(data);
+                }
+            }
             if (isFilterApplied) {
                 const filterRequest = {
                     companyName: $('#companySearchInput').val() || null,
@@ -581,8 +600,8 @@
                     },
                     data: JSON.stringify(filterRequest),
                     success: function (data) {
+                        handleResponse(data);
                         $('#currentPage').text(currentPage);
-                        updateTable(data);
                     },
                     error: function () {
                         alert('Filtreli veriler alınırken hata oluştu.');
@@ -596,8 +615,8 @@
                         'Authorization': 'Bearer ' + token
                     },
                     success: function (data) {
+                        handleResponse(data);
                         $('#currentPage').text(currentPage);
-                        updateTable(data);
                     },
                     error: function () {
                         alert('Veriler alınırken hata oluştu.');

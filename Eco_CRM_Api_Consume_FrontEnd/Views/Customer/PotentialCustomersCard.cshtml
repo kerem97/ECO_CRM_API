@@ -3,10 +3,18 @@
     ViewData["Title"] = "PotentialCustomersCard";
     Layout = "~/Views/Layout/Index.cshtml";
 }
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+        crossorigin="anonymous"></script>
 <link href="~/HTML/dist/assets/libs/dragula/dragula.min.css" rel="stylesheet" type="text/css" />
 <div class="card">
     <div class="card-header">
+        <div id="noDataAlert" class="alert alert-danger shadow-sm border-theme-white-2" role="alert" style="display:none; margin-top: 10px;">
+            <div class="d-inline-flex justify-content-center align-items-center thumb-xs bg-danger rounded-circle mx-auto me-1">
+                <i class="fas fa-xmark align-self-center mb-0 text-white "></i>
+            </div>
+            <strong>Maalesef</strong> Kayıt bulunamadı.
+        </div>
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="card-title">Mevcut Müşteriler</h4>
             <div>
@@ -21,7 +29,6 @@
 </div>
 <div class="container-xxl">
     <div class="row justify-content-center">
-
         @foreach (var x in Model)
         {
             <div class="col-md-3 col-lg-3 mb-4">
@@ -49,6 +56,103 @@
             </div>
         }
     </div>
+    <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
+        <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+            ◀ Önceki
+        </button>
+        <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; background-color: #f8f9fa;">1</span>
+        <button class="btn btn-sm mx-1" onclick="changePage('next')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+            Sonraki ▶
+        </button>
+    </div>
 </div>
 <script src="~/HTML/dist/assets/libs/dragula/dragula.min.js"></script>
 <script src="~/HTML/dist/assets/js/pages/dragula.init.js"></script>
+<script>
+    let currentPage = 1;
+    const pageSize = 8;
+    const token = '@ViewBag.Token'; 
+
+    $(document).ready(function () {
+        fetchData(currentPage);
+    });
+
+    function fetchData(page) {
+        $.ajax({
+            url: `https://localhost:44309/api/Customers/paged-potential-customers?pageNumber=${page}&pageSize=${pageSize}`,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (data) {
+                if (data && data.length > 0) {
+                    $('#noDataAlert').hide();
+                    updateTable(data);
+                    $('#currentPage').text(page);
+                } else {
+                    $('#noDataAlert').show();
+                }
+            },
+            error: function () {
+                alert('Veri alınırken hata oluştu.');
+            }
+        });
+    }
+
+    function updateTable(data) {
+        let container = $('.row.justify-content-center');
+        container.empty();
+
+        data.forEach(customer => {
+            container.append(`
+                        <div class="col-md-3 col-lg-3 mb-4">
+                            <div class="rounded mb-4">
+                                <div class="card bg-light shadow-lg">
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center float-end">
+                                            <i class="iconoir-chat-bubble fs-14 me-1"></i>Detaylar
+                                        </button>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0"></div>
+                                            <div class="flex-grow-1 ms-2 text-truncate">
+                                                <h5 class="m-0 fw-bold">${customer.companyName}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 align-items-center">
+                                            <div class="col-12">
+                                                <div class="text-muted mb-2 d-flex align-items-center">
+                                                    <i class="iconoir-mail-out fs-20 me-1"></i>
+                                                    <span class="text-body fw-semibold">Email :</span>
+                                                    <span class="text-primary text-decoration-underline ms-1 text-truncate" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${customer.contactEmail}</span>
+                                                </div>
+                                                <div class="text-body d-flex align-items-center">
+                                                    <i class="iconoir-phone fs-20 me-1 text-muted"></i>
+                                                    <span class="text-body fw-semibold">Phone :</span> ${customer.contactPhone1}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+        });
+    }
+
+    function changePage(direction) {
+        const previousPage = currentPage;
+
+        if (direction === 'next') {
+            currentPage++;
+        } else if (direction === 'prev' && currentPage > 1) {
+            currentPage--;
+        }
+
+        fetchData(currentPage).then(function (data) {
+            if (data.length === 0) {
+                currentPage = previousPage;
+            }
+        });
+    }
+
+</script>

@@ -246,6 +246,12 @@
     <div class="col-md-12 col-lg-12">
         <div class="card">
             <div class="card-header">
+                <div id="noDataAlert" class="alert alert-danger shadow-sm border-theme-white-2" role="alert" style="display: none;">
+                    <div class="d-inline-flex justify-content-center align-items-center thumb-xs bg-danger rounded-circle mx-auto me-1">
+                        <i class="fas fa-xmark align-self-center mb-0 text-white"></i>
+                    </div>
+                    <strong>Maalesef</strong> Kayıt bulunamadı.
+                </div>
                 <div class="row align-items-center">
                     <div class="filter-container">
                         <input type="text" id="companySearchInput" placeholder="Firma Ara" list="companySearchBox" autocomplete="off" />
@@ -508,27 +514,27 @@
                     : '';
                 const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
                 tbody.append(`
-                                                                                    <tr>
-                                                                                        <td>${operationDate}</td>
-                                                                                        <td>${operation.createdByUser || ''}</td>
-                                                                                        <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                                                                                        <td>${operation.customerName || ''}</td>
-                                                                                        <td>${operation.address || ''}</td>
-                                                                                        <td>${operation.method || ''}</td>
-                                                                                        <td>${operation.contactPerson || ''}</td>
-                                                                                        <td>${plannedDate}</td>
-                                                                                        <td>${actualDate}</td>
-                                                                                        <td>${operation.reason || ''}</td>
-                                                                                        <td>${operation.status || ''}</td>
-                                                                                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                                                                            ${operation.description || ''}
-                                                                                        </td>
-                                                                                                <td>
-                                                                                <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
-                                                                                    data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
-                                                                            </td>
-                                                                                    </tr>
-                                                                                `);
+                                                                                            <tr>
+                                                                                                <td>${operationDate}</td>
+                                                                                                <td>${operation.createdByUser || ''}</td>
+                                                                                                <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                                                <td>${operation.customerName || ''}</td>
+                                                                                                <td>${operation.address || ''}</td>
+                                                                                                <td>${operation.method || ''}</td>
+                                                                                                <td>${operation.contactPerson || ''}</td>
+                                                                                                <td>${plannedDate}</td>
+                                                                                                <td>${actualDate}</td>
+                                                                                                <td>${operation.reason || ''}</td>
+                                                                                                <td>${operation.status || ''}</td>
+                                                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                                                    ${operation.description || ''}
+                                                                                                </td>
+                                                                                                        <td>
+                                                                                        <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
+                                                                                            data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
+                                                                                    </td>
+                                                                                            </tr>
+                                                                                        `);
             });
 
             $('.edit-btn').off('click').on('click', function () {
@@ -558,6 +564,7 @@
             } else if (direction === 'prev' && currentPage > 1) {
                 currentPage--;
             }
+           
             const isFilterApplied = $('#companySearchInput').val() ||
                 $('#monthFilter').val() ||
                 $('#yearFilter').val() ||
@@ -566,6 +573,18 @@
                 $('#reasonFilter').val() ||
                 $('#statusFilter').val();
 
+            function handleResponse(data) {
+                if (data.length === 0) {
+                    if (direction === 'next') {
+                        currentPage--; 
+                    }
+                    $('#noDataAlert').show(); 
+                } else {
+                    $('#noDataAlert').hide(); 
+                    $('#currentPage').text(currentPage);
+                    updateTable(data);
+                }
+            }
             if (isFilterApplied) {
                 const filterRequest = {
                     companyName: $('#companySearchInput').val() || null,
@@ -576,6 +595,7 @@
                     reason: $('#reasonFilter').val() || null,
                     status: $('#statusFilter').val() || null
                 };
+               
 
                 $.ajax({
                     url: `https://localhost:44309/api/CustomerOperations/filtered-cancelled-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
@@ -586,8 +606,8 @@
                     },
                     data: JSON.stringify(filterRequest),
                     success: function (data) {
+                        handleResponse(data);
                         $('#currentPage').text(currentPage);
-                        updateTable(data);
                     },
                     error: function () {
                         alert('Filtreli veriler alınırken hata oluştu.');
@@ -601,8 +621,8 @@
                         'Authorization': 'Bearer ' + token
                     },
                     success: function (data) {
+                        handleResponse(data);
                         $('#currentPage').text(currentPage);
-                        updateTable(data);
                     },
                     error: function () {
                         alert('Veriler alınırken hata oluştu.');
@@ -778,27 +798,27 @@
                         : '';
                     const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
                     tbody.append(`
-                                                                                            <tr>
-                                                                                                <td>${operationDate}</td>
-                                                                                                <td>${operation.createdByUser || ''}</td>
-                                                                                                <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                                                                                                <td>${operation.customerName || ''}</td>
-                                                                                                <td>${operation.address || ''}</td>
-                                                                                                <td>${operation.method || ''}</td>
-                                                                                                <td>${operation.contactPerson || ''}</td>
-                                                                                                <td>${plannedDate}</td>
-                                                                                                <td>${actualDate}</td>
-                                                                                                <td>${operation.reason || ''}</td>
-                                                                                                <td>${operation.status || ''}</td>
-                                                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                                                                                    ${operation.description || ''}
-                                                                                                </td>
-                                                                                                        <td>
-                                                                                        <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
-                                                                                            data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
-                                                                                    </td>
-                                                                                            </tr>
-                                                                                        `);
+                                                                                                    <tr>
+                                                                                                        <td>${operationDate}</td>
+                                                                                                        <td>${operation.createdByUser || ''}</td>
+                                                                                                        <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                                                        <td>${operation.customerName || ''}</td>
+                                                                                                        <td>${operation.address || ''}</td>
+                                                                                                        <td>${operation.method || ''}</td>
+                                                                                                        <td>${operation.contactPerson || ''}</td>
+                                                                                                        <td>${plannedDate}</td>
+                                                                                                        <td>${actualDate}</td>
+                                                                                                        <td>${operation.reason || ''}</td>
+                                                                                                        <td>${operation.status || ''}</td>
+                                                                                                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                                                            ${operation.description || ''}
+                                                                                                        </td>
+                                                                                                                <td>
+                                                                                                <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
+                                                                                                    data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
+                                                                                            </td>
+                                                                                                    </tr>
+                                                                                                `);
                 });
                 $('.edit-btn').off('click').on('click', function () {
                     const operationId = $(this).data('operation-id');

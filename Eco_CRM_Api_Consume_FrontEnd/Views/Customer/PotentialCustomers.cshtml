@@ -19,6 +19,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        <div id="noDataAlert" class="alert alert-danger shadow-sm border-theme-white-2" role="alert" style="display:none; margin-top: 10px;">
+                            <div class="d-inline-flex justify-content-center align-items-center thumb-xs bg-danger rounded-circle mx-auto me-1">
+                                <i class="fas fa-xmark align-self-center mb-0 text-white"></i>
+                            </div>
+                            <strong>Maalesef</strong> Kayıt bulunamadı.
+                        </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Potensiyel Müşteriler</h4>
                             <div>
@@ -110,15 +116,21 @@
                     'Authorization': 'Bearer ' + token
                 },
                 success: function (data) {
-                    currentPage = page;
-                    $('#currentPage').text(currentPage);
-                    updateTable(data);
+                    if (data && data.length > 0) {
+                        $('#noDataAlert').hide();
+                        currentPage = page;
+                        $('#currentPage').text(currentPage);
+                        updateTable(data);
+                    } else {
+                        $('#noDataAlert').show(); 
+                    }
                 },
                 error: function () {
                     alert('Veri alınırken hata oluştu.');
                 }
             });
         }
+
 
         function updateTable(data) {
             let tbody = $('#customer-table-body');
@@ -153,12 +165,36 @@
             }
         }
         function changePage(direction) {
+            const previousPage = currentPage;
+
             if (direction === 'next') {
-                fetchData(currentPage + 1);
+                currentPage++;
             } else if (direction === 'prev' && currentPage > 1) {
-                fetchData(currentPage - 1);
+                currentPage--;
             }
+
+            $.ajax({
+                url: `https://localhost:44309/api/Customers/paged-potential-customers?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        $('#noDataAlert').hide(); 
+                        $('#currentPage').text(currentPage);
+                        updateTable(data);
+                    } else {
+                        currentPage = previousPage; 
+                        $('#noDataAlert').show(); 
+                    }
+                },
+                error: function () {
+                    alert('Veri alınırken hata oluştu.');
+                }
+            });
         }
+
         document.addEventListener("DOMContentLoaded", function () {
             document.body.style.opacity = 1;
         });
