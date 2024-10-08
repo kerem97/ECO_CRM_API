@@ -276,18 +276,13 @@
                         <select id="yearFilter" class="filter-dropdown">
                             <option value="">Yıl Seç</option>
                         </select>
-                        @*  <select id="statusFilter" class="filter-dropdown">
-                        <option value="">Durum Seç</option>
-                        <option value="Planlandı">Planlandı</option>
-                        <option value="Gerçekleşti">Gerçekleşti</option>
-                        <option value="İptal Edildi">İptal Edildi</option>
-                        </select> *@
+                      
                         <button id="applyFilters" class="filter-btn">Filtrele</button>
                         <button id="resetFilters" class="reset-btn">Sıfırla</button>
                         <a href="/CustomerOperation/AddOperation" class="add-operation-btn">Yeni İşlem</a>
                     </div>
-                </div>  <!--end row-->
-            </div><!--end card-header-->
+                </div>  
+            </div>
             <div class="card-body pt-0">
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0 table-centered">
@@ -305,7 +300,7 @@
                                 <th>Sebep</th>
                                 <th>Durum</th>
                                 <th>Açıklama</th>
-                                <th>Düzenle</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -325,9 +320,6 @@
                                     <td>@x.Status</td>
                                     <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
                                         @x.Description
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-sm">Düzenle</button>
                                     </td>
                                 </tr>
                             }
