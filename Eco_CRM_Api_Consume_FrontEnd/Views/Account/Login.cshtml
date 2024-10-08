@@ -9,10 +9,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    @await Component.InvokeAsync("_LoginStyleComponentPartial")
+    <title>ECO CRM GİRİŞ</title>
+    <link rel="stylesheet" href="~/HTML/dist/assets/libs/jsvectormap/css/jsvectormap.min.css" />
+    <link href="~/HTML/dist/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/HTML/dist/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/HTML/dist/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+   @*  @await Component.InvokeAsync("_LoginStyleComponentPartial") *@
 </head>
-<body>
+@* <body>
     <div class="login-container">
         <div class="eco-crm-title">ECO CRM</div>
         <form asp-action="Login" method="post">
@@ -37,5 +41,48 @@
     <div style="position: fixed; bottom: 10px; right: 20px; color: #fff; font-size: 12px;">
         Designed by Eco Software Development ℗
     </div>
+</body> *@
+<body>
+    <div class="container-xxl">
+        <div class="row vh-100 d-flex justify-content-center">
+            <div class="col-12 align-self-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 mx-auto">
+                            <div class="card">
+                                <div class="card-body p-0 bg-black auth-header-box rounded-top">
+                                    <div class="text-center p-3">
+                                        <a href="index.html" class="logo logo-admin">
+                                            <img src="~/HTML/dist/assets/images/logo-sm.png" height="50" alt="logo" class="auth-logo">
+                                        </a>
+                                        <p class="text-muted fw-medium mb-0">CRM Sistemine Giriş Yapın</p>
+                                    </div>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <form asp-action="Login" method="post" asp-controller="Account">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="username">Kullanıcı Adı</label>
+                                            <input type="text" class="form-control" asp-for="Username" placeholder="Kullanıcı Adı">
+                                        </div><!--end form-group-->
+                                        <div class="form-group">
+                                            <label class="form-label" for="userpassword">Şifre</label>
+                                            <input type="password" class="form-control" asp-for="Password" placeholder="Şifre">
+                                        </div><!--end form-group-->
+                                        <div class="form-group mb-0 row">
+                                            <div class="col-12">
+                                                <div class="d-grid mt-3">
+                                                    <button class="btn btn-primary" type="submit">Giriş<i class="fas fa-sign-in-alt ms-1"></i></button>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div> <!--end form-group-->
+                                    </form><!--end form-->
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end card-body-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!-- container -->
 </body>
 </html>

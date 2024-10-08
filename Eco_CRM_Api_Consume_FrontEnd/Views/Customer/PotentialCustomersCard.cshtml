@@ -1,0 +1,54 @@
+﻿@model List<DisplayCustomerResponse>
+@{
+    ViewData["Title"] = "PotentialCustomersCard";
+    Layout = "~/Views/Layout/Index.cshtml";
+}
+
+<link href="~/HTML/dist/assets/libs/dragula/dragula.min.css" rel="stylesheet" type="text/css" />
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title">Mevcut Müşteriler</h4>
+            <div>
+                <a href="/Customer/NewCustomer" class="btn btn-primary me-2">Yeni Müşteri Ekle</a>
+                <a href="/Customer/PotentialCustomers" class="text-secondary btn btn-secondary">
+                    <i class="fas fa-th-list" style="color: #fff;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container-xxl">
+    <div class="row justify-content-center">
+
+        @foreach (var x in Model)
+        {
+            <div class="col-md-3 col-lg-3 mb-4">
+                <div class=" rounded mb-4">
+                    <div class="card bg-light shadow-lg">
+                        <div class="card-body ">
+                            <button type="button" class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center float-end"><i class="iconoir-chat-bubble fs-14 me-1"></i>Detaylar</button>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                </div>
+                                <div class="flex-grow-1 ms-2 text-truncate">
+                                    <h5 class="m-0 fw-bold">@x.CompanyName</h5>
+                                </div>
+                            </div>
+                            <div class="row mt-3 align-items-center">
+                                <div class="col-12">
+                                    <div class="text-muted mb-2 d-flex align-items-center"><i class="iconoir-mail-out fs-20 me-1"></i><span class="text-body fw-semibold">Email :</span><span class="text-primary text-decoration-underline ms-1 text-truncate" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">example@example.com</span></div>
+                                    <div class="text-body d-flex align-items-center"><i class="iconoir-phone fs-20 me-1 text-muted"></i><span class="text-body fw-semibold">Phone :</span> +1 123 456 789</div>
+                                    <div class="text-body d-flex align-items-center"><i class="iconoir-phone fs-20 me-1 text-muted"></i><span class="text-body fw-semibold">Phone :</span> +1 123 456 789</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script src="~/HTML/dist/assets/libs/dragula/dragula.min.js"></script>
+<script src="~/HTML/dist/assets/js/pages/dragula.init.js"></script>

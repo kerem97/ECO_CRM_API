@@ -18,10 +18,14 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Mevcut Müşteriler</h4>
-                            <a href="/Customer/NewCustomer" class="btn btn-primary">Yeni Müşteri Ekle</a>
+                            <div>
+                                <a href="/Customer/NewCustomer" class="btn btn-primary me-2">Yeni Müşteri Ekle</a>
+                                <a href="/Customer/ExistedCustomersCard" class="text-secondary btn btn-secondary">
+                                    <i class="fas fa-th-large" style="color: #fff;"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-
                     <div class="card-body pt-0">
                         <div class="table-responsive">
                             <table class="table table-bordered mb-0 table-centered">
@@ -72,7 +76,8 @@
                             <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
                                 ◀ Önceki
                             </button>
-                            <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #fff;">1</span>
+                            <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #343a40; background-color: #f8f9fa; border-radius: 5px;">1</span>
+
                             <button class="btn btn-sm mx-1" onclick="changePage('next')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
                                 Sonraki ▶
                             </button>
@@ -81,7 +86,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <script src="~/HTML/dist/assets/libs/simple-datatables/umd/simple-datatables.js"></script>
     <script src="~/HTML/dist/assets/js/pages/datatable.init.js"></script>

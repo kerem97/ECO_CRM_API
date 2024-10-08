@@ -20,8 +20,13 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Mevcut Müşteriler</h4>
-                            <a href="/Customer/NewCustomer" class="btn btn-primary">Yeni Müşteri Ekle</a>
+                            <h4 class="card-title">Potensiyel Müşteriler</h4>
+                            <div>
+                                <a href="/Customer/NewCustomer" class="btn btn-primary me-2">Yeni Müşteri Ekle</a>
+                                <a href="/Customer/PotentialCustomersCard" class="text-secondary btn btn-secondary">
+                                    <i class="fas fa-th-large" style="color: #fff;"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -75,7 +80,7 @@
                             <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
                                 ◀ Önceki
                             </button>
-                            <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; color: #fff;">1</span>
+                            <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; background-color: #f8f9fa;">1</span>
                             <button class="btn btn-sm mx-1" onclick="changePage('next')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
                                 Sonraki ▶
                             </button>
@@ -121,27 +126,27 @@
             if (data && data.length > 0) {
                 data.forEach(customer => {
                     tbody.append(`
-                                                        <tr>
-                                                            <td>${customer.companyName || ""}</td>
-                                                            <td>${customer.city || ""}</td>
-                                                            <td>${customer.district || ""}</td>
-                                                            <td>${customer.address || ""}</td>
-                                                            <td>${customer.country || ""}</td>
-                                                            <td>${customer.contactName || ""}</td>
-                                                            <td>${customer.contactPhone1 || ""}</td>
-                                                            <td>${customer.contactEmail || ""}</td>
-                                                            <td>${customer.isDomestic ? "Evet" : "Hayır"}</td>
-                                                            <td>${customer.description || ""}</td>
-                                                            <td>${customer.status || ""}</td>
-                                                            <td>${customer.group || ""}</td>
-                                                            <td>
-                                                                <a href="/CustomerOperation/OperationsByCustomer/${customer.id}" class="btn btn-primary btn-sm"
-                                                                   style="background-color: #555; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                                                    Detaylar
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    `);
+                                                                <tr>
+                                                                    <td>${customer.companyName || ""}</td>
+                                                                    <td>${customer.city || ""}</td>
+                                                                    <td>${customer.district || ""}</td>
+                                                                    <td>${customer.address || ""}</td>
+                                                                    <td>${customer.country || ""}</td>
+                                                                    <td>${customer.contactName || ""}</td>
+                                                                    <td>${customer.contactPhone1 || ""}</td>
+                                                                    <td>${customer.contactEmail || ""}</td>
+                                                                    <td>${customer.isDomestic ? "Evet" : "Hayır"}</td>
+                                                                    <td>${customer.description || ""}</td>
+                                                                    <td>${customer.status || ""}</td>
+                                                                    <td>${customer.group || ""}</td>
+                                                                    <td>
+                                                                        <a href="/CustomerOperation/OperationsByCustomer/${customer.id}" class="btn btn-primary btn-sm"
+                                                                           style="background-color: #555; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                                                            Detaylar
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            `);
                 });
             } else {
                 tbody.append('<tr><td colspan="13">Kayıt bulunamadı.</td></tr>');

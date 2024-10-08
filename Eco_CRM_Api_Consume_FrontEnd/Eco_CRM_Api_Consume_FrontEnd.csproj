@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ViewComponents\Customers\" />
+    <Folder Include="ViewComponents\Login\" />
     <Folder Include="wwwroot\HTML\dist\assets\libs\gmaps\docs\" />
     <Folder Include="wwwroot\HTML\dist\assets\libs\gmaps\examples\" />
     <Folder Include="wwwroot\HTML\dist\assets\libs\gmaps\test\" />
