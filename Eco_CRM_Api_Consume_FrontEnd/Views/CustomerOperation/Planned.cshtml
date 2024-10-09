@@ -355,7 +355,7 @@
                         <select id="status" class="form-control">
                             <option value="">Seçiniz</option>
                             <option value="Gerçekleşti">Gerçekleşti</option>
-                            <option value="İptal">İptal</option>
+                            <option value="Gerçekleşmedi">Gerçekleşmedi</option>
                         </select>
                     </div>
                     <div id="meetingStatusDiv" class="mb-3" style="display: none;">
@@ -512,7 +512,7 @@
                 const actualDate = operation.actualDate
                     ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
                     : '';
-                const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
+                const disableButton = (operation.status === "Gerçekleşti" || operation.status === "Gerçekleşmedi");
                 tbody.append(`
                                                                                     <tr>
                                                                                         <td>${operationDate}</td>
@@ -541,8 +541,8 @@
                 const operationId = $(this).data('operation-id');
                 const operationStatus = $(this).closest('tr').find('td:nth-child(11)').text().trim();
 
-                if (operationStatus === "Gerçekleşti" || operationStatus === "İptal Edildi") {
-                    alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "İptal Edildi".');
+                if (operationStatus === "Gerçekleşti" || operationStatus === "Gerçekleşmedi") {
+                    alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "Gerçekleşmedi".');
                     return;
                 }
                 $('#offerStatusDiv').hide();
@@ -641,8 +641,8 @@
             let requestData;
             let endpointUrl;
 
-            if (status === "İptal" && !cancelReason) {
-                alert('Lütfen iptal sebebini giriniz.');
+            if (status === "Gerçekleşmedi" && !cancelReason) {
+                alert('Lütfen gerçekleşmeme sebebini giriniz.');
                 return;
             }
 
@@ -678,7 +678,7 @@
                 } else if (offerStatus === 'Hayır') {
                     saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Hayır');
                 }
-            } else if (status === "İptal") {
+            } else if (status === "Gerçekleşmedi") {
                 requestData = JSON.stringify({
                     operationId: operationId,
                     cancelReason: cancelReason,
@@ -739,7 +739,7 @@
 
         $('#status').change(function () {
             const status = $(this).val();
-            if (status === 'İptal') {
+            if (status === 'Gerçekleşmedi') {
                 $('#cancelReasonDiv').show();
                 $('#actualDateDiv').hide();
                 $('#meetingStatusDiv').hide();

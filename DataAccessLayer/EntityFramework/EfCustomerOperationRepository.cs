@@ -277,7 +277,7 @@ namespace DataAccessLayer.EntityFramework
             var query = _context.CustomerOperations
                  .Include(co => co.User)
                  .Include(co => co.Customer)
-                 .Where(co => co.UserId == userId && co.Status == "İptal Edildi")
+                 .Where(co => co.UserId == userId && co.Status == "Gerçekleşmedi")
                  .OrderByDescending(co => co.OperationDate);
 
             int totalRecords = await query.CountAsync();
@@ -361,7 +361,7 @@ namespace DataAccessLayer.EntityFramework
             var query = _context.CustomerOperations
          .Include(co => co.Customer)
          .Include(co => co.User)
-         .Where(co => co.UserId == userId && co.Status == "İptal Edildi")
+         .Where(co => co.UserId == userId && co.Status == "Gerçekleşmedi")
          .AsQueryable();
 
             if (!string.IsNullOrEmpty(companyName))

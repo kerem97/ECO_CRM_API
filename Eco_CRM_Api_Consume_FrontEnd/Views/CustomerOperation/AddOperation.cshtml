@@ -29,8 +29,8 @@
                     </div>
                     <div class="card-body pt-0">
                         <form asp-action="AddOperation" method="post" id="operationForm">
-                            <div class="col-md-4">
-                                <label asp-for="OperationRequest.CustomerId" class="mb-2">Firma Seç</label>
+                            <div class="mb-3 col-md-3">
+                                <label asp-for="OperationRequest.CustomerId" class="form-label">Firma Seç</label>
                                 <input type="text" id="firmSelector" class="form-control" placeholder="Firma adını yazın" style="width: 100%;">
                                 <ul id="firmDropdown" class="dropdown-menu" style="display: none; width: 100%;"></ul>
 

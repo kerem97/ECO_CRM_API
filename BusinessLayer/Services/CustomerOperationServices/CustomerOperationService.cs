@@ -60,7 +60,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
             if (operation == null)
                 throw new Exception("Operation not found");
 
-            operation.Status = "İptal Edildi";
+            operation.Status = "Gerçekleşmedi";
             operation.CancelReason = cancelReason;
 
             await _customerOperationRepository.Update(operation);
