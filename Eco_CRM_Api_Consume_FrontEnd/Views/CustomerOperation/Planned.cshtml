@@ -376,6 +376,18 @@
                             <label for="offerNo">Hayır</label>
                         </div>
                     </div>
+                    <div id="meetingFeedbackDiv" class="mb-3" style="display: none;">
+                        <label for="meetingFeedback" class="form-label">Görüşmenin Nasıl Geçtiği</label>
+                        <select id="meetingFeedback" class="form-control">
+                            <option value="">Seçiniz</option>
+                            <option value="Nötr">Nötr</option>
+                            <option value="Gergin">Gergin</option>
+                            <option value="Olumlu">Olumlu</option>
+                            <option value="İstekli">İstekli</option>
+                            <option value="Endişeli">Endişeli</option>
+                            <option value="İsteksiz">İsteksiz</option>
+                        </select>
+                    </div>
                     <div class="mb-3" id="cancelReasonDiv" style="display: none;">
                         <label for="cancelReason" class="form-label">İptal Sebebi</label>
                         <textarea id="cancelReason" class="form-control"></textarea>
@@ -638,6 +650,7 @@
             let actualDate = $('#actualDate').val();
             const meetingStatus = $('#meetingStatus').val();
             const offerStatus = $('input[name="offerStatus"]:checked').val();
+            const meetingFeedback = $('#meetingFeedback').val();
             let requestData;
             let endpointUrl;
 
@@ -653,6 +666,10 @@
                     actualDate = $('#plannedDate').val();
                 } else if (meetingStatus === 'no' && !actualDate) {
                     alert('Lütfen gerçekleşen tarih bilgisini giriniz.');
+                    return;
+                }
+                if (!meetingFeedback) {
+                    alert('Lütfen görüşmenin nasıl geçtiğini seçiniz.');
                     return;
                 }
 
@@ -672,11 +689,11 @@
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Teklif Verilecek');
+                            saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Teklif Verilecek', meetingFeedback);
                         }
                     });
                 } else if (offerStatus === 'Hayır') {
-                    saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Hayır');
+                    saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Hayır', meetingFeedback);
                 }
             } else if (status === "Gerçekleşmedi") {
                 requestData = JSON.stringify({
@@ -706,14 +723,15 @@
             }
         });
 
-        function saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, offerStatus) {
+        function saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, offerStatus, meetingFeedback) {
             const requestData = JSON.stringify({
                 operationId: operationId,
                 actualDate: actualDate,
                 status: status,
                 updatedStatusDescription: updatedStatusDescription,
                 isMeetingOnPlannedDate: meetingStatus === 'yes',
-                offerStatus: offerStatus
+                offerStatus: offerStatus,
+                meetingFeedback: meetingFeedback
             });
             console.log(requestData);
             const endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
@@ -745,14 +763,16 @@
                 $('#meetingStatusDiv').hide();
                 $('#updatedStatusDescriptionDiv').hide();
                 $('#offerStatusDiv').hide();
+                $('#meetingFeedbackDiv').hide();
             } else if (status === 'Gerçekleşti') {
                 $('#cancelReasonDiv').hide();
                 $('#actualDateDiv').hide();
                 $('#meetingStatusDiv').show();
                 $('#updatedStatusDescriptionDiv').show();
                 $('#offerStatusDiv').show();
+                $('#meetingFeedbackDiv').show();
             } else {
-                $('#cancelReasonDiv, #actualDateDiv, #meetingStatusDiv, #updatedStatusDescriptionDiv, #offerStatusDiv').hide();
+                $('#cancelReasonDiv, #actualDateDiv, #meetingStatusDiv, #updatedStatusDescriptionDiv, #offerStatusDiv, #meetingFeedbackDiv').hide();
             }
         });
         $('#meetingStatus').change(function () {

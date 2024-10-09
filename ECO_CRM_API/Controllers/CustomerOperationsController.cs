@@ -136,7 +136,7 @@ public class CustomerOperationsController : ControllerBase
             if (request.IsMeetingOnPlannedDate == null)
                 return BadRequest(new { message = "Planned date meeting status is required." });
 
-            await _customerOperationService.CompleteOperationAsync(request.OperationId, request.ActualDate, request.IsMeetingOnPlannedDate, request.UpdatedStatusDescription, request.OfferStatus);
+            await _customerOperationService.CompleteOperationAsync(request.OperationId, request.ActualDate, request.IsMeetingOnPlannedDate, request.UpdatedStatusDescription, request.OfferStatus, request.MeetingFeedback);
             return Ok(new { message = "Operation completed successfully." });
         }
         catch (Exception ex)
