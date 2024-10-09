@@ -143,7 +143,6 @@
                 background-color: #555;
             }
 
-    /* Light Mod */
     body[data-bs-theme="light"] #companySearchInput {
         background-color: #fff;
         color: #333;
@@ -165,7 +164,6 @@
                 background-color: #f0f0f0;
             }
 
-    /* Dark Mod */
     body[data-bs-theme="dark"] #companySearchInput {
         background-color: #333;
         color: #f1f1f1;
@@ -205,7 +203,7 @@
     }
 
         .add-operation-btn:hover {
-            background-color: #e68a00; /* Hover için daha koyu turuncu */
+            background-color: #e68a00; 
         }
 
     body[data-bs-theme="light"] .add-operation-btn {
@@ -221,26 +219,6 @@
     .add-operation-btn:focus {
         outline: none;
     }
-
-    .modal-header .close {
-        position: absolute;
-        right: 15px; /* Sağ köşeye kaydır */
-        top: 15px;
-        background-color: transparent; /* Arka planı şeffaf yap */
-        color: #fff; /* X işaretini beyaz yap */
-        border: none;
-        font-size: 20px; /* Boyutu biraz büyüt */
-        cursor: pointer;
-        padding: 0;
-        outline: none;
-    }
-
-        .modal-header .close:hover {
-            color: #ff6f61; /* Hover sırasında renk değiştir */
-            transform: scale(1.2); /* Hover sırasında biraz büyü */
-            transition: all 0.3s ease; /* Geçiş efektleri ekle */
-        }
-
 </style>
 <body>
     <div class="col-md-12 col-lg-12">
@@ -293,7 +271,7 @@
                                 <th>Müşteri</th>
                                 <th>Adres</th>
                                 <th>Yöntem</th>
-                                <th>Görüşülen</th>
+                                <th>İrtibat</th>
                                 <th>Planlanan</th>
                                 <th>Görüşülen</th>
                                 <th>Sebep</th>
@@ -316,10 +294,9 @@
                                     <td>@x.ActualDate</td>
                                     <td>@x.Reason</td>
                                     <td>@x.Status</td>
-                                    <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                    <td class="cancel-reason-cell" style="white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
                                         @x.CancelReason
                                     </td>
-                                   
                                 </tr>
                             }
                         </tbody>
@@ -337,52 +314,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editOperationModal" tabindex="-1" aria-labelledby="editOperationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Operasyon Düzenle</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Durum</label>
-                        <select id="status" class="form-control">
-                            <option value="">Seçiniz</option>
-                            <option value="Gerçekleşti">Gerçekleşti</option>
-                            <option value="İptal">İptal</option>
-                        </select>
-                    </div>
-                    <div id="meetingStatusDiv" class="mb-3" style="display: none;">
-                        <label for="meetingStatus" class="form-label">Planlanan tarihte görüşme gerçekleşti mi?</label>
-                        <select id="meetingStatus" class="form-control">
-                            <option value="">Seçiniz</option>
-                            <option value="yes">Evet</option>
-                            <option value="no">Hayır</option>
-                        </select>
-                    </div>
-                    <div class="mb-3" id="cancelReasonDiv" style="display: none;">
-                        <label for="cancelReason" class="form-label">İptal Sebebi</label>
-                        <textarea id="cancelReason" class="form-control"></textarea>
-                    </div>
-                    <div class="mb-3" id="updatedStatusDescriptionDiv" style="display: none;">
-                        <label for="updatedStatusDescription" class="form-label">Güncellenmiş Durum Açıklaması</label>
-                        <textarea id="updatedStatusDescription" class="form-control"></textarea>
-                    </div>
-                    <div class="mb-3" id="actualDateDiv" style="display: none;">
-                        <label for="actualDate" class="form-label">Gerçekleşme Tarihi</label>
-                        <input type="datetime-local" id="actualDate" class="form-control">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button type="button" id="saveChangesBtn" class="btn btn-primary">Kaydet</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <script src="~/HTML/dist/assets/libs/simple-datatables/umd/simple-datatables.js"></script>
     <script src="~/HTML/dist/assets/js/pages/datatable.init.js"></script>
     <script src="~/HTML/dist/assets/js/app.js"></script>
@@ -486,7 +418,6 @@
                 }
             });
         }
-
         function updateTable(data) {
             let tbody = $('table tbody');
             tbody.empty();
@@ -501,7 +432,7 @@
                 const actualDate = operation.actualDate
                     ? new Date(operation.actualDate).toLocaleDateString('tr-TR') + ' ' + new Date(operation.actualDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
                     : '';
-                const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
+                const disableButton = (operation.status === "Gerçekleşti" || operation.status === "Gerçekleşmedi");
                 tbody.append(`
                                                                                             <tr>
                                                                                                 <td>${operationDate}</td>
@@ -515,37 +446,13 @@
                                                                                                 <td>${actualDate}</td>
                                                                                                 <td>${operation.reason || ''}</td>
                                                                                                 <td>${operation.status || ''}</td>
-                                                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                                                                                    ${operation.description || ''}
+                                                                                                              <td class="description-cell" style="white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
+                                                                                                            ${operation.cancelReason || ''}
                                                                                                 </td>
-                                                                                                        <td>
-                                                                                        <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
-                                                                                            data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
-                                                                                    </td>
                                                                                             </tr>
                                                                                         `);
             });
 
-            $('.edit-btn').off('click').on('click', function () {
-                const operationId = $(this).data('operation-id');
-                const operationStatus = $(this).closest('tr').find('td:nth-child(11)').text().trim();
-
-                if (operationStatus === "Gerçekleşti" || operationStatus === "İptal Edildi") {
-                    alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "İptal Edildi".');
-                    return;
-                }
-                $('#editOperationModal').data('operation-id', operationId);
-                $('#editOperationModal').modal('show');
-                $('#cancelReasonDiv').hide();
-                $('#updatedStatusDescriptionDiv').hide();
-                $('#actualDateDiv').hide();
-                $('#meetingStatusDiv').hide();
-                $('#status').val('');
-                $('#cancelReason').val('');
-                $('#actualDate').val('');
-                $('#meetingStatus').val('');
-                $('#updatedStatusDescription').val('');
-            });
         }
         function changePage(direction) {
             if (direction === 'next') {
@@ -711,9 +618,6 @@
                 $('#actualDate').val('');
             }
         });
-        $('#editOperationModal .close, #editOperationModal .btn-secondary').click(function () {
-            $('#editOperationModal').modal('hide');
-        });
         $(document).ready(function () {
             function searchCompanyNames(searchTerm) {
                 const encodedSearchTerm = encodeURIComponent(searchTerm);
@@ -740,7 +644,7 @@
             $('#companySearchInput').on('input', function () {
                 const searchTerm = $(this).val().trim();
 
-                if (searchTerm.length >= 2) {
+                if (searchTerm.length >= 1) {
                     searchCompanyNames(searchTerm);
                 } else {
                     $('#companySearchBox').empty();
@@ -756,7 +660,7 @@
             });
             function filterOperationsByCompanyName(companyName) {
                 $.ajax({
-                    url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-cancelled-user-operations`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -799,35 +703,12 @@
                                                                                                         <td>${actualDate}</td>
                                                                                                         <td>${operation.reason || ''}</td>
                                                                                                         <td>${operation.status || ''}</td>
-                                                                                                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                                                               <td class="description-cell" style="white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
                                                                                                             ${operation.description || ''}
                                                                                                         </td>
-                                                                                                                <td>
-                                                                                                <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
-                                                                                                    data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
-                                                                                            </td>
+                                                                                                                
                                                                                                     </tr>
                                                                                                 `);
-                });
-                $('.edit-btn').off('click').on('click', function () {
-                    const operationId = $(this).data('operation-id');
-                    const operationStatus = $(this).closest('tr').find('td:nth-child(11)').text().trim();
-
-                    if (operationStatus === "Gerçekleşti" || operationStatus === "İptal Edildi") {
-                        alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "İptal Edildi".');
-                        return;
-                    }
-                    $('#editOperationModal').data('operation-id', operationId);
-                    $('#editOperationModal').modal('show');
-                    $('#cancelReasonDiv').hide();
-                    $('#updatedStatusDescriptionDiv').hide();
-                    $('#actualDateDiv').hide();
-                    $('#meetingStatusDiv').hide();
-                    $('#status').val('');
-                    $('#cancelReason').val('');
-                    $('#actualDate').val('');
-                    $('#meetingStatus').val('');
-                    $('#updatedStatusDescription').val('');
                 });
                 $('#resetFilters').click(function () {
                     $('#methodFilter').val('');

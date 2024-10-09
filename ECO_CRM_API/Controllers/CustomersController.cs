@@ -70,6 +70,12 @@ namespace ECO_CRM_API.Controllers
 
             return Ok("Customer added successfully");
         }
+        [HttpGet("search-companies-add-operations")]
+        public async Task<IActionResult> SearchCompaniesAddOperations([FromQuery] string searchTerm, int pageNumber = 1, int pageSize = 10)
+        {
+            var customerDtos = await _customerService.SearchCompaniesByNameAddOperations(searchTerm, pageNumber, pageSize);
+            return Ok(customerDtos);
+        }
         [HttpGet("search-companies")]
         public async Task<IActionResult> SearchCompanies([FromQuery] string searchTerm, int pageNumber = 1, int pageSize = 10)
         {

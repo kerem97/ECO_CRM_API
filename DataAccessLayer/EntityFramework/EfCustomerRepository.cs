@@ -81,7 +81,22 @@ namespace DataAccessLayer.EntityFramework
        .Include(c => c.User)
        .FirstOrDefaultAsync(c => c.Id == id);
         }
-        public async Task<List<SearchCustomerDto>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
+        public async Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return new List<string>();
+
+            searchTerm = searchTerm.Trim().ToLower();
+
+            return await _context.Customers
+                .Where(c => c.CompanyName.ToLower().Contains(searchTerm))
+                .OrderBy(c => c.CompanyName)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => c.CompanyName)
+                .ToListAsync();
+        }
+        public async Task<List<SearchCustomerDto>> SearchCompaniesByNameAddOperations(string searchTerm, int pageNumber, int pageSize)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return new List<SearchCustomerDto>();

@@ -813,7 +813,7 @@
             });
             function filterOperationsByCompanyName(companyName) {
                 $.ajax({
-                    url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-planned-user-operations`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
