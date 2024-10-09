@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Repository;
+using DtoLayer.Customer.Responses;
 using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -80,10 +81,10 @@ namespace DataAccessLayer.EntityFramework
        .Include(c => c.User)
        .FirstOrDefaultAsync(c => c.Id == id);
         }
-        public async Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
+        public async Task<List<SearchCustomerDto>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
-                return new List<string>();
+                return new List<SearchCustomerDto>();
 
             searchTerm = searchTerm.Trim().ToLower();
 
@@ -92,9 +93,14 @@ namespace DataAccessLayer.EntityFramework
                 .OrderBy(c => c.CompanyName)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(c => c.CompanyName)
+                .Select(c => new SearchCustomerDto
+                {
+                    Id = c.Id,
+                    CompanyName = c.CompanyName
+                })
                 .ToListAsync();
         }
+
         public async Task Update(Customer entity)
         {
             _context.Set<Customer>().Update(entity);

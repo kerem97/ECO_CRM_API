@@ -17,5 +17,6 @@ namespace DtoLayer.CustomerOperation.Requests
         public string ContactPerson { get; set; }
         public string Reason { get; set; }
         public string Address { get; set; }
+        public bool? IsMeetingOnPlannedDate { get; set; }
     }
 }

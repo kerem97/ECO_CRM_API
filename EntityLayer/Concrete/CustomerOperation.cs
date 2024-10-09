@@ -24,6 +24,7 @@ namespace EntityLayer.Concrete
         public string? CancelReason { get; set; }
         public bool? IsMeetingOnPlannedDate { get; set; }
         public string? UpdatedStatusDescription { get; set; }
+        public string? OfferStatus { get; set; }
         public User User { get; set; }
         public Customer Customer { get; set; }
     }

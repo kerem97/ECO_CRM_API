@@ -29,12 +29,13 @@
                     </div>
                     <div class="card-body pt-0">
                         <form asp-action="AddOperation" method="post" id="operationForm">
+                            <div class="col-md-4">
+                                <label asp-for="OperationRequest.CustomerId" class="mb-2">Firma Seç</label>
+                                <input type="text" id="firmSelector" class="form-control" placeholder="Firma adını yazın" style="width: 100%;">
+                                <ul id="firmDropdown" class="dropdown-menu" style="display: none; width: 100%;"></ul>
 
-                            <div class="mb-3 col-md-3">
-                                <label for="firmSelector" class="form-label">Firma</label>
-                                <input type="text" id="firmSelector" class="form-control" placeholder="Firma Seçin">
-                                <ul id="firmDropdown" class="dropdown-menu" style="display: none; width: 25%; max-height: 200px; overflow-y: auto;"></ul>
-                                <input type="hidden" id="selectedCustomerId" asp-for="OperationRequest.CustomerId">
+                                <input type="hidden" asp-for="OperationRequest.CustomerId" id="selectedCustomerId">
+                                <span asp-validation-for="OperationRequest.CustomerId" class="text-danger"></span>
                             </div>
                             <div class="mb-3 col-md-3">
                                 <label asp-for="OperationRequest.Method" class="form-label">Yöntem</label>
@@ -105,82 +106,49 @@
 </html>
 <script>
     $(document).ready(function () {
-        var firmDropdown = $('#firmDropdown');
-        $.ajax({
-            url: 'https://localhost:44309/api/Customers',
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + sessionStorage.getItem('Token')
-            },
-            success: function (data) {
-                var firmSelector = $('#firmSelector');
-                firmDropdown.empty();
-                data.forEach(function (customer) {
-                    firmDropdown.append(`<li class="dropdown-item" data-id="${customer.id}">${customer.companyName}</li>`);
-                });
-                firmSelector.on('input', function () {
-                    var searchTerm = firmSelector.val().toLowerCase();
-                    firmDropdown.show();
-                    firmDropdown.children('li').each(function () {
-                        var firmName = $(this).text().toLowerCase();
-                        $(this).toggle(firmName.includes(searchTerm));
-                    });
-                });
+        const token = '@ViewBag.Token'; 
 
-                firmDropdown.on('click', '.dropdown-item', function () {
-                    var selectedFirmName = $(this).text();
-                    var selectedFirmId = $(this).data('id');
-                    firmSelector.val(selectedFirmName);
-                    $('#selectedCustomerId').val(selectedFirmId);
-                    firmDropdown.hide();
-                });
-                firmSelector.on('focus', function () {
-                    firmDropdown.show();
-                });
-                $(document).on('click', function (event) {
-                    if (!$(event.target).closest('#firmSelector, #firmDropdown').length) {
-                        firmDropdown.hide();
+        $('#firmSelector').on('input', function () {
+            const searchTerm = $(this).val().trim(); 
+
+            if (searchTerm.length >= 1) {  
+                $.ajax({
+                    url: `https://localhost:44309/api/Customers/search-companies?searchTerm=${searchTerm}`,
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token, 
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (data) {
+                        $('#firmDropdown').empty().show(); 
+
+                        data.forEach(function (company) {
+                            $('#firmDropdown').append(`<li class="dropdown-item" data-id="${company.id}">${company.companyName}</li>`);
+                        });
+
+                        $('.dropdown-item').off('click').on('click', function () {
+                            const selectedFirmName = $(this).text();
+                            const selectedFirmId = $(this).data('id');
+
+                            $('#firmSelector').val(selectedFirmName);
+                            $('#selectedCustomerId').val(selectedFirmId);
+                            $('#firmDropdown').hide(); 
+                        });
+                    },
+                    error: function () {
+                        alert('Firmalar alınırken hata oluştu.');
                     }
                 });
-            },
-            error: function () {
-                alert('Firmalar alınırken hata oluştu.');
+            } else {
+                $('#firmDropdown').hide(); 
+            }
+        });
+
+        $(document).on('click', function (event) {
+            if (!$(event.target).closest('#firmSelector, #firmDropdown').length) {
+                $('#firmDropdown').hide();
             }
         });
     });
-    function toggleMode() {
-        const body = document.body;
-        if (body.classList.contains('dark-mode')) {
-            body.classList.remove('dark-mode');
-            body.classList.add('light-mode');
-        } else {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-        }
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-        const mode = sessionStorage.getItem('mode') || 'dark-mode';
-        document.body.classList.add(mode);
-        const toggleModeBtn = document.getElementById('toggleModeBtn');
-        if (toggleModeBtn) {
-            toggleModeBtn.addEventListener('click', function () {
-                if (document.body.classList.contains('dark-mode')) {
-                    document.body.classList.replace('dark-mode', 'light-mode');
-                    sessionStorage.setItem('mode', 'light-mode');
-                } else {
-                    document.body.classList.replace('light-mode', 'dark-mode');
-                    sessionStorage.setItem('mode', 'dark-mode');
-                }
-            });
-        }
-    });
-    $('#operationForm').on('submit', function (e) {
-        e.preventDefault();
-        const customerId = $('#selectedCustomerId').val();
-        if (!customerId) {
-            alert('Lütfen bir firma seçin.');
-            return;
-        }
-        this.submit();
-    });
 </script>
+

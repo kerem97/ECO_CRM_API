@@ -23,5 +23,6 @@ namespace DtoLayer.CustomerOperation.Responses
         public string Status { get; set; }
         public string UpdatedStatusDescription { get; set; }
         public string CancelReason { get; set; }
+        public string? OfferStatus { get; set; }
     }
 }

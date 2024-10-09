@@ -65,7 +65,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             await _customerOperationRepository.Update(operation);
         }
-        public async Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription)
+        public async Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription, string offerStatus)
         {
             var operation = await _customerOperationRepository.GetById(operationId);
             if (operation == null)
@@ -78,13 +78,16 @@ namespace BusinessLayer.Services.CustomerOperationServices
             if (isMeetingOnPlannedDate == true)
             {
                 operation.ActualDate = operation.PlannedDate;
+                operation.IsMeetingOnPlannedDate = true;
             }
             else if (isMeetingOnPlannedDate == false && actualDate != null)
             {
                 operation.ActualDate = actualDate;
+                operation.IsMeetingOnPlannedDate = false;
             }
 
             operation.UpdatedStatusDescription = updatedStatusDescription;
+            operation.OfferStatus = offerStatus;
 
             await _customerOperationRepository.Update(operation);
         }

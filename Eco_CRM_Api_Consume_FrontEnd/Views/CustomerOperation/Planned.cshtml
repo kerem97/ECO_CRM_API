@@ -7,6 +7,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-startbar="light" data-bs-theme="light">
 <link href="~/HTML/dist/assets/libs/simple-datatables/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
         crossorigin="anonymous"></script>
@@ -342,7 +344,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Operasyon Düzenle</h5>
+                    <h5 class="modal-title">Operasyonu Bitir</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -363,6 +365,16 @@
                             <option value="yes">Evet</option>
                             <option value="no">Hayır</option>
                         </select>
+                    </div>
+                    <input type="hidden" id="isMeetingOnPlannedDate" name="OperationRequest.IsMeetingOnPlannedDate">
+                    <div class="mb-3" id="offerStatusDiv" style="display: none;">
+                        <label class="form-label">Teklif Verilecek mi?</label>
+                        <div>
+                            <input type="radio" id="offerYes" name="offerStatus" value="Teklif Verilecek">
+                            <label for="offerYes">Evet</label>
+                            <input type="radio" id="offerNo" name="offerStatus" value="Hayır" checked>
+                            <label for="offerNo">Hayır</label>
+                        </div>
                     </div>
                     <div class="mb-3" id="cancelReasonDiv" style="display: none;">
                         <label for="cancelReason" class="form-label">İptal Sebebi</label>
@@ -442,7 +454,6 @@
                 }
             });
         }
-
         $('#applyFilters').click(function () {
             const filterRequest = {
                 companyName: $('#companySearchInput').val() || null,
@@ -487,7 +498,6 @@
                 }
             });
         }
-
         function updateTable(data) {
             let tbody = $('table tbody');
             tbody.empty();
@@ -504,27 +514,27 @@
                     : '';
                 const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
                 tbody.append(`
-                                                                            <tr>
-                                                                                <td>${operationDate}</td>
-                                                                                <td>${operation.createdByUser || ''}</td>
-                                                                                <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                                                                                <td>${operation.customerName || ''}</td>
-                                                                                <td>${operation.address || ''}</td>
-                                                                                <td>${operation.method || ''}</td>
-                                                                                <td>${operation.contactPerson || ''}</td>
-                                                                                <td>${plannedDate}</td>
-                                                                                <td>${actualDate}</td>
-                                                                                <td>${operation.reason || ''}</td>
-                                                                                <td>${operation.status || ''}</td>
-                                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                                                                    ${operation.description || ''}
-                                                                                </td>
-                                                                                        <td>
-                                                                        <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
-                                                                            data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
-                                                                    </td>
-                                                                            </tr>
-                                                                        `);
+                                                                                    <tr>
+                                                                                        <td>${operationDate}</td>
+                                                                                        <td>${operation.createdByUser || ''}</td>
+                                                                                        <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                                        <td>${operation.customerName || ''}</td>
+                                                                                        <td>${operation.address || ''}</td>
+                                                                                        <td>${operation.method || ''}</td>
+                                                                                        <td>${operation.contactPerson || ''}</td>
+                                                                                        <td>${plannedDate}</td>
+                                                                                        <td>${actualDate}</td>
+                                                                                        <td>${operation.reason || ''}</td>
+                                                                                        <td>${operation.status || ''}</td>
+                                                                                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                                            ${operation.description || ''}
+                                                                                        </td>
+                                                                                                <td>
+                                                                                <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
+                                                                                    data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Bitir</button>
+                                                                            </td>
+                                                                                    </tr>
+                                                                                `);
             });
 
             $('.edit-btn').off('click').on('click', function () {
@@ -535,6 +545,7 @@
                     alert('Bu işlem güncellenemez. Durumu "Gerçekleşti" veya "İptal Edildi".');
                     return;
                 }
+                $('#offerStatusDiv').hide();
                 $('#editOperationModal').data('operation-id', operationId);
                 $('#editOperationModal').modal('show');
                 $('#cancelReasonDiv').hide();
@@ -626,7 +637,7 @@
             const updatedStatusDescription = $('#updatedStatusDescription').val();
             let actualDate = $('#actualDate').val();
             const meetingStatus = $('#meetingStatus').val();
-
+            const offerStatus = $('input[name="offerStatus"]:checked').val();
             let requestData;
             let endpointUrl;
 
@@ -634,6 +645,7 @@
                 alert('Lütfen iptal sebebini giriniz.');
                 return;
             }
+
             if (status === "Gerçekleşti") {
                 const meetingStatus = $('#meetingStatus').val();
 
@@ -643,28 +655,68 @@
                     alert('Lütfen gerçekleşen tarih bilgisini giriniz.');
                     return;
                 }
-                const updatedStatusDescription = $('#updatedStatusDescription').val();
+
                 if (!updatedStatusDescription) {
                     alert('Lütfen güncellenmiş durum açıklamasını giriniz.');
                     return;
                 }
-                requestData = JSON.stringify({
-                    operationId: operationId,
-                    actualDate: actualDate,
-                    status: status,
-                    updatedStatusDescription: updatedStatusDescription,
-                    isMeetingOnPlannedDate: meetingStatus === 'yes'
-                });
-                endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
-            }
-            else if (status === "İptal") {
+
+                if (offerStatus === 'Teklif Verilecek') {
+                    Swal.fire({
+                        title: 'Teklif verilecek olarak işaretlediniz',
+                        text: "Bu işlemi onaylıyor musunuz?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Evet, onaylıyorum',
+                        cancelButtonText: 'Hayır, iptal et',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Teklif Verilecek');
+                        }
+                    });
+                } else if (offerStatus === 'Hayır') {
+                    saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, 'Hayır');
+                }
+            } else if (status === "İptal") {
                 requestData = JSON.stringify({
                     operationId: operationId,
                     cancelReason: cancelReason,
                     status: status
                 });
                 endpointUrl = "https://localhost:44309/api/CustomerOperations/cancel-operation";
+
+                $.ajax({
+                    url: endpointUrl,
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    data: requestData,
+                    success: function () {
+                        $('#editOperationModal').modal('hide');
+                        fetchData(currentPage);
+                    },
+                    error: function () {
+                        $('#editOperationModal').modal('hide');
+                        fetchData(currentPage);
+                    }
+                });
             }
+        });
+
+        function saveOperation(operationId, actualDate, status, updatedStatusDescription, meetingStatus, offerStatus) {
+            const requestData = JSON.stringify({
+                operationId: operationId,
+                actualDate: actualDate,
+                status: status,
+                updatedStatusDescription: updatedStatusDescription,
+                isMeetingOnPlannedDate: meetingStatus === 'yes',
+                offerStatus: offerStatus
+            });
+            console.log(requestData);
+            const endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
 
             $.ajax({
                 url: endpointUrl,
@@ -683,7 +735,8 @@
                     fetchData(currentPage);
                 }
             });
-        });
+        }
+
         $('#status').change(function () {
             const status = $(this).val();
             if (status === 'İptal') {
@@ -691,13 +744,15 @@
                 $('#actualDateDiv').hide();
                 $('#meetingStatusDiv').hide();
                 $('#updatedStatusDescriptionDiv').hide();
+                $('#offerStatusDiv').hide();
             } else if (status === 'Gerçekleşti') {
                 $('#cancelReasonDiv').hide();
                 $('#actualDateDiv').hide();
                 $('#meetingStatusDiv').show();
                 $('#updatedStatusDescriptionDiv').show();
+                $('#offerStatusDiv').show();
             } else {
-                $('#cancelReasonDiv, #actualDateDiv, #meetingStatusDiv, #updatedStatusDescriptionDiv').hide();
+                $('#cancelReasonDiv, #actualDateDiv, #meetingStatusDiv, #updatedStatusDescriptionDiv, #offerStatusDiv').hide();
             }
         });
         $('#meetingStatus').change(function () {
@@ -706,9 +761,11 @@
                 const plannedDate = $('#plannedDate').val();
                 $('#actualDate').val(plannedDate);
                 $('#actualDateDiv').hide();
+                $('#isMeetingOnPlannedDate').val(true);
             } else if (meetingStatus === 'no') {
                 $('#actualDateDiv').show();
                 $('#actualDate').val('');
+                $('#isMeetingOnPlannedDate').val(false);
             }
         });
         $('#editOperationModal .close, #editOperationModal .btn-secondary').click(function () {
@@ -787,27 +844,27 @@
                         : '';
                     const disableButton = (operation.status === "Gerçekleşti" || operation.status === "İptal Edildi");
                     tbody.append(`
-                                                                                    <tr>
-                                                                                        <td>${operationDate}</td>
-                                                                                        <td>${operation.createdByUser || ''}</td>
-                                                                                        <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
-                                                                                        <td>${operation.customerName || ''}</td>
-                                                                                        <td>${operation.address || ''}</td>
-                                                                                        <td>${operation.method || ''}</td>
-                                                                                        <td>${operation.contactPerson || ''}</td>
-                                                                                        <td>${plannedDate}</td>
-                                                                                        <td>${actualDate}</td>
-                                                                                        <td>${operation.reason || ''}</td>
-                                                                                        <td>${operation.status || ''}</td>
-                                                                                        <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
-                                                                                            ${operation.description || ''}
-                                                                                        </td>
-                                                                                                <td>
-                                                                                <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
-                                                                                    data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
-                                                                            </td>
-                                                                                    </tr>
-                                                                                `);
+                                                                                            <tr>
+                                                                                                <td>${operationDate}</td>
+                                                                                                <td>${operation.createdByUser || ''}</td>
+                                                                                                <td>${operation.isNew ? 'Evet' : 'Hayır'}</td>
+                                                                                                <td>${operation.customerName || ''}</td>
+                                                                                                <td>${operation.address || ''}</td>
+                                                                                                <td>${operation.method || ''}</td>
+                                                                                                <td>${operation.contactPerson || ''}</td>
+                                                                                                <td>${plannedDate}</td>
+                                                                                                <td>${actualDate}</td>
+                                                                                                <td>${operation.reason || ''}</td>
+                                                                                                <td>${operation.status || ''}</td>
+                                                                                                <td class="description-cell" style="white-space: normal; word-wrap: break-word;">
+                                                                                                    ${operation.description || ''}
+                                                                                                </td>
+                                                                                                        <td>
+                                                                                        <button class="btn btn-sm edit-btn" style="background-color: ${disableButton ? '#999' : '#555'}; color: #fff; border: none; padding: 5px 10px; border-radius: 5px;"
+                                                                                            data-operation-id="${operation.id}" ${disableButton ? 'disabled' : ''}>Düzenle</button>
+                                                                                    </td>
+                                                                                            </tr>
+                                                                                        `);
                 });
                 $('.edit-btn').off('click').on('click', function () {
                     const operationId = $(this).data('operation-id');
