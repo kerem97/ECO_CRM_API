@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.EntityFramework
 {
-    public class EfCustomerRepository : IRepository<Customer>, ICustomerRepository
+    public class EfCustomerRepository :  ICustomerRepository
     {
         private readonly ApplicationDbContext _context;
 

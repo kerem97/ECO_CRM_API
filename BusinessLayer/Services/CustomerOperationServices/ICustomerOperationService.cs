@@ -23,6 +23,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task DeleteCustomerOperationsAsync(int id);
         Task<List<DisplayCustomerOperationResponse>> GetPagedCustomerOperationsAsync(int pageNumber, int pageSize);
         Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsPagedAsync(int pageNumber, int pageSize);
+        Task<List<DisplayCustomerOperationsStatusGivenOffersResponse>> GetPagedCustomerOperationsStatusGivenOffers(int pageNumber, int pageSize);
         Task CancelOperationAsync(int operationId, string cancelReason);
         Task CompleteOperationAsync(int operationId, DateTime actualDate, bool? isMeetingOnPlannedDate, string updatedStatusDescription, string offerStatus, string meetingFeedback);
         Task<List<DisplayCustomerOperationResponse>> GetFilteredOperationsAsync(FilterCustomerOperationRequest filterRequest, int pageNumber, int pageSize);
@@ -38,6 +39,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task<List<DisplayUserFaceToFaceInteractionCountResponse>> GetUserFaceToFaceInteractions(int userId);
         Task<DisplayOperationStatsResponse> GetTotalOperationStatsAsync();
         Task<DisplayUserOperationStatsResponse> GetUserOperationStatsAsync(int userId);
+
 
 
     }

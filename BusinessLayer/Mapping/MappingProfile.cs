@@ -3,6 +3,8 @@ using DtoLayer.Customer.Requests;
 using DtoLayer.Customer.Responses;
 using DtoLayer.CustomerOperation.Requests;
 using DtoLayer.CustomerOperation.Responses;
+using DtoLayer.TaskAssignment.Requests;
+using DtoLayer.TaskAssignment.Responses;
 using DtoLayer.User.Requests;
 using DtoLayer.User.Responses;
 using EntityLayer.Concrete;
@@ -28,6 +30,17 @@ namespace BusinessLayer.Mapping
             CreateMap<CustomerOperation, FilterCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, CompleteOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, CancelOperationRequest>().ReverseMap();
+
+
+            CreateMap<TaskAssignment, AddTaskAssignmentRequest>().ReverseMap();
+            CreateMap<TaskAssignment, UpdateTaskAssignmentRequest>().ReverseMap();
+            CreateMap<TaskAssignment, DisplayTaskAssignmentResponse>().ReverseMap();
+            CreateMap<TaskAssignment, GetByIdTaskAssignmentResponse>().ReverseMap();
+
+            CreateMap<CustomerOperation, DisplayCustomerOperationsStatusGivenOffersResponse>()
+                .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown"))
+             .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer != null ? src.Customer.CompanyName : "Unknown")).ReverseMap();
+
             CreateMap<CustomerOperation, UpdateCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, DisplayCustomerOperationResponse>()
              .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown"))
@@ -56,8 +69,8 @@ namespace BusinessLayer.Mapping
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
             CreateMap<CustomerOperation, DisplayUserEmailInteractionCountResponse>()
-           .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName)) 
-           .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id)) 
+           .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Customer.CompanyName))
+           .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.Customer.Id))
            .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
             CreateMap<CustomerOperation, DisplayUserPhoneInteractionCountResponse>()

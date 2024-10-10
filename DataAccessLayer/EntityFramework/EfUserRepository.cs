@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.EntityFramework
 {
-    public class EfUserRepository : IRepository<User>, IUserRepository
+    public class EfUserRepository :  IUserRepository
     {
         private readonly ApplicationDbContext _context;
 

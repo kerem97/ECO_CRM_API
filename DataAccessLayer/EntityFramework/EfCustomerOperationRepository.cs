@@ -12,7 +12,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DataAccessLayer.EntityFramework
 {
-    public class EfCustomerOperationRepository : IRepository<CustomerOperation>, ICustomerOperationRepository
+    public class EfCustomerOperationRepository :  ICustomerOperationRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -383,6 +383,18 @@ namespace DataAccessLayer.EntityFramework
                 query = query.Where(co => co.Reason == reason);
 
             return await query
+                .OrderByDescending(co => co.OperationDate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<List<CustomerOperation>> GetPagedCustomerOperationsStatusGivenOffers(int pageNumber, int pageSize)
+        {
+            return await _context.CustomerOperations
+                .Include(co => co.User)
+                .Include(co => co.Customer)
+                .Where(co => co.OfferStatus == "Teklif Verilecek")
                 .OrderByDescending(co => co.OperationDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)

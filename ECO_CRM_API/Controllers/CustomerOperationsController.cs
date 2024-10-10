@@ -144,6 +144,19 @@ public class CustomerOperationsController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+    [HttpGet("status-given-offers")]
+    public async Task<IActionResult> GetPagedCustomerOperationsStatusGivenOffers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        try
+        {
+            var result = await _customerOperationService.GetPagedCustomerOperationsStatusGivenOffers(pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Sunucu hatası: {ex.Message}");
+        }
+    }
     [HttpPost("filtered-operations")]
     public async Task<IActionResult> GetFilteredOperations([FromBody] FilterCustomerOperationRequest filterRequest, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {

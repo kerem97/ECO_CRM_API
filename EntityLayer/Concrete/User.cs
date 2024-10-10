@@ -13,5 +13,6 @@ namespace EntityLayer.Concrete
         public string FullName { get; set; }
         public string Password { get; set; }
         public ICollection<CustomerOperation> CustomerOperations { get; set; }
+        public ICollection<TaskAssignment> TaskAssignments { get; set; }
     }
 }

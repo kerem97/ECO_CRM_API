@@ -27,5 +27,6 @@ namespace EntityLayer.Concrete
         public string Group { get; set; }
         public ICollection<CustomerOperation> CustomerOperations { get; set; }
         public User User { get; set; }
+
     }
 }

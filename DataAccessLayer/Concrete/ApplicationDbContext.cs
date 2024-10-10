@@ -18,6 +18,7 @@ namespace DataAccessLayer.Concrete
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerOperation> CustomerOperations { get; set; }
+        public DbSet<TaskAssignment> TaskAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,8 +32,19 @@ namespace DataAccessLayer.Concrete
                 .HasOne(co => co.Customer)
                 .WithMany(c => c.CustomerOperations)
                 .HasForeignKey(co => co.CustomerId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<CustomerOperation>()
+       .HasOne(co => co.TaskAssignment)
+       .WithOne(ta => ta.CustomerOperation)
+       .HasForeignKey<TaskAssignment>(ta => ta.OperationId)
+       .OnDelete(DeleteBehavior.Cascade);  
+
+            modelBuilder.Entity<TaskAssignment>()
+                .HasOne(ta => ta.CustomerOperation)
+                .WithOne(co => co.TaskAssignment)
+                .HasForeignKey<TaskAssignment>(ta => ta.OperationId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

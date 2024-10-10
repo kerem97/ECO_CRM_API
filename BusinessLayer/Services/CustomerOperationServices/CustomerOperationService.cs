@@ -91,6 +91,8 @@ namespace BusinessLayer.Services.CustomerOperationServices
             operation.MeetingFeedback = meetingFeedback;
 
             await _customerOperationRepository.Update(operation);
+
+
         }
         public async Task DeleteCustomerOperationsAsync(int id)
         {
@@ -361,6 +363,15 @@ namespace BusinessLayer.Services.CustomerOperationServices
             );
 
             return _mapper.Map<List<DisplayCustomerOperationResponse>>(filteredOperations);
+        }
+
+        public async Task<List<DisplayCustomerOperationsStatusGivenOffersResponse>> GetPagedCustomerOperationsStatusGivenOffers(int pageNumber, int pageSize)
+        {
+            var customerOperations = await _customerOperationRepository.GetPagedCustomerOperationsStatusGivenOffers(pageNumber, pageSize);
+
+            var result = _mapper.Map<List<DisplayCustomerOperationsStatusGivenOffersResponse>>(customerOperations);
+
+            return result;
         }
     }
 }

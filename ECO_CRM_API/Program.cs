@@ -10,6 +10,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BusinessLayer.Services.TaskAssignmentServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ builder.Services.AddScoped<ICustomerOperationRepository, EfCustomerOperationRepo
 builder.Services.AddScoped<ICustomerOperationService, CustomerOperationService>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITaskAssignmentRepository, EfTaskAssignmentRepository>();
+builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 var jwtSettings = builder.Configuration.GetSection("JWT");

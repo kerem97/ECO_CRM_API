@@ -28,5 +28,6 @@ namespace EntityLayer.Concrete
         public string MeetingFeedback { get; set; }
         public User User { get; set; }
         public Customer Customer { get; set; }
+        public TaskAssignment TaskAssignment { get; set; }
     }
 }
