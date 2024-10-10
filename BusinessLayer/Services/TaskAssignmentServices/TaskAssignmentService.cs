@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.EntityFramework;
 using DtoLayer.TaskAssignment.Requests;
 using DtoLayer.TaskAssignment.Responses;
 using EntityLayer.Concrete;
@@ -13,20 +14,49 @@ namespace BusinessLayer.Services.TaskAssignmentServices
     public class TaskAssignmentService : ITaskAssignmentService
     {
         private readonly ITaskAssignmentRepository _repository;
+        private readonly ICustomerOperationRepository _customerOperationRepository;
         private readonly IMapper _mapper;
 
-        public TaskAssignmentService(ITaskAssignmentRepository repository, IMapper mapper)
+        public TaskAssignmentService(ITaskAssignmentRepository repository, IMapper mapper, ICustomerOperationRepository customerOperationRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _customerOperationRepository = customerOperationRepository;
         }
 
-        public async Task AddTaskAssignmentAsync(AddTaskAssignmentRequest addTaskAssignmentRequest)
+        public async Task AddTaskAssignmentAsync( AddTaskAssignmentRequest request)
         {
-            var taskAssignment = _mapper.Map<TaskAssignment>(addTaskAssignmentRequest);
-            taskAssignment.CreatedDate = DateTime.Now;
+            var operation = await _customerOperationRepository.GetById(request.OperationId);
+            if (operation == null)
+            {
+                throw new Exception("Operation not found");
+            }
+            operation.OfferStatus = "Fiyat Talep Edildi";
+            await _customerOperationRepository.Update(operation);
+            var taskAssignment = new TaskAssignment
+            {
+                OperationId = request.OperationId,
+                CustomerId = operation.CustomerId,
+                UserId = operation.UserId,
+                AbasId = request.AbasId,
+                Description = request.Description,
+                Status = "Fiyat Bekleniyor",
+                Quantity1 = request.Quantity1,
+                Quantity2 = request.Quantity2,
+                Quantity3 = request.Quantity3,
+                Quantity4 = request.Quantity4,
+                Quantity5 = request.Quantity5,
+                Quantity6 = request.Quantity6,
+                Quantity7 = request.Quantity7,
+                Quantity8 = request.Quantity8,
+                Quantity9 = request.Quantity9,
+                Quantity10 = request.Quantity10,
+                CreatedDate = DateTime.Now 
+            };
+
             await _repository.Add(taskAssignment);
         }
+
 
         public async Task DeleteTaskAssignmentAsync(int id)
         {
@@ -61,9 +91,9 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             return taskAssignmentResponse;
         }
 
-        public async Task UpdateTaskAssignmentAsync(int id,UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
+        public async Task UpdateTaskAssignmentAsync(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
         {
-            var existingTaskAssignment = await _repository.GetById(id); 
+            var existingTaskAssignment = await _repository.GetById(id);
             if (existingTaskAssignment == null)
             {
                 throw new Exception("Güncellenecek görev bulunamadı.");

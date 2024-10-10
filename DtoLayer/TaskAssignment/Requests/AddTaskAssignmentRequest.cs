@@ -9,11 +9,8 @@ namespace DtoLayer.TaskAssignment.Requests
     public class AddTaskAssignmentRequest
     {
         public int OperationId { get; set; }
-        public int CustomerId { get; set; }
-        public int UserId { get; set; }
         public int AbasId { get; set; }
         public string Description { get; set; }
-        public string Status { get; set; }
         public int Quantity1 { get; set; }
         public int? Quantity2 { get; set; }
         public int? Quantity3 { get; set; }

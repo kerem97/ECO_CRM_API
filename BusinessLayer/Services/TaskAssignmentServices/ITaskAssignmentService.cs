@@ -13,7 +13,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
         Task<List<DisplayTaskAssignmentResponse>> GetAllTaskAssignmentAsync();
         Task<GetByIdTaskAssignmentResponse> GetUserByIdAsync(int id);
         Task AddTaskAssignmentAsync(AddTaskAssignmentRequest addTaskAssignmentRequest);
-        Task UpdateTaskAssignmentAsync(int id,UpdateTaskAssignmentRequest updateTaskAssignmentRequest);
+        Task UpdateTaskAssignmentAsync(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest);
         Task DeleteTaskAssignmentAsync(int id);
     }
 }
