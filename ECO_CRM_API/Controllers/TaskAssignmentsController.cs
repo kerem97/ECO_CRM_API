@@ -45,12 +45,28 @@ namespace ECO_CRM_API.Controllers
         [HttpGet("taskassignment/{id}")]
         public async Task<IActionResult> GetTaskAssignmentById(int id)
         {
-            var result = await _taskAssignmentService.GetUserByIdAsync(id);
+            var result = await _taskAssignmentService.GetTaskAssignmentByIdAsync(id);
             if (result == null)
                 return NotFound("Görev bulunamadı.");
 
             return Ok(result);
         }
+        [HttpGet("pending-tasks")]
+        public async Task<IActionResult> GetPendingTasks(int pageNumber = 1, int pageSize = 10)
+        {
+            var tasks = await _taskAssignmentService.TGetPendingTasksAsync(pageNumber, pageSize);
+            return Ok(tasks);
+        }
+        [HttpPost("task/update-status-to-givenoffer")]
+        public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateTaskAssignmentStatusToOfferGivenRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _taskAssignmentService.UpdateTaskStatusAsync(request);
+            return Ok("Görev durumu başarıyla güncellendi.");
+        }
+
 
 
 

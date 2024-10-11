@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DtoLayer.TaskAssignment.Responses
 {
-    public class GetByIdTaskAssignmentResponse
+    public class GetPendingTaskAssignmentResponse
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }

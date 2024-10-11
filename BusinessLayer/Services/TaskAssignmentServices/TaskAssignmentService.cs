@@ -24,7 +24,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             _customerOperationRepository = customerOperationRepository;
         }
 
-        public async Task AddTaskAssignmentAsync( AddTaskAssignmentRequest request)
+        public async Task AddTaskAssignmentAsync(AddTaskAssignmentRequest request)
         {
             var operation = await _customerOperationRepository.GetById(request.OperationId);
             if (operation == null)
@@ -51,13 +51,23 @@ namespace BusinessLayer.Services.TaskAssignmentServices
                 Quantity8 = request.Quantity8,
                 Quantity9 = request.Quantity9,
                 Quantity10 = request.Quantity10,
-                CreatedDate = DateTime.Now 
+                CreatedDate = DateTime.Now
             };
 
             await _repository.Add(taskAssignment);
         }
 
+        public async Task UpdateTaskStatusAsync(UpdateTaskAssignmentStatusToOfferGivenRequest request)
+        {
+            var task = await _repository.GetById(request.Id);
+            if (task == null)
+            {
+                throw new Exception("Görev bulunamadı.");
+            }
 
+            task.Status = "Teklif Verildi";
+            await _repository.Update(task);
+        }
         public async Task DeleteTaskAssignmentAsync(int id)
         {
             var taskAssignment = await _repository.GetById(id);
@@ -78,7 +88,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             return taskAssignmentResponses;
         }
 
-        public async Task<GetByIdTaskAssignmentResponse> GetUserByIdAsync(int id)
+        public async Task<GetByIdTaskAssignmentResponse> GetTaskAssignmentByIdAsync(int id)
         {
             var taskAssignment = await _repository.GetById(id);
             if (taskAssignment == null)
@@ -89,6 +99,15 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             var taskAssignmentResponse = _mapper.Map<GetByIdTaskAssignmentResponse>(taskAssignment);
 
             return taskAssignmentResponse;
+        }
+
+        public async Task<List<GetPendingTaskAssignmentResponse>> TGetPendingTasksAsync(int pageNumber, int pageSize)
+        {
+            var pendingTasks = await _repository.GetPendingTasksAsync(pageNumber, pageSize);
+
+            var result = _mapper.Map<List<GetPendingTaskAssignmentResponse>>(pendingTasks);
+
+            return result;
         }
 
         public async Task UpdateTaskAssignmentAsync(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
