@@ -16,7 +16,8 @@ namespace BusinessLayer.Services.TaskAssignmentServices
         Task AddTaskAssignmentAsync(AddTaskAssignmentRequest addTaskAssignmentRequest);
         Task UpdateTaskAssignmentAsync(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest);
         Task DeleteTaskAssignmentAsync(int id);
-        Task UpdateTaskStatusAsync(UpdateTaskAssignmentStatusToOfferGivenRequest request);
+        Task UpdateTaskStatusToOfferGivenAsync(UpdateTaskAssignmentStatusToOfferGivenRequest request);
+        Task UpdateTaskStatusToProposalGivenAsync(UpdateTaskStatusToProposalGivenRequest request);
         Task<List<GetPendingTaskAssignmentResponse>> TGetPendingTasksAsync(int pageNumber, int pageSize);
     }
 }

@@ -57,7 +57,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             await _repository.Add(taskAssignment);
         }
 
-        public async Task UpdateTaskStatusAsync(UpdateTaskAssignmentStatusToOfferGivenRequest request)
+        public async Task UpdateTaskStatusToOfferGivenAsync(UpdateTaskAssignmentStatusToOfferGivenRequest request)
         {
             var task = await _repository.GetById(request.Id);
             if (task == null)
@@ -121,6 +121,18 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             _mapper.Map(updateTaskAssignmentRequest, existingTaskAssignment);
 
             await _repository.Update(existingTaskAssignment);
+        }
+
+        public async Task UpdateTaskStatusToProposalGivenAsync(UpdateTaskStatusToProposalGivenRequest request)
+        {
+            var task = await _repository.GetById(request.Id);
+            if (task == null)
+            {
+                throw new Exception("Görev bulunamadı.");
+            }
+
+            task.Status = "Teklif Verildi";
+            await _repository.Update(task);
         }
     }
 }

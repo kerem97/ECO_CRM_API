@@ -38,6 +38,7 @@
     <Folder Include="wwwroot\HTML\dist\assets\libs\simple-datatables\dts\editing\" />
     <Folder Include="wwwroot\HTML\dist\assets\libs\simple-datatables\dts\export\" />
     <Folder Include="wwwroot\HTML\dist\assets\libs\starability\starability-scss\starability\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

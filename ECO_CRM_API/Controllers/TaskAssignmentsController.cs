@@ -58,12 +58,21 @@ namespace ECO_CRM_API.Controllers
             return Ok(tasks);
         }
         [HttpPost("task/update-status-to-givenoffer")]
-        public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateTaskAssignmentStatusToOfferGivenRequest request)
+        public async Task<IActionResult> UpdateTaskStatusToOfferGiven([FromBody] UpdateTaskAssignmentStatusToOfferGivenRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _taskAssignmentService.UpdateTaskStatusAsync(request);
+            await _taskAssignmentService.UpdateTaskStatusToOfferGivenAsync(request);
+            return Ok("Görev durumu başarıyla güncellendi.");
+        }
+        [HttpPost("task/update-status-to-givenproposal")]
+        public async Task<IActionResult> UpdateTaskStatusToProposalGiven([FromBody] UpdateTaskStatusToProposalGivenRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _taskAssignmentService.UpdateTaskStatusToProposalGivenAsync(request);
             return Ok("Görev durumu başarıyla güncellendi.");
         }
 

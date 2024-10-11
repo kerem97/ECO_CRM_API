@@ -38,22 +38,22 @@ namespace DataAccessLayer.EntityFramework
 
         public async Task<TaskAssignment> GetById(int id)
         {
-          return await _context.TaskAssignments
-        .Include(ta => ta.CustomerOperation)
-        .ThenInclude(co => co.Customer)
-        .Include(ta => ta.CustomerOperation.User)
-         .FirstOrDefaultAsync(ta => ta.Id == id);
+            return await _context.TaskAssignments
+          .Include(ta => ta.CustomerOperation)
+          .ThenInclude(co => co.Customer)
+          .Include(ta => ta.CustomerOperation.User)
+           .FirstOrDefaultAsync(ta => ta.Id == id);
         }
 
         public async Task<List<TaskAssignmentEfDto>> GetPendingTasksAsync(int pageNumber, int pageSize)
         {
             return await _context.TaskAssignments
-        .Include(ta => ta.CustomerOperation) 
+        .Include(ta => ta.CustomerOperation)
         .ThenInclude(co => co.Customer)
         .Include(ta => ta.CustomerOperation.User)
-        .Where(ta => ta.Status == "Fiyat Bekleniyor")
-        .OrderByDescending(ta => ta.CreatedDate)  
-        .Skip((pageNumber - 1) * pageSize)  
+        .Where(ta => ta.Status == "Fiyat Bekleniyor" || ta.Status == "Fiyat Verildi")
+        .OrderByDescending(ta => ta.CreatedDate)
+        .Skip((pageNumber - 1) * pageSize)
         .Take(pageSize)
         .Select(ta => new TaskAssignmentEfDto
         {

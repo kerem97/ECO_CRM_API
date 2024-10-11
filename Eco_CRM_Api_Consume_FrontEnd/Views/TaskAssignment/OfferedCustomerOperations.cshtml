@@ -156,16 +156,17 @@
             tbody.empty();
             if (data && data.length > 0) {
                 data.forEach(operation => {
-                    var dateObj = new Date(task.createdDate);
-                    var day = ("0" + dateObj.getDate()).slice(-2);
-                    var month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-                    var year = dateObj.getFullYear();
-                    var hours = ("0" + dateObj.getHours()).slice(-2);
-                    var minutes = ("0" + dateObj.getMinutes()).slice(-2);
-                    var formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
+                    var operationDateObj = new Date(operation.operationDate);
+                    var day = ("0" + operationDateObj.getDate()).slice(-2);
+                    var month = ("0" + (operationDateObj.getMonth() + 1)).slice(-2);
+                    var year = operationDateObj.getFullYear();
+                    var hours = ("0" + operationDateObj.getHours()).slice(-2);
+                    var minutes = ("0" + operationDateObj.getMinutes()).slice(-2);
+
+                    var formattedOperationDate = `${day}:${month}:${year} ${hours}:${minutes}`;
                     tbody.append(`
                             <tr>
-                                        <td>${formattedDate}</td>
+                                 <td>${formattedOperationDate}</td>
                                 <td>${operation.createdByUser || ""}</td>
                                 <td>${operation.customerName || ""}</td>
                                 <td>${operation.description || ""}</td>

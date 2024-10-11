@@ -5,6 +5,7 @@ using DtoLayer.CustomerOperation.Requests;
 using DtoLayer.CustomerOperation.Responses;
 using DtoLayer.TaskAssignment.Requests;
 using DtoLayer.TaskAssignment.Responses;
+using DtoLayer.TaskAssignmentFile.Requests;
 using DtoLayer.User.Requests;
 using DtoLayer.User.Responses;
 using EntityLayer.Concrete;
@@ -34,6 +35,7 @@ namespace BusinessLayer.Mapping
 
             CreateMap<TaskAssignment, AddTaskAssignmentRequest>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskAssignmentStatusToOfferGivenRequest>().ReverseMap();
+            CreateMap<TaskAssignment, UpdateTaskStatusToProposalGivenRequest>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskAssignmentRequest>().ReverseMap();
             CreateMap<TaskAssignment, DisplayTaskAssignmentResponse>().ReverseMap();
             CreateMap<TaskAssignment, GetByIdTaskAssignmentResponse>()
@@ -145,6 +147,12 @@ namespace BusinessLayer.Mapping
             //    .ForMember(dest => dest.Customers, opt => opt.MapFrom(src => src))
             //    .ReverseMap();
 
+            CreateMap<AddTaskAssignmentFileRequest, TaskAssignmentFile>()
+            .ForMember(dest => dest.FileName, opt => opt.Ignore())  // Manuel olarak atayacağımız için ignore
+            .ForMember(dest => dest.FilePath, opt => opt.Ignore())  // Manuel olarak atayacağımız için ignore
+            .ForMember(dest => dest.UploadedDate, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<TaskAssignment, TaskAssignmentFile>() // TaskAssignment'dan TaskAssignmentFile'a mapping
+            .ForMember(dest => dest.TaskAssignmentId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

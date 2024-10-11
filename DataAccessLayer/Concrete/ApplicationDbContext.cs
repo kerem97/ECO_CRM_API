@@ -19,6 +19,7 @@ namespace DataAccessLayer.Concrete
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerOperation> CustomerOperations { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
+        public DbSet<TaskAssignmentFile> TaskAssignmentFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +39,7 @@ namespace DataAccessLayer.Concrete
        .HasOne(co => co.TaskAssignment)
        .WithOne(ta => ta.CustomerOperation)
        .HasForeignKey<TaskAssignment>(ta => ta.OperationId)
-       .OnDelete(DeleteBehavior.Cascade);  
+       .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<TaskAssignment>()
                 .HasOne(ta => ta.CustomerOperation)
