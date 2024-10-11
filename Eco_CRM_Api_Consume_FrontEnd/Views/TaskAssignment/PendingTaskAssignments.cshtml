@@ -44,6 +44,7 @@
                                         <th>Abas ID</th>
                                         <th>Durum</th>
                                         <th>Detaylar</th>
+                                        <th>Teklif</th>
                                     </tr>
                                 </thead>
                                 <tbody id="task-table-body">
@@ -58,7 +59,12 @@
                                             <td>@task.Status</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm" data-task-id="@task.Id" onclick="openTaskDetailsModal(@task.Id)">
-                                                    Detay Gör
+                                                    İncele
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success btn-sm" data-task-id="${task.id}" onclick="openOfferModal(${task.id})">
+                                                    Teklif Gir
                                                 </button>
                                             </td>
                                         </tr>
@@ -113,6 +119,44 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="offerModal" tabindex="-1" aria-labelledby="offerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="offerModalLabel">Teklif Ver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Lütfen PDF dosyasını yükleyiniz</h4>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Dosya sürükle bırak alanı ve input -->
+                                    <form id="fileUploadForm" enctype="multipart/form-data">
+                                        <div id="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center;">
+                                            Dosyayı buraya sürükleyin veya
+                                            <input type="file" id="fileInput" name="file" style="display: inline;" accept="application/pdf">
+                                        </div>
+                                    </form>
+                                    <div id="uploadStatus"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary" onclick="submitOfferWithFile()">Gönder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <script>
         let currentPage = 1;
@@ -122,6 +166,8 @@
         $(document).ready(function () {
             fetchData(currentPage);
         });
+
+
 
         function fetchData(page) {
             return $.ajax({
@@ -146,6 +192,7 @@
             });
         }
 
+        // Tabloyu Güncelleme Fonksiyonu
         function updateTable(data) {
             let tbody = $('#task-table-body');
             tbody.empty();
@@ -157,26 +204,32 @@
                     var year = dateObj.getFullYear();
                     var hours = ("0" + dateObj.getHours()).slice(-2);
                     var minutes = ("0" + dateObj.getMinutes()).slice(-2);
-                    var formattedDate = `${day}-${month}-${year} ${hours}:${minutes}`;
+                    var formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`; 
+
 
                     tbody.append(`
-                        <tr>
-                            <td>${formattedDate}</td>
-                            <td>${task.createdByUser || ""}</td>
-                            <td>${task.customerName || ""}</td>
-                            <td>${task.description || ""}</td>
-                            <td>${task.abasId || ""}</td>
-                            <td>${task.status || ""}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" data-task-id="${task.id}" onclick="openTaskDetailsModal(${task.id})">
-                                    Detay Gör
-                                </button>
-                            </td>
-                        </tr>
-                    `);
+                            <tr>
+                                <td>${formattedDate}</td>
+                                <td>${task.createdByUser || ""}</td>
+                                <td>${task.customerName || ""}</td>
+                                <td>${task.description || ""}</td>
+                                <td>${task.abasId || ""}</td>
+                                <td>${task.status || ""}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-task-id="${task.id}" onclick="openTaskDetailsModal(${task.id})">
+                                        İncele
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success btn-sm" data-task-id="${task.id}" onclick="openOfferModal(${task.id})">
+                                        Teklif Gir
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
                 });
             } else {
-                tbody.append('<tr><td colspan="7">Kayıt bulunamadı.</td></tr>'); 
+                tbody.append('<tr><td colspan="7">Kayıt bulunamadı.</td></tr>');
             }
         }
 
@@ -195,6 +248,7 @@
                 }
             });
         }
+
         function openTaskDetailsModal(taskId) {
             $.ajax({
                 url: `https://localhost:44309/api/TaskAssignments/taskassignment/${taskId}`,
@@ -223,10 +277,10 @@
 
                     quantityFields.forEach(field => {
                         if (field.value != null && field.value !== 0) {
-                            $(`#${field.id}`).parent().show(); 
+                            $(`#${field.id}`).parent().show();
                             $(`#${field.id}`).text(field.value);
                         } else {
-                            $(`#${field.id}`).parent().hide(); 
+                            $(`#${field.id}`).parent().hide();
                         }
                     });
 
@@ -237,40 +291,79 @@
                 }
             });
         }
+        function openOfferModal(taskId) {
+            $('#offerModal').modal('show');
+            $('#taskId').val(taskId); 
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
 
-        function submitOffer() {
-            const taskId = $('#taskId').val();
-            const status = 'Teklif Verildi';
-            $.ajax({
-                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-givenoffer',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    id: taskId,
-                    status: status
-                }),
-                success: function () {
-                    Swal.fire({
-                        title: 'Başarılı!',
-                        text: 'İşlem durumu güncellendi.',
-                        icon: 'success',
-                        confirmButtonText: 'Tamam'
-                    }).then(() => {
-                        $('#taskDetailModal').modal('hide');
-                        location.reload(); 
-                    });
-                },
-                error: function (xhr, status, error) {
-                    Swal.fire({
-                        title: 'Hata!',
-                        text: 'İşlem durumu güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
-                        icon: 'error',
-                        confirmButtonText: 'Tamam'
-                    });
+            dropZone.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                dropZone.style.borderColor = '#000';
+            });
 
-                }
+            dropZone.addEventListener('dragleave', function (e) {
+                e.preventDefault();
+                dropZone.style.borderColor = '#ccc';
+            });
+
+            dropZone.addEventListener('drop', function (e) {
+                e.preventDefault();
+                dropZone.style.borderColor = '#ccc';
+                fileInput.files = e.dataTransfer.files; 
             });
         }
+        
+
+        function submitOfferWithFile() {
+            let formData = new FormData();
+            let file = $('#fileInput')[0].files[0];
+            const taskId = $('#taskId').val(); 
+
+            if (file) {
+                formData.append("file", file);
+                formData.append("taskId", taskId);
+
+                $.ajax({
+                    url: 'https://localhost:44309/api/TaskAssignments/task/upload-file',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'Authorization': 'Bearer ' + token 
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Başarılı!',
+                            text: 'Dosya başarıyla yüklendi ve görev durumu güncellendi.',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam'
+                        }).then(() => {
+                            $('#offerModal').modal('hide');
+                            location.reload(); 
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: 'Hata!',
+                            text: 'Dosya yüklenirken bir hata oluştu.',
+                            icon: 'error',
+                            confirmButtonText: 'Tamam'
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Hata!',
+                    text: 'Lütfen bir dosya seçiniz.',
+                    icon: 'error',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+
     </script>
+
 </body>
 </html>

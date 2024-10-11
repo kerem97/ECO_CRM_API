@@ -65,7 +65,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
                 throw new Exception("Görev bulunamadı.");
             }
 
-            task.Status = "Teklif Verildi";
+            task.Status = "Fiyat Verildi";
             await _repository.Update(task);
         }
         public async Task DeleteTaskAssignmentAsync(int id)
