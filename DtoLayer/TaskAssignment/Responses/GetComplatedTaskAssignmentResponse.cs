@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DtoLayer.TaskAssignment.Responses
 {
-    public class TaskAssignmentEfDto
+    public class GetComplatedTaskAssignmentResponse
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -27,5 +27,4 @@ namespace DtoLayer.TaskAssignment.Responses
         public int? Quantity9 { get; set; }
         public int? Quantity10 { get; set; }
     }
-
 }

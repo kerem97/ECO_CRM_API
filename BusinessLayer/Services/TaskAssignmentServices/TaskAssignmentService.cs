@@ -109,7 +109,14 @@ namespace BusinessLayer.Services.TaskAssignmentServices
 
             return result;
         }
+        public async Task<List<GetComplatedTaskAssignmentResponse>> TGetCompletedTasksAsync(int pageNumber, int pageSize)
+        {
+            var complatedTasks = await _repository.GetCompletedTasksAsync(pageNumber, pageSize);
 
+            var result = _mapper.Map<List<GetComplatedTaskAssignmentResponse>>(complatedTasks);
+
+            return result;
+        }
         public async Task UpdateTaskAssignmentAsync(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
         {
             var existingTaskAssignment = await _repository.GetById(id);
@@ -132,6 +139,43 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             }
 
             task.Status = "Teklif Verildi";
+            await _repository.Update(task);
+        }
+
+        public async Task<List<GetProposalGivenTaskAssignmentResponse>> TGetProposalGivenTasksAsync(int pageNumber, int pageSize)
+        {
+            var pendingTasks = await _repository.GetProposalGivenTasksAsync(pageNumber, pageSize);
+
+            var result = _mapper.Map<List<GetProposalGivenTaskAssignmentResponse>>(pendingTasks);
+
+            return result;
+        }
+
+        public async Task UpdateTaskStatusToApprovedAsync(UpdateTaskStatusToApprovedRequest request)
+        {
+            var task = await _repository.GetById(request.Id);
+            if (task == null)
+            {
+                throw new Exception("Görev bulunamadı.");
+            }
+
+            task.Status = "Onaylandı";
+            task.Description = request.Description;
+            task.CompletedDate = DateTime.Now;
+            await _repository.Update(task);
+        }
+
+        public async Task UpdateTaskStatusToRejectedAsync(UpdateTaskStatusToRejectedRequest request)
+        {
+            var task = await _repository.GetById(request.Id);
+            if (task == null)
+            {
+                throw new Exception("Görev bulunamadı.");
+            }
+
+            task.Status = "Reddedildi";
+            task.Description = request.Description; 
+            task.CompletedDate= DateTime.Now;
             await _repository.Update(task);
         }
     }

@@ -62,6 +62,48 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             TempData["ErrorMessage"] = "Görevler alınırken bir hata oluştu.";
             return View(new List<GetPendingTaskAssignmentResponse>());
         }
+        [HttpGet]
+        public async Task<IActionResult> GivenOfferTaskAssignments(int pageNumber = 1, int pageSize = 10)
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
+            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/proposal-given-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+                var tasks = JsonConvert.DeserializeObject<List<GetProposalGivenTaskAssignmentResponse>>(jsonData);
+                return View(tasks);
+            }
+
+            TempData["ErrorMessage"] = "Görevler alınırken bir hata oluştu.";
+            return View(new List<GetProposalGivenTaskAssignmentResponse>());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ComplatedTaskAssignments(int pageNumber = 1, int pageSize = 10)
+        {
+            var fullName = HttpContext.Session.GetString("FullName");
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
+
+            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/completed-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+                var tasks = JsonConvert.DeserializeObject<List<GetComplatedTaskAssignmentResponse>>(jsonData);
+                return View(tasks);
+            }
+
+            TempData["ErrorMessage"] = "Görevler alınırken bir hata oluştu.";
+            return View(new List<GetComplatedTaskAssignmentResponse>());
+        }
     }
 }

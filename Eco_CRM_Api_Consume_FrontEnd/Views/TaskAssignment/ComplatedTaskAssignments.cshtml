@@ -1,0 +1,256 @@
+﻿@model List<GetComplatedTaskAssignmentResponse>
+
+@{
+    ViewData["Title"] = "ComplatedTaskAssignments";
+    Layout = "~/Views/Layout/Index.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="~/HTML/dist/assets/libs/simple-datatables/style.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="col-md-12 col-lg-12">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div id="noDataAlert" class="alert alert-danger shadow-sm border-theme-white-2" role="alert" style="display:none; margin-top: 10px;">
+                            <div class="d-inline-flex justify-content-center align-items-center thumb-xs bg-danger rounded-circle mx-auto me-1">
+                                <i class="fas fa-xmark align-self-center mb-0 text-white"></i>
+                            </div>
+                            <strong>Maalesef</strong> Kayıt bulunamadı.
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="card-title">Tamamlanan Görevler</h4>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0 table-centered">
+                                <thead>
+                                    <tr>
+                                        <th>Oluşturulma Tarihi</th>
+                                        <th>Tamamlanma Tarihi</th>
+                                        <th>Personel</th>
+                                        <th>Müşteri</th>
+                                        <th>Açıklama</th>
+                                        <th>Abas ID</th>
+                                        <th>Durum</th>
+                                        <th>Detaylar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="task-table-body">
+                                    @foreach (var task in Model)
+                                    {
+                                        var rowClass = task.Status == "Onaylandı" ? "table-success" : (task.Status == "Reddedildi" ? "table-danger" : "");
+                                        <tr class="@rowClass">
+                                            <td>@task.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>@task.CompletedDate??.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>@task.CreatedByUser</td>
+                                            <td>@task.CustomerName</td>
+                                            <td>@task.Description</td>
+                                            <td>@task.AbasId</td>
+                                            <td class="status-column">@task.Status</td> 
+                                            <td>
+                                                <button class="btn btn-primary btn-sm" data-task-id="@task.Id" onclick="openTaskDetailsModal(@task.Id)">
+                                                    İncele
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="pagination-controls" style="text-align: center; margin-top: 20px;">
+                            <button class="btn btn-sm mx-1" onclick="changePage('prev')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+                                ◀ Önceki
+                            </button>
+                            <span id="currentPage" style="font-size: 16px; font-weight: bold; padding: 0 10px; background-color: #f8f9fa;">1</span>
+                            <button class="btn btn-sm mx-1" onclick="changePage('next')" style="background-color: #555; border: none; border-radius: 20px; padding: 5px 15px; color: #fff;">
+                                Sonraki ▶
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detaylar Modalı -->
+    <div class="modal fade" id="taskDetailModal" tabindex="-1" aria-labelledby="taskDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskDetailModalLabel">Görev Detayları</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Müşteri:</strong> <span id="customerName"></span></p>
+                    <p><strong>Oluşturulma Tarihi:</strong> <span id="createdDate"></span></p>
+                    <p><strong>Personel:</strong> <span id="createdByUser"></span></p>
+                    <p><strong>Abas ID:</strong> <span id="abasId"></span></p>
+                    <p><strong>Açıklama:</strong> <span id="description"></span></p>
+                    <p><strong>Durum:</strong> <span id="status"></span></p>
+
+                    <!-- Miktarlar -->
+                    <p><strong>Miktar 1:</strong> <span id="quantity1"></span></p>
+                    <p><strong>Miktar 2:</strong> <span id="quantity2"></span></p>
+                    <p><strong>Miktar 3:</strong> <span id="quantity3"></span></p>
+                    <p><strong>Miktar 4:</strong> <span id="quantity4"></span></p>
+                    <p><strong>Miktar 5:</strong> <span id="quantity5"></span></p>
+                    <p><strong>Miktar 6:</strong> <span id="quantity6"></span></p>
+                    <p><strong>Miktar 7:</strong> <span id="quantity7"></span></p>
+                    <p><strong>Miktar 8:</strong> <span id="quantity8"></span></p>
+                    <p><strong>Miktar 9:</strong> <span id="quantity9"></span></p>
+                    <p><strong>Miktar 10:</strong> <span id="quantity10"></span></p>
+
+                    <input type="hidden" id="taskId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const pageSize = 8;
+        const token = '@ViewBag.Token';  
+
+        $(document).ready(function () {
+            fetchData(currentPage);
+        });
+
+        function fetchData(page) {
+            return $.ajax({
+                url: `https://localhost:44309/api/TaskAssignments/completed-tasks?pageNumber=${page}&pageSize=${pageSize}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        $('#noDataAlert').hide();
+                        currentPage = page;
+                        $('#currentPage').text(currentPage);
+                        updateTable(data);
+                    } else {
+                        $('#noDataAlert').show();
+                    }
+                },
+                error: function () {
+                    alert('Veri alınırken hata oluştu.');
+                }
+            });
+        }
+
+        function updateTable(data) {
+            let tbody = $('#task-table-body');
+            tbody.empty();
+
+            if (data && data.length > 0) {
+                data.forEach(task => {
+                    var createdDateObj = new Date(task.createdDate);
+                    var createdDay = ("0" + createdDateObj.getDate()).slice(-2);
+                    var createdMonth = ("0" + (createdDateObj.getMonth() + 1)).slice(-2);
+                    var createdYear = createdDateObj.getFullYear();
+                    var createdHours = ("0" + createdDateObj.getHours()).slice(-2);
+                    var createdMinutes = ("0" + createdDateObj.getMinutes()).slice(-2);
+                    var formattedCreatedDate = `${createdDay}.${createdMonth}.${createdYear} ${createdHours}:${createdMinutes}`;
+
+                    var completedDateObj = new Date(task.completedDate);
+                    var completedDay = ("0" + completedDateObj.getDate()).slice(-2);
+                    var completedMonth = ("0" + (completedDateObj.getMonth() + 1)).slice(-2);
+                    var completedYear = completedDateObj.getFullYear();
+                    var completedHours = ("0" + completedDateObj.getHours()).slice(-2);
+                    var completedMinutes = ("0" + completedDateObj.getMinutes()).slice(-2);
+                    var formattedCompletedDate = `${completedDay}.${completedMonth}.${completedYear} ${completedHours}:${completedMinutes}`;
+
+                    var rowClass = task.status === "Onaylandı" ? "table-success" : (task.status === "Reddedildi" ? "table-danger" : "");
+                    var backgroundColor = task.status === "Onaylandı" ? "background-color: #eaffea;" : (task.status === "Reddedildi" ? "background-color: #ffe6e6;" : "");
+                    tbody.append(`
+                            <tr class="${rowClass}">
+                                <td>${formattedCreatedDate}</td>
+                                <td>${formattedCompletedDate}</td>
+                                <td>${task.createdByUser || ""}</td>
+                                <td>${task.customerName || ""}</td>
+                                <td>${task.description || ""}</td>
+                                <td>${task.abasId || ""}</td>
+                                <td class="status-column">${task.status || ""}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-task-id="${task.id}" onclick="openTaskDetailsModal(${task.id})">
+                                        Detaylar
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                });
+            } else {
+                tbody.append('<tr><td colspan="7">Kayıt bulunamadı.</td></tr>');
+            }
+        }
+
+        function openTaskDetailsModal(taskId) {
+            $.ajax({
+                url: `https://localhost:44309/api/TaskAssignments/taskassignment/${taskId}`,
+                method: 'GET',
+                success: function (task) {
+                    $('#customerName').text(task.customerName);
+                    $('#createdDate').text(new Date(task.createdDate).toLocaleString());
+                    $('#completedDate').text(task.completedDate ? new Date(task.completedDate).toLocaleString() : 'Tamamlanma tarihi yok');
+                    $('#createdByUser').text(task.createdByUser);
+                    $('#abasId').text(task.abasId);
+                    $('#description').text(task.description);
+                    $('#status').text(task.status);
+
+                    for (let i = 1; i <= 10; i++) {
+                        let quantityField = $(`#quantity${i}`);
+                        if (task[`quantity${i}`]) {
+                            quantityField.parent().show();
+                            quantityField.text(task[`quantity${i}`]);
+                        } else {
+                            quantityField.parent().hide();
+                        }
+                    }
+
+                    $('#taskDetailModal').modal('show');
+                },
+                error: function () {
+                    alert('Görev detayları alınırken bir hata oluştu.');
+                }
+            });
+        }
+
+        function changePage(direction) {
+            const previousPage = currentPage;
+
+            if (direction === 'next') {
+                currentPage++;
+            } else if (direction === 'prev' && currentPage > 1) {
+                currentPage--;
+            }
+
+            fetchData(currentPage).then(function (data) {
+                if (data.length === 0) {
+                    currentPage = previousPage; 
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.body.style.opacity = 1;
+        });
+    </script>
+
+</body>
+</html>

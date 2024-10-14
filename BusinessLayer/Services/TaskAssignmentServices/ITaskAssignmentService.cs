@@ -18,6 +18,10 @@ namespace BusinessLayer.Services.TaskAssignmentServices
         Task DeleteTaskAssignmentAsync(int id);
         Task UpdateTaskStatusToOfferGivenAsync(UpdateTaskAssignmentStatusToOfferGivenRequest request);
         Task UpdateTaskStatusToProposalGivenAsync(UpdateTaskStatusToProposalGivenRequest request);
+        Task UpdateTaskStatusToApprovedAsync(UpdateTaskStatusToApprovedRequest request);
+        Task UpdateTaskStatusToRejectedAsync(UpdateTaskStatusToRejectedRequest request);
         Task<List<GetPendingTaskAssignmentResponse>> TGetPendingTasksAsync(int pageNumber, int pageSize);
+        Task<List<GetProposalGivenTaskAssignmentResponse>> TGetProposalGivenTasksAsync(int pageNumber, int pageSize);
+        Task<List<GetComplatedTaskAssignmentResponse>> TGetCompletedTasksAsync(int pageNumber, int pageSize);
     }
 }

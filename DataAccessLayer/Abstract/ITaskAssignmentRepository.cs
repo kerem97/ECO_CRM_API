@@ -12,5 +12,9 @@ namespace DataAccessLayer.Abstract
     public interface ITaskAssignmentRepository : IRepository<TaskAssignment>
     {
         Task<List<TaskAssignmentEfDto>> GetPendingTasksAsync(int pageNumber, int pageSize);
+        Task<List<TaskAssignmentEfDto>> GetProposalGivenTasksAsync(int pageNumber, int pageSize);
+        Task<List<TaskAssignmentEfDto>> GetCompletedTasksAsync(int pageNumber, int pageSize);
+
+
     }
 }

@@ -79,6 +79,71 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
+        public async Task<List<TaskAssignmentEfDto>> GetProposalGivenTasksAsync(int pageNumber, int pageSize)
+        {
+            return await _context.TaskAssignments
+       .Include(ta => ta.CustomerOperation)
+       .ThenInclude(co => co.Customer)
+       .Include(ta => ta.CustomerOperation.User)
+       .Where(ta => ta.Status == "Teklif Verildi")
+       .OrderByDescending(ta => ta.CreatedDate)
+       .Skip((pageNumber - 1) * pageSize)
+       .Take(pageSize)
+       .Select(ta => new TaskAssignmentEfDto
+       {
+           Id = ta.Id,
+           CreatedDate = ta.CreatedDate,
+           CustomerName = ta.CustomerOperation.Customer.CompanyName,
+           CreatedByUser = ta.CustomerOperation.User.FullName,
+           AbasId = ta.AbasId,
+           Description = ta.Description,
+           Status = ta.Status,
+           Quantity1 = ta.Quantity1,
+           Quantity2 = ta.Quantity2,
+           Quantity3 = ta.Quantity3,
+           Quantity4 = ta.Quantity4,
+           Quantity5 = ta.Quantity5,
+           Quantity6 = ta.Quantity6,
+           Quantity7 = ta.Quantity7,
+           Quantity8 = ta.Quantity8,
+           Quantity9 = ta.Quantity9,
+           Quantity10 = ta.Quantity10
+       })
+       .ToListAsync();
+        }
+        public async Task<List<TaskAssignmentEfDto>> GetCompletedTasksAsync(int pageNumber, int pageSize)
+        {
+            return await _context.TaskAssignments
+                .Include(ta => ta.CustomerOperation)
+                .ThenInclude(co => co.Customer)
+                .Include(ta => ta.CustomerOperation.User)
+                .Where(ta => ta.Status == "Onaylandı" || ta.Status == "Reddedildi")
+                .OrderByDescending(ta => ta.CompletedDate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(ta => new TaskAssignmentEfDto
+                {
+                    Id = ta.Id,
+                    CreatedDate = ta.CreatedDate,
+                    CompletedDate = ta.CompletedDate,
+                    CustomerName = ta.CustomerOperation.Customer.CompanyName,
+                    CreatedByUser = ta.CustomerOperation.User.FullName,
+                    AbasId = ta.AbasId,
+                    Description = ta.Description,
+                    Status = ta.Status,
+                    Quantity1 = ta.Quantity1,
+                    Quantity2 = ta.Quantity2,
+                    Quantity3 = ta.Quantity3,
+                    Quantity4 = ta.Quantity4,
+                    Quantity5 = ta.Quantity5,
+                    Quantity6 = ta.Quantity6,
+                    Quantity7 = ta.Quantity7,
+                    Quantity8 = ta.Quantity8,
+                    Quantity9 = ta.Quantity9,
+                    Quantity10 = ta.Quantity10
+                })
+                .ToListAsync();
+        }
         public async Task Update(TaskAssignment entity)
         {
             _context.Set<TaskAssignment>().Update(entity);

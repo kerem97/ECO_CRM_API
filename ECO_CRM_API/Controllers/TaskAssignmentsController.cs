@@ -57,6 +57,12 @@ namespace ECO_CRM_API.Controllers
             var tasks = await _taskAssignmentService.TGetPendingTasksAsync(pageNumber, pageSize);
             return Ok(tasks);
         }
+        [HttpGet("proposal-given-tasks")]
+        public async Task<IActionResult> GetProposalGivenTasks(int pageNumber = 1, int pageSize = 10)
+        {
+            var tasks = await _taskAssignmentService.TGetProposalGivenTasksAsync(pageNumber, pageSize);
+            return Ok(tasks);
+        }
         [HttpPost("task/update-status-to-givenoffer")]
         public async Task<IActionResult> UpdateTaskStatusToOfferGiven([FromBody] UpdateTaskAssignmentStatusToOfferGivenRequest request)
         {
@@ -75,8 +81,31 @@ namespace ECO_CRM_API.Controllers
             await _taskAssignmentService.UpdateTaskStatusToProposalGivenAsync(request);
             return Ok("Görev durumu başarıyla güncellendi.");
         }
+        [HttpPost("task/update-status-to-approved")]
+        public async Task<IActionResult> UpdateTaskStatusToApproved([FromBody] UpdateTaskStatusToApprovedRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            await _taskAssignmentService.UpdateTaskStatusToApprovedAsync(request);
+            return Ok("Görev durumu başarıyla Onaylandı olarak güncellendi.");
+        }
 
+        [HttpPost("task/update-status-to-rejected")]
+        public async Task<IActionResult> UpdateTaskStatusToRejected([FromBody] UpdateTaskStatusToRejectedRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _taskAssignmentService.UpdateTaskStatusToRejectedAsync(request);
+            return Ok("Görev durumu başarıyla Reddedildi olarak güncellendi.");
+        }
+        [HttpGet("completed-tasks")]
+        public async Task<IActionResult> GetCompletedTasks(int pageNumber = 1, int pageSize = 10)
+        {
+            var tasks = await _taskAssignmentService.TGetCompletedTasksAsync(pageNumber, pageSize);
+            return Ok(tasks);
+        }
 
 
     }
