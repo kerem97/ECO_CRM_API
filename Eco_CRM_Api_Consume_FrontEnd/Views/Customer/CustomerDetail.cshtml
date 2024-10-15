@@ -14,8 +14,8 @@
                     <div class="row g-3">
                         @await Component.InvokeAsync("_CustomerTotalOperationsComponentPartial", new { customerId = ViewBag.CustomerId })
                         @await Component.InvokeAsync("_CustomerDetailApprovedTaskCountComponentPartial", new { customerId = ViewBag.CustomerId })
+                        @await Component.InvokeAsync("_CustomerTaskAssignmentCountComponentPartial", new { customerId = ViewBag.CustomerId })
                      @*    @await Component.InvokeAsync("_CustomerDetailNotApprovedTaskCountComponentPartial", new { customerId = ViewBag.CustomerId }) *@
-
                         @await Component.InvokeAsync("_CustomerLastVisitUserComponentPartial", new { customerId = ViewBag.CustomerId })
                         
                     </div>

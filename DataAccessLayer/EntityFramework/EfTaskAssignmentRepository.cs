@@ -167,5 +167,14 @@ namespace DataAccessLayer.EntityFramework
 
             return taskCount;
         }
+
+        public async Task<int> GetTaskAssignmentCountByCustomerIdAsync(int customerId)
+        {
+            var oneYearAgo = DateTime.Now.AddYears(-1);
+
+            return await _context.TaskAssignments
+                .Where(ta => ta.CustomerId == customerId && ta.CreatedDate >= oneYearAgo) 
+                .CountAsync();
+        }
     }
 }

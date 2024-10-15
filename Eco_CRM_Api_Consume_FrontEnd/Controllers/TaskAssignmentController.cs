@@ -105,5 +105,8 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             TempData["ErrorMessage"] = "Görevler alınırken bir hata oluştu.";
             return View(new List<GetComplatedTaskAssignmentResponse>());
         }
+
+
+
     }
 }

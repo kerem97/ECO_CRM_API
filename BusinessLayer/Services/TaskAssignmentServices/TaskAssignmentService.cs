@@ -198,5 +198,11 @@ namespace BusinessLayer.Services.TaskAssignmentServices
                 NotApprovedTaskCount = notApprovedTaskCount
             };
         }
+
+        public async Task<GetTotalTaskAssignmentCountByCustomerIdResponse> GetTaskAssignmentCountAsync(int customerId)
+        {
+            var count = await _repository.GetTaskAssignmentCountByCustomerIdAsync(customerId);
+            return new GetTotalTaskAssignmentCountByCustomerIdResponse { TaskCount = count };
+        }
     }
 }
