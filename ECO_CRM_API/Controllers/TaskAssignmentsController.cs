@@ -112,6 +112,12 @@ namespace ECO_CRM_API.Controllers
             var result = await _taskAssignmentService.TGetApprovedTaskCountByCustomerIdAsync(customerId);
             return Ok(result);
         }
+        [HttpGet("customer/{customerId}/not-approved-task-count")]
+        public async Task<IActionResult> GetNotApprovedTaskCountByCustomerId(int customerId)
+        {
+            var result = await _taskAssignmentService.TGetNotApprovedTaskCountByCustomerIdAsync(customerId);
+            return Ok(result);
+        }
 
 
     }

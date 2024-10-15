@@ -173,19 +173,29 @@ namespace BusinessLayer.Services.TaskAssignmentServices
                 throw new Exception("Görev bulunamadı.");
             }
 
-            task.Status = "Reddedildi";
+            task.Status = "Onaylanmadı";
             task.Description = request.Description; 
             task.CompletedDate= DateTime.Now;
             await _repository.Update(task);
         }
 
-        public async Task<TaskAssignmentCountResponse> TGetApprovedTaskCountByCustomerIdAsync(int customerId)
+        public async Task<TaskAssignmentApprovedCountResponse> TGetApprovedTaskCountByCustomerIdAsync(int customerId)
         {
             var approvedTaskCount = await _repository.GetApprovedTaskCountByCustomerIdAsync(customerId);
 
-            return new TaskAssignmentCountResponse
+            return new TaskAssignmentApprovedCountResponse
             {
                 ApprovedTaskCount = approvedTaskCount
+            };
+        }
+
+        public async Task<TaskAssignmentNotApprovedCountResponse> TGetNotApprovedTaskCountByCustomerIdAsync(int customerId)
+        {
+            var notApprovedTaskCount = await _repository.GetNotApprovedTaskCountByCustomerIdAsync(customerId);
+
+            return new TaskAssignmentNotApprovedCountResponse
+            {
+                NotApprovedTaskCount = notApprovedTaskCount
             };
         }
     }

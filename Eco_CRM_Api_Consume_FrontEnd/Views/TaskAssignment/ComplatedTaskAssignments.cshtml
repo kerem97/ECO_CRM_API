@@ -51,7 +51,7 @@
                                 <tbody id="task-table-body">
                                     @foreach (var task in Model)
                                     {
-                                        var rowClass = task.Status == "Onaylandı" ? "table-success" : (task.Status == "Reddedildi" ? "table-danger" : "");
+                                        var rowClass = task.Status == "Onaylandı" ? "table-success" : (task.Status == "Onaylanmadı" ? "table-danger" : "");
                                         <tr class="@rowClass">
                                             <td>@task.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
                                             <td>@task.CompletedDate??.ToString("dd.MM.yyyy HH:mm")</td>
@@ -176,8 +176,8 @@
                     var completedMinutes = ("0" + completedDateObj.getMinutes()).slice(-2);
                     var formattedCompletedDate = `${completedDay}.${completedMonth}.${completedYear} ${completedHours}:${completedMinutes}`;
 
-                    var rowClass = task.status === "Onaylandı" ? "table-success" : (task.status === "Reddedildi" ? "table-danger" : "");
-                    var backgroundColor = task.status === "Onaylandı" ? "background-color: #eaffea;" : (task.status === "Reddedildi" ? "background-color: #ffe6e6;" : "");
+                    var rowClass = task.status === "Onaylandı" ? "table-success" : (task.status === "Onaylanmadı" ? "table-danger" : "");
+                    var backgroundColor = task.status === "Onaylandı" ? "background-color: #eaffea;" : (task.status === "Onaylanmadı" ? "background-color: #ffe6e6;" : "");
                     tbody.append(`
                             <tr class="${rowClass}">
                                 <td>${formattedCreatedDate}</td>

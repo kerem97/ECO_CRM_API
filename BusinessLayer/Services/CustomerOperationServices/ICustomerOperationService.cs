@@ -40,7 +40,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
         Task<DisplayOperationStatsResponse> GetTotalOperationStatsAsync();
         Task<DisplayUserOperationStatsResponse> GetUserOperationStatsAsync(int userId);
         Task<int> TGetTotalOperationsByCustomerIdAsync(int customerId);
-        
+        Task<GetCustomerLastVisitUserResponse> TGetLastVisitUserByCustomerIdAsync(int customerId);
 
 
 

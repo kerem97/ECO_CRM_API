@@ -1,15 +1,15 @@
-﻿using DtoLayer.TaskAssignment.Responses;
+﻿using DtoLayer.CustomerOperation.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Customers
 {
-    public class _CustomerDetailApprovedTaskCountComponentPartial:ViewComponent
+    public class _CustomerLastVisitUserComponentPartial:ViewComponent
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public _CustomerDetailApprovedTaskCountComponentPartial(IHttpClientFactory httpClientFactory)
+        public _CustomerLastVisitUserComponentPartial(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
@@ -21,22 +21,22 @@ namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Customers
 
             if (string.IsNullOrEmpty(token))
             {
-                return View(new TaskAssignmentApprovedCountResponse { ApprovedTaskCount = 0 });
+                return View(new GetCustomerLastVisitUserResponse { FullName = "N/A" });
             }
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/customer/{customerId}/approved-task-count");
+            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/last-visit-user/{customerId}");
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
-                var approvedOrders = JsonConvert.DeserializeObject<TaskAssignmentApprovedCountResponse>(jsonData); // Nesne dönüyor
+                var lastVisitUser = JsonConvert.DeserializeObject<GetCustomerLastVisitUserResponse>(jsonData);
 
-                return View(approvedOrders);
+                return View(lastVisitUser);
             }
 
-            return View(new TaskAssignmentApprovedCountResponse { ApprovedTaskCount = 0 });
+            return View(new GetCustomerLastVisitUserResponse { FullName = "N/A" });
         }
     }
 }

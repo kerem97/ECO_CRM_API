@@ -31,5 +31,6 @@ namespace DataAccessLayer.Abstract
         Task<(int plannedCount, int completedCount)> GetTotalOperationStatsAsync();
         Task<(int plannedCount, int completedCount)> GetUserOperationStatsAsync(int userId);
         Task<int> GetTotalOperationsByCustomerIdAsync(int customerId);
+        Task<string> GetLastVisitUserNameByCustomerIdAsync(int customerId);
     }
 }

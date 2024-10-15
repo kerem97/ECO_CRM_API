@@ -181,6 +181,11 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> CustomerDetail(int id)
         {
+            var fullName = HttpContext.Session.GetString("FullName");
+            ViewBag.FullName = fullName;
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
+            ViewBag.Token = HttpContext.Session.GetString("Token");
             ViewBag.CustomerId = id;
             return View();
         }

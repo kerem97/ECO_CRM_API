@@ -377,6 +377,23 @@ namespace BusinessLayer.Services.CustomerOperationServices
         {
             return await _customerOperationRepository.GetTotalOperationsByCustomerIdAsync(customerId);
         }
+
+        public async Task<GetCustomerLastVisitUserResponse> TGetLastVisitUserByCustomerIdAsync(int customerId)
+        {
+            var lastVisitUserFullName = await _customerOperationRepository.GetLastVisitUserNameByCustomerIdAsync(customerId);
+
+            if (string.IsNullOrEmpty(lastVisitUserFullName))
+            {
+                return null; 
+            }
+
+            var dto = new GetCustomerLastVisitUserResponse
+            {
+                FullName = lastVisitUserFullName
+            };
+
+            return dto;
+        }
     }
 }
 

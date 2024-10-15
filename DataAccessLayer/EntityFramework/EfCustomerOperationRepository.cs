@@ -12,7 +12,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DataAccessLayer.EntityFramework
 {
-    public class EfCustomerOperationRepository :  ICustomerOperationRepository
+    public class EfCustomerOperationRepository : ICustomerOperationRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -407,8 +407,20 @@ namespace DataAccessLayer.EntityFramework
 
             return await _context.CustomerOperations
                                  .Where(co => co.CustomerId == customerId &&
-                                              co.OperationDate >= oneYearAgo) 
+                                              co.OperationDate >= oneYearAgo)
                                  .CountAsync();
+        }
+
+        public async Task<string> GetLastVisitUserNameByCustomerIdAsync(int customerId)
+        {
+            var lastOperation = await _context.CustomerOperations
+    .Include(co => co.User) 
+    .Where(co => co.CustomerId == customerId && co.Reason == "Ziyaret")
+    .OrderByDescending(co => co.OperationDate)
+    .Select(co => co.User.FullName) 
+    .FirstOrDefaultAsync();
+
+            return lastOperation;
         }
     }
 }

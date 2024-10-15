@@ -117,7 +117,7 @@ namespace DataAccessLayer.EntityFramework
                 .Include(ta => ta.CustomerOperation)
                 .ThenInclude(co => co.Customer)
                 .Include(ta => ta.CustomerOperation.User)
-                .Where(ta => ta.Status == "Onaylandı" || ta.Status == "Reddedildi")
+                .Where(ta => ta.Status == "Onaylandı" || ta.Status == "Onaylanmadı")
                 .OrderByDescending(ta => ta.CompletedDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -157,6 +157,15 @@ namespace DataAccessLayer.EntityFramework
                                  .Where(ta => ta.CustomerId == customerId && ta.Status == "Onaylandı" &&
                                       ta.CreatedDate >= oneYearAgo)
                                  .CountAsync();
+        }
+
+        public async Task<int> GetNotApprovedTaskCountByCustomerIdAsync(int customerId)
+        {
+            var taskCount = await _context.TaskAssignments
+                                 .Where(ta => ta.CustomerId == customerId && ta.Status == "Onaylanmadı")
+                                 .CountAsync();
+
+            return taskCount;
         }
     }
 }

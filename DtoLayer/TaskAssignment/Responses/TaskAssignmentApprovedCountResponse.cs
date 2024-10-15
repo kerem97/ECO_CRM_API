@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DtoLayer.TaskAssignment.Responses
 {
-    public class TaskAssignmentCountResponse
+    public class TaskAssignmentApprovedCountResponse
     {
         public int ApprovedTaskCount { get; set; }
     }

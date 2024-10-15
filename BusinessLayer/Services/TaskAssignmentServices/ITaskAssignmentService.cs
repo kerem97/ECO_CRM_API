@@ -23,6 +23,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
         Task<List<GetPendingTaskAssignmentResponse>> TGetPendingTasksAsync(int pageNumber, int pageSize);
         Task<List<GetProposalGivenTaskAssignmentResponse>> TGetProposalGivenTasksAsync(int pageNumber, int pageSize);
         Task<List<GetComplatedTaskAssignmentResponse>> TGetCompletedTasksAsync(int pageNumber, int pageSize);
-        Task<TaskAssignmentCountResponse> TGetApprovedTaskCountByCustomerIdAsync(int customerId);
+        Task<TaskAssignmentApprovedCountResponse> TGetApprovedTaskCountByCustomerIdAsync(int customerId);
+        Task<TaskAssignmentNotApprovedCountResponse> TGetNotApprovedTaskCountByCustomerIdAsync(int customerId);
     }
 }

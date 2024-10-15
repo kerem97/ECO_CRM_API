@@ -5,11 +5,11 @@ using System.Net.Http.Headers;
 
 namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Customers
 {
-    public class _CustomerDetailApprovedTaskCountComponentPartial:ViewComponent
+    public class _CustomerDetailNotApprovedTaskCountComponentPartial:ViewComponent
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public _CustomerDetailApprovedTaskCountComponentPartial(IHttpClientFactory httpClientFactory)
+        public _CustomerDetailNotApprovedTaskCountComponentPartial(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
@@ -21,22 +21,22 @@ namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Customers
 
             if (string.IsNullOrEmpty(token))
             {
-                return View(new TaskAssignmentApprovedCountResponse { ApprovedTaskCount = 0 });
+                return View(new TaskAssignmentNotApprovedCountResponse { NotApprovedTaskCount = 0 });
             }
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/customer/{customerId}/approved-task-count");
+            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/customer/{customerId}/not-approved-task-count");
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
-                var approvedOrders = JsonConvert.DeserializeObject<TaskAssignmentApprovedCountResponse>(jsonData); // Nesne dönüyor
+                var approvedOrders = JsonConvert.DeserializeObject<TaskAssignmentNotApprovedCountResponse>(jsonData); 
 
                 return View(approvedOrders);
             }
 
-            return View(new TaskAssignmentApprovedCountResponse { ApprovedTaskCount = 0 });
+            return View(new TaskAssignmentNotApprovedCountResponse { NotApprovedTaskCount = 0 });
         }
     }
 }

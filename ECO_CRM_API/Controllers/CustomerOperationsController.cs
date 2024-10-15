@@ -278,4 +278,17 @@ public class CustomerOperationsController : ControllerBase
         var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
         return int.Parse(userIdClaim.Value);
     }
+
+    [HttpGet("last-visit-user/{customerId}")]
+    public async Task<IActionResult> GetLastVisitUser(int customerId)
+    {
+        var lastVisitUserDto = await _customerOperationService.TGetLastVisitUserByCustomerIdAsync(customerId);
+
+        if (lastVisitUserDto == null)
+        {
+            return NotFound("No visit found for this customer.");
+        }
+
+        return Ok(lastVisitUserDto);
+    }
 }

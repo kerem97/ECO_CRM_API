@@ -35,7 +35,8 @@ namespace BusinessLayer.Mapping
 
 
             CreateMap<TaskAssignment, AddTaskAssignmentRequest>().ReverseMap();
-            CreateMap<TaskAssignment, TaskAssignmentCountResponse>().ReverseMap();
+            CreateMap<TaskAssignment, TaskAssignmentApprovedCountResponse>().ReverseMap();
+            CreateMap<TaskAssignment, TaskAssignmentNotApprovedCountResponse>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskAssignmentStatusToOfferGivenRequest>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskStatusToProposalGivenRequest>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskStatusToApprovedRequest>().ReverseMap();
