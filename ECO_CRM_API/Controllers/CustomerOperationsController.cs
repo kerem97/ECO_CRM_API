@@ -267,6 +267,12 @@ public class CustomerOperationsController : ControllerBase
         var result = await _customerOperationService.GetUserOperationStatsAsync(userId);
         return Ok(result);
     }
+    [HttpGet("customer/{customerId}/total-operations")]
+    public async Task<IActionResult> GetTotalOperationsByCustomerId(int customerId)
+    {
+        var totalOperations = await _customerOperationService.TGetTotalOperationsByCustomerIdAsync(customerId);
+        return Ok(totalOperations);
+    }
     private int GetCurrentUserId()
     {
         var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);

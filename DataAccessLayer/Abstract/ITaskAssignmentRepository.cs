@@ -14,7 +14,7 @@ namespace DataAccessLayer.Abstract
         Task<List<TaskAssignmentEfDto>> GetPendingTasksAsync(int pageNumber, int pageSize);
         Task<List<TaskAssignmentEfDto>> GetProposalGivenTasksAsync(int pageNumber, int pageSize);
         Task<List<TaskAssignmentEfDto>> GetCompletedTasksAsync(int pageNumber, int pageSize);
-
+        Task<int> GetApprovedTaskCountByCustomerIdAsync(int customerId);
 
     }
 }

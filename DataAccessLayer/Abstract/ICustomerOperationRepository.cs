@@ -30,6 +30,6 @@ namespace DataAccessLayer.Abstract
         Task<List<(string companyName, int customerId, int count)>> GetUserFaceToFaceInteractions(int userId);
         Task<(int plannedCount, int completedCount)> GetTotalOperationStatsAsync();
         Task<(int plannedCount, int completedCount)> GetUserOperationStatsAsync(int userId);
-
+        Task<int> GetTotalOperationsByCustomerIdAsync(int customerId);
     }
 }

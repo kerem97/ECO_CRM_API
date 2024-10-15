@@ -25,6 +25,14 @@ namespace EntityLayer.Concrete
         public string Status { get; set; }
         public decimal LimitTl { get; set; }
         public string Group { get; set; }
+        public int PostalCode { get; set; }
+        public string? Website { get; set; }
+        public string? Instagram { get; set; }
+        public string? Twitter { get; set; }
+        public string? Facebook { get; set; }
+        public string? Sector { get; set; }
+        public string? PaymentMethod { get; set; }
+
         public ICollection<CustomerOperation> CustomerOperations { get; set; }
         public User User { get; set; }
 

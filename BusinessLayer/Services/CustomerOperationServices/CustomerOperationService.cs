@@ -373,6 +373,10 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
             return result;
         }
+        public async Task<int> TGetTotalOperationsByCustomerIdAsync(int customerId)
+        {
+            return await _customerOperationRepository.GetTotalOperationsByCustomerIdAsync(customerId);
+        }
     }
 }
 

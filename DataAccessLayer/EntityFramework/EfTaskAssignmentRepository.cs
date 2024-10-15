@@ -149,5 +149,14 @@ namespace DataAccessLayer.EntityFramework
             _context.Set<TaskAssignment>().Update(entity);
             _context.SaveChanges();
         }
+
+        public async Task<int> GetApprovedTaskCountByCustomerIdAsync(int customerId)
+        {
+            var oneYearAgo = DateTime.Now.AddYears(-1);
+            return await _context.TaskAssignments
+                                 .Where(ta => ta.CustomerId == customerId && ta.Status == "Onaylandı" &&
+                                      ta.CreatedDate >= oneYearAgo)
+                                 .CountAsync();
+        }
     }
 }

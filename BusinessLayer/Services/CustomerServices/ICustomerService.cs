@@ -20,5 +20,6 @@ namespace BusinessLayer.Services.CustomerServices
         Task<(List<DisplayCustomerResponse>, int)> TGetAllPotentialCustomersPaged(int pageNumber, int pageSize);
         Task<List<SearchCustomerDto>> SearchCompaniesByNameAddOperations(string searchTerm, int pageNumber, int pageSize);
         Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize);
+        Task<GetProfileInfoByIdResponse> GetProfileInfoByIdAsync(int id);
     }
 }

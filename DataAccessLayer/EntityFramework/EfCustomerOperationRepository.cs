@@ -400,5 +400,15 @@ namespace DataAccessLayer.EntityFramework
                 .Take(pageSize)
                 .ToListAsync();
         }
+
+        public async Task<int> GetTotalOperationsByCustomerIdAsync(int customerId)
+        {
+            var oneYearAgo = DateTime.Now.AddYears(-1);
+
+            return await _context.CustomerOperations
+                                 .Where(co => co.CustomerId == customerId &&
+                                              co.OperationDate >= oneYearAgo) 
+                                 .CountAsync();
+        }
     }
 }

@@ -178,5 +178,15 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             task.CompletedDate= DateTime.Now;
             await _repository.Update(task);
         }
+
+        public async Task<TaskAssignmentCountResponse> TGetApprovedTaskCountByCustomerIdAsync(int customerId)
+        {
+            var approvedTaskCount = await _repository.GetApprovedTaskCountByCustomerIdAsync(customerId);
+
+            return new TaskAssignmentCountResponse
+            {
+                ApprovedTaskCount = approvedTaskCount
+            };
+        }
     }
 }

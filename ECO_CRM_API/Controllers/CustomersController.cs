@@ -108,6 +108,19 @@ namespace ECO_CRM_API.Controllers
                 return NotFound();
             return Ok(customerDto);
         }
+        [HttpGet("profile-info/{id}")]
+        public async Task<IActionResult> GetCustomerDetails(int id)
+        {
+            try
+            {
+                var customer = await _customerService.GetProfileInfoByIdAsync(id);
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
 
     }
 }

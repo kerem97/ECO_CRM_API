@@ -26,6 +26,7 @@ namespace BusinessLayer.Mapping
             CreateMap<Customer, DisplayCustomerResponse>().ReverseMap();
             CreateMap<Customer, GetByIdCustomerResponse>().ReverseMap();
             CreateMap<Customer, CustomerSearchResponse>().ReverseMap();
+            CreateMap<Customer, GetProfileInfoByIdResponse>().ReverseMap();
 
             CreateMap<CustomerOperation, AddCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, FilterCustomerOperationRequest>().ReverseMap();
@@ -34,6 +35,7 @@ namespace BusinessLayer.Mapping
 
 
             CreateMap<TaskAssignment, AddTaskAssignmentRequest>().ReverseMap();
+            CreateMap<TaskAssignment, TaskAssignmentCountResponse>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskAssignmentStatusToOfferGivenRequest>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskStatusToProposalGivenRequest>().ReverseMap();
             CreateMap<TaskAssignment, UpdateTaskStatusToApprovedRequest>().ReverseMap();

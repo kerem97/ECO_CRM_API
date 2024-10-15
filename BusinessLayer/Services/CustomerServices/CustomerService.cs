@@ -131,5 +131,24 @@ namespace BusinessLayer.Services.CustomerServices
                 _customerRepository.Update(customerEntity);
             }
         }
+
+        public async Task<GetProfileInfoByIdResponse> GetProfileInfoByIdAsync(int id)
+        {
+            var customer = await _customerRepository.GetById(id);
+            if (customer == null) throw new Exception("Customer not found.");
+            var customerDto = new GetProfileInfoByIdResponse
+            {
+                CompanyName = customer.CompanyName,
+                Website = customer.Website,
+                Instagram = customer.Instagram,
+                Twitter = customer.Twitter,
+                Facebook = customer.Facebook,
+                Status = customer.Status,
+                ContactPhone1 = customer.ContactPhone1,
+                ContactEmail = customer.ContactEmail
+            };
+
+            return customerDto;
+        }
     }
 }

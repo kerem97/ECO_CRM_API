@@ -177,7 +177,13 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             }
         }
 
-    }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> CustomerDetail(int id)
+        {
+            ViewBag.CustomerId = id;
+            return View();
+        }
+    }
 }
 
