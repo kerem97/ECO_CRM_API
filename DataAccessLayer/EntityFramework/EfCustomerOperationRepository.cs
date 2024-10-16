@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Repository;
+using DtoLayer.CustomerOperation.Responses;
 using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -411,16 +412,40 @@ namespace DataAccessLayer.EntityFramework
                                  .CountAsync();
         }
 
-        public async Task<string> GetLastVisitUserNameByCustomerIdAsync(int customerId)
+        public async Task<GetCustomerLastVisitUserResponse> GetLastVisitUserNameByCustomerIdAsync(int customerId)
         {
             var lastOperation = await _context.CustomerOperations
-    .Include(co => co.User) 
-    .Where(co => co.CustomerId == customerId && co.Reason == "Ziyaret")
-    .OrderByDescending(co => co.OperationDate)
-    .Select(co => co.User.FullName) 
-    .FirstOrDefaultAsync();
+       .Include(co => co.User)
+       .Where(co => co.CustomerId == customerId && co.Reason == "Ziyaret")
+       .OrderByDescending(co => co.OperationDate)
+       .Select(co => new GetCustomerLastVisitUserResponse
+       {
+           FullName = co.User.FullName,
+           ActualDate = co.ActualDate
+       })
+       .FirstOrDefaultAsync();
 
             return lastOperation;
+        }
+
+        public async Task<List<GetByCustomerIdLast10OperationsResponse>> GetLast10CustomerOperationsByCustomerIdAsync(int customerId)
+        {
+            return await _context.CustomerOperations
+          .Where(co => co.CustomerId == customerId)
+          .OrderByDescending(co => co.ActualDate) 
+          .Take(10) 
+          .Select(co => new GetByCustomerIdLast10OperationsResponse
+          {
+              ActualDate = co.ActualDate,
+              CreatedByUser = co.User.FullName,
+              Method = co.Method,
+              Description = co.Description,
+              ContactPerson = co.ContactPerson,
+              Reason = co.Reason,
+              MeetingFeedback = co.MeetingFeedback,
+              OfferStatus = co.OfferStatus
+          })
+          .ToListAsync();
         }
     }
 }

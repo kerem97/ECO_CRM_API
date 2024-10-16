@@ -291,4 +291,16 @@ public class CustomerOperationsController : ControllerBase
 
         return Ok(lastVisitUserDto);
     }
+    [HttpGet("customer/{customerId}/last-10-operations")]
+    public async Task<IActionResult> GetLast10CustomerOperations(int customerId)
+    {
+        var operations = await _customerOperationService.GetLast10CustomerOperationsByCustomerIdAsync(customerId);
+
+        if (operations == null || !operations.Any())
+        {
+            return NotFound("No operations found for this customer.");
+        }
+
+        return Ok(operations);
+    }
 }

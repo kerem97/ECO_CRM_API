@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Repository;
+using DtoLayer.CustomerOperation.Responses;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace DataAccessLayer.Abstract
         Task<(int plannedCount, int completedCount)> GetTotalOperationStatsAsync();
         Task<(int plannedCount, int completedCount)> GetUserOperationStatsAsync(int userId);
         Task<int> GetTotalOperationsByCustomerIdAsync(int customerId);
-        Task<string> GetLastVisitUserNameByCustomerIdAsync(int customerId);
+        Task<GetCustomerLastVisitUserResponse> GetLastVisitUserNameByCustomerIdAsync(int customerId);
+        Task<List<GetByCustomerIdLast10OperationsResponse>> GetLast10CustomerOperationsByCustomerIdAsync(int customerId);
     }
 }

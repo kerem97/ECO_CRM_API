@@ -1,0 +1,46 @@
+﻿@model List<GetByCustomerIdLast10OperationsResponse>
+
+<div class="card-body pt-0">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Tarih</th>
+                    <th>Personel</th>
+                    <th>Metot</th>
+                    <th>Görüşülen</th>
+                    <th>Sebep</th>
+                    <th>Geri Bildirim</th>
+                    <th>Teklif Durumu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    var index = 1;
+                    foreach (var operation in Model)
+                    {
+                        <tr>
+                            <th scope="row">@index</th>
+                            <td>@(operation.ActualDate.HasValue ? operation.ActualDate.Value.ToString("dd.MM.yyyy") : "N/A")</td>
+                            <td>@operation.CreatedByUser</td>
+                            <td>@operation.Method</td>
+                            <td>@operation.ContactPerson</td>
+                            <td>@operation.Reason</td>
+                            <td>@operation.MeetingFeedback</td>
+                            <td>@operation.OfferStatus</td>
+                        </tr>
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center">No operations found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

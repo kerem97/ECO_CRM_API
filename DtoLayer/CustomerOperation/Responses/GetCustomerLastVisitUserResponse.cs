@@ -9,5 +9,6 @@ namespace DtoLayer.CustomerOperation.Responses
     public class GetCustomerLastVisitUserResponse
     {
         public string FullName { get; set; }
+        public DateTime? ActualDate { get; set; }
     }
 }

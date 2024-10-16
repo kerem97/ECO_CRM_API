@@ -84,7 +84,7 @@ namespace BusinessLayer.Mapping
             .ForMember(dest => dest.Quantity8, opt => opt.MapFrom(src => src.Quantity8))
             .ForMember(dest => dest.Quantity9, opt => opt.MapFrom(src => src.Quantity9))
             .ForMember(dest => dest.Quantity10, opt => opt.MapFrom(src => src.Quantity10));
-            
+
 
             CreateMap<TaskAssignmentEfDto, GetProposalGivenTaskAssignmentResponse>()
             .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.CreatedByUser))
@@ -121,7 +121,7 @@ namespace BusinessLayer.Mapping
                 .ForMember(dest => dest.Quantity8, opt => opt.MapFrom(src => src.Quantity8))
                 .ForMember(dest => dest.Quantity9, opt => opt.MapFrom(src => src.Quantity9))
                 .ForMember(dest => dest.Quantity10, opt => opt.MapFrom(src => src.Quantity10));
-            
+
 
             CreateMap<CustomerOperation, DisplayCustomerOperationsStatusGivenOffersResponse>()
                 .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown"))
@@ -170,6 +170,9 @@ namespace BusinessLayer.Mapping
             .ForMember(dest => dest.InteractionCount, opt => opt.Ignore());
 
 
+            CreateMap<CustomerOperation, GetByCustomerIdLast10OperationsResponse>()
+           .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown")).ReverseMap();
+
             CreateMap<User, AddUserRequest>().ReverseMap()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
             CreateMap<User, UpdateUserRequest>().ReverseMap();
@@ -193,10 +196,10 @@ namespace BusinessLayer.Mapping
             //    .ReverseMap();
 
             CreateMap<AddTaskAssignmentFileRequest, TaskAssignmentFile>()
-            .ForMember(dest => dest.FileName, opt => opt.Ignore())  
-            .ForMember(dest => dest.FilePath, opt => opt.Ignore())  
+            .ForMember(dest => dest.FileName, opt => opt.Ignore())
+            .ForMember(dest => dest.FilePath, opt => opt.Ignore())
             .ForMember(dest => dest.UploadedDate, opt => opt.MapFrom(src => DateTime.Now));
-            CreateMap<TaskAssignment, TaskAssignmentFile>() 
+            CreateMap<TaskAssignment, TaskAssignmentFile>()
             .ForMember(dest => dest.TaskAssignmentId, opt => opt.MapFrom(src => src.Id));
         }
     }

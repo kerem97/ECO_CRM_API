@@ -380,19 +380,12 @@ namespace BusinessLayer.Services.CustomerOperationServices
 
         public async Task<GetCustomerLastVisitUserResponse> TGetLastVisitUserByCustomerIdAsync(int customerId)
         {
-            var lastVisitUserFullName = await _customerOperationRepository.GetLastVisitUserNameByCustomerIdAsync(customerId);
+            return await _customerOperationRepository.GetLastVisitUserNameByCustomerIdAsync(customerId);
+        }
 
-            if (string.IsNullOrEmpty(lastVisitUserFullName))
-            {
-                return null; 
-            }
-
-            var dto = new GetCustomerLastVisitUserResponse
-            {
-                FullName = lastVisitUserFullName
-            };
-
-            return dto;
+        public async Task<List<GetByCustomerIdLast10OperationsResponse>> GetLast10CustomerOperationsByCustomerIdAsync(int customerId)
+        {
+            return await _customerOperationRepository.GetLast10CustomerOperationsByCustomerIdAsync(customerId);
         }
     }
 }
