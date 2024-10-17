@@ -124,6 +124,17 @@ namespace ECO_CRM_API.Controllers
             var taskCountDto = await _taskAssignmentService.GetTaskAssignmentCountAsync(customerId);
             return Ok(taskCountDto);
         }
+        [HttpGet("customer/{customerId}/last-10-task-assignments")]
+        public async Task<IActionResult> GetLast10TaskAssignmentsByCustomerId(int customerId)
+        {
+            var taskAssignments = await _taskAssignmentService.TGetLast10TaskAssignmentsByCustomerIdAsync(customerId);
 
+            if (taskAssignments == null || !taskAssignments.Any())
+            {
+                return NotFound("No task assignments found for this customer.");
+            }
+
+            return Ok(taskAssignments);
+        }
     }
 }

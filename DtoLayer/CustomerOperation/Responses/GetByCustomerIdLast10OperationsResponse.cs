@@ -8,6 +8,7 @@ namespace DtoLayer.CustomerOperation.Responses
 {
     public class GetByCustomerIdLast10OperationsResponse
     {
+        public int Id { get; set; }
         public DateTime? ActualDate { get; set; }
         public string CreatedByUser { get; set; }
         public string Method { get; set; }

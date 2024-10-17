@@ -21,5 +21,6 @@ namespace BusinessLayer.Services.CustomerServices
         Task<List<SearchCustomerDto>> SearchCompaniesByNameAddOperations(string searchTerm, int pageNumber, int pageSize);
         Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize);
         Task<GetProfileInfoByIdResponse> GetProfileInfoByIdAsync(int id);
+        Task<GetCustomerCreatorResponse> GetCustomerCreatorByCustomerIdAsync(int customerId);
     }
 }

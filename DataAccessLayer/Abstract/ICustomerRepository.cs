@@ -16,5 +16,6 @@ namespace DataAccessLayer.Abstract
         Task<(List<Customer>, int)> GetAllPotentialCustomersPaged(int pageNumber, int pageSize);
         Task<List<SearchCustomerDto>> SearchCompaniesByNameAddOperations(string searchTerm, int pageNumber, int pageSize);
         Task<List<string>> SearchCompaniesByName(string searchTerm, int pageNumber, int pageSize);
+        Task<Customer> GetCustomerWithUserByIdAsync(int customerId);
     }
 }

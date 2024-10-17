@@ -432,10 +432,11 @@ namespace DataAccessLayer.EntityFramework
         {
             return await _context.CustomerOperations
           .Where(co => co.CustomerId == customerId)
-          .OrderByDescending(co => co.ActualDate) 
-          .Take(10) 
+          .OrderByDescending(co => co.ActualDate)
+          .Take(10)
           .Select(co => new GetByCustomerIdLast10OperationsResponse
           {
+              Id = co.Id,
               ActualDate = co.ActualDate,
               CreatedByUser = co.User.FullName,
               Method = co.Method,

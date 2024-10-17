@@ -173,8 +173,20 @@ namespace DataAccessLayer.EntityFramework
             var oneYearAgo = DateTime.Now.AddYears(-1);
 
             return await _context.TaskAssignments
-                .Where(ta => ta.CustomerId == customerId && ta.CreatedDate >= oneYearAgo) 
+                .Where(ta => ta.CustomerId == customerId && ta.CreatedDate >= oneYearAgo)
                 .CountAsync();
+        }
+
+        public async Task<List<TaskAssignment>> GetLast10TaskAssignmentsByCustomerIdAsync(int customerId)
+        {
+            return await _context.TaskAssignments
+                         .Include(ta => ta.CustomerOperation)
+                         .ThenInclude(co => co.Customer)
+                         .Include(ta => ta.CustomerOperation.User)
+                         .Where(ta => ta.CustomerId == customerId)
+                         .OrderByDescending(ta => ta.CreatedDate)
+                         .Take(10)
+                         .ToListAsync();
         }
     }
 }

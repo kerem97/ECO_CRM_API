@@ -1,5 +1,7 @@
 ﻿@model List<GetByCustomerIdLast10OperationsResponse>
 
+<script src="~/HTML/dist/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 <div class="card-body pt-0">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
@@ -18,20 +20,40 @@
             <tbody>
                 @if (Model != null && Model.Count > 0)
                 {
-                    var index = 1;
                     foreach (var operation in Model)
                     {
                         <tr>
-                            <th scope="row">@index</th>
+                            <th scope="row">@operation.Id</th>
                             <td>@(operation.ActualDate.HasValue ? operation.ActualDate.Value.ToString("dd.MM.yyyy") : "N/A")</td>
                             <td>@operation.CreatedByUser</td>
                             <td>@operation.Method</td>
                             <td>@operation.ContactPerson</td>
                             <td>@operation.Reason</td>
                             <td>@operation.MeetingFeedback</td>
-                            <td>@operation.OfferStatus</td>
+                            <td>
+                                @if (operation.OfferStatus == "Hayır")
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary">@operation.OfferStatus</span> 
+                                }
+                                else if (operation.OfferStatus == "Fiyat Talep Edildi")
+                                {
+                                    <span class="badge bg-purple-subtle text-purple">@operation.OfferStatus</span> 
+                                }
+                                else if (operation.OfferStatus == "Teklif Verilecek")
+                                {
+                                    <span class="badge bg-info-subtle text-info">@operation.OfferStatus</span>
+                                }
+                                else if (operation.OfferStatus == "Fiyat Bekleniyor")
+                                {
+                                    <span class="badge bg-warning-subtle text-warning">@operation.OfferStatus</span> 
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary">@operation.OfferStatus</span> 
+                                }
+                            </td>
+
                         </tr>
-                        index++;
                     }
                 }
                 else
@@ -44,3 +66,4 @@
         </table>
     </div>
 </div>
+<script src="~/HTML/dist/assets/js/app.js"></script>

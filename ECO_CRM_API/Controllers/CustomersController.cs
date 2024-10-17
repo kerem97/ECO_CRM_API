@@ -121,6 +121,13 @@ namespace ECO_CRM_API.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpGet("customer/{customerId}/creator")]
+        public async Task<IActionResult> GetCustomerCreator(int customerId)
+        {
+            var creatorName = await _customerService.GetCustomerCreatorByCustomerIdAsync(customerId);
+            return Ok(creatorName);
+        }
+
 
     }
 }

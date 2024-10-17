@@ -27,6 +27,9 @@ namespace BusinessLayer.Mapping
             CreateMap<Customer, GetByIdCustomerResponse>().ReverseMap();
             CreateMap<Customer, CustomerSearchResponse>().ReverseMap();
             CreateMap<Customer, GetProfileInfoByIdResponse>().ReverseMap();
+            CreateMap<Customer, GetCustomerCreatorResponse>()
+      .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+      .ReverseMap();
 
             CreateMap<CustomerOperation, AddCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, FilterCustomerOperationRequest>().ReverseMap();
@@ -35,6 +38,16 @@ namespace BusinessLayer.Mapping
 
 
             CreateMap<TaskAssignment, AddTaskAssignmentRequest>().ReverseMap();
+            CreateMap<TaskAssignment, GetLast10TaskAssignmentsByCustomerIdResponse>()
+                .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => src.CustomerOperation.User.FullName))
+            .ForMember(dest => dest.AbasId, opt => opt.MapFrom(src => src.AbasId))
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
+            .ForMember(dest => dest.CompletedDate, opt => opt.MapFrom(src => src.CompletedDate)).ReverseMap();
+
+
             CreateMap<TaskAssignment, GetTotalTaskAssignmentCountByCustomerIdResponse>().ReverseMap();
             CreateMap<TaskAssignment, TaskAssignmentApprovedCountResponse>().ReverseMap();
             CreateMap<TaskAssignment, TaskAssignmentNotApprovedCountResponse>().ReverseMap();
@@ -171,7 +184,8 @@ namespace BusinessLayer.Mapping
 
 
             CreateMap<CustomerOperation, GetByCustomerIdLast10OperationsResponse>()
-           .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown")).ReverseMap();
+           .ForMember(dest => dest.CreatedByUser, opt => opt.MapFrom(src => src.User != null ? src.User.FullName : "Unknown"))
+             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id)).ReverseMap();
 
             CreateMap<User, AddUserRequest>().ReverseMap()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());

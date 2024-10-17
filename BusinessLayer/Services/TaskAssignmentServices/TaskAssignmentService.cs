@@ -204,5 +204,15 @@ namespace BusinessLayer.Services.TaskAssignmentServices
             var count = await _repository.GetTaskAssignmentCountByCustomerIdAsync(customerId);
             return new GetTotalTaskAssignmentCountByCustomerIdResponse { TaskCount = count };
         }
+
+        public async Task<List<GetLast10TaskAssignmentsByCustomerIdResponse>> TGetLast10TaskAssignmentsByCustomerIdAsync(int customerId)
+        {
+            var taskAssignments = await _repository.GetLast10TaskAssignmentsByCustomerIdAsync(customerId);
+
+            // DTO'ya map'le
+            var taskAssignmentDtos = _mapper.Map<List<GetLast10TaskAssignmentsByCustomerIdResponse>>(taskAssignments);
+
+            return taskAssignmentDtos;
+        }
     }
 }

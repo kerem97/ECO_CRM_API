@@ -17,7 +17,7 @@ namespace DataAccessLayer.Abstract
         Task<int> GetApprovedTaskCountByCustomerIdAsync(int customerId);
         Task<int> GetNotApprovedTaskCountByCustomerIdAsync(int customerId);
         Task<int> GetTaskAssignmentCountByCustomerIdAsync(int customerId);
-
+        Task<List<TaskAssignment>> GetLast10TaskAssignmentsByCustomerIdAsync(int customerId);
 
     }
 }

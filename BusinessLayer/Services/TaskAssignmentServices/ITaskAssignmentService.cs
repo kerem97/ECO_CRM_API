@@ -26,5 +26,6 @@ namespace BusinessLayer.Services.TaskAssignmentServices
         Task<TaskAssignmentApprovedCountResponse> TGetApprovedTaskCountByCustomerIdAsync(int customerId);
         Task<TaskAssignmentNotApprovedCountResponse> TGetNotApprovedTaskCountByCustomerIdAsync(int customerId);
         Task<GetTotalTaskAssignmentCountByCustomerIdResponse> GetTaskAssignmentCountAsync(int customerId);
+        Task<List<GetLast10TaskAssignmentsByCustomerIdResponse>> TGetLast10TaskAssignmentsByCustomerIdAsync(int customerId);
     }
 }

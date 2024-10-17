@@ -150,5 +150,17 @@ namespace BusinessLayer.Services.CustomerServices
 
             return customerDto;
         }
+
+        public async Task<GetCustomerCreatorResponse> GetCustomerCreatorByCustomerIdAsync(int customerId)
+        {
+            var customer = await _customerRepository.GetCustomerWithUserByIdAsync(customerId);  
+            if (customer == null)
+            {
+                return null; 
+            }
+
+            var customerCreatorDto = _mapper.Map<GetCustomerCreatorResponse>(customer);
+            return customerCreatorDto;
+        }
     }
 }

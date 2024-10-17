@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.EntityFramework
 {
-    public class EfCustomerRepository :  ICustomerRepository
+    public class EfCustomerRepository : ICustomerRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -120,6 +120,13 @@ namespace DataAccessLayer.EntityFramework
         {
             _context.Set<Customer>().Update(entity);
             _context.SaveChanges();
+        }
+
+        public async Task<Customer> GetCustomerWithUserByIdAsync(int customerId)
+        {
+            return await _context.Customers
+                             .Include(c => c.User) 
+                             .FirstOrDefaultAsync(c => c.Id == customerId);
         }
     }
 }
