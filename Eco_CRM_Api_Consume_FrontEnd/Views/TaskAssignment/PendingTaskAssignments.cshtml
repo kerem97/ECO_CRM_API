@@ -199,7 +199,8 @@
                     var hours = ("0" + dateObj.getHours()).slice(-2);
                     var minutes = ("0" + dateObj.getMinutes()).slice(-2);
                     var formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
-
+                    var isDisabled = task.status === "Fiyat Verildi" ? "disabled" : "";
+                    var buttonClass = task.status === "Fiyat Verildi" ? "btn-secondary" : "btn-primary";
 
 
                     tbody.append(`
@@ -211,9 +212,9 @@
                                         <td>${task.abasId || ""}</td>
                                         <td>${task.status || ""}</td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm" data-task-id="${task.id}" onclick="openTaskDetailsModal(${task.id})">
-                                                İncele
-                                            </button>
+                                           <button class="btn ${buttonClass} btn-sm" data-task-id="${task.id}" onclick="openTaskDetailsModal(${task.id})" ${isDisabled}>
+                                              İncele
+                                           </button>
                                         </td>
                                         <td>
                                             <button class="btn btn-success btn-sm" data-task-id="${task.id}" onclick="openOfferModal(${task.id})">
