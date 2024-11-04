@@ -130,7 +130,7 @@
 
         function fetchData(page) {
             return $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/status-given-offers?pageNumber=${page}&pageSize=10`,
+                url: `https://sistemeco.online/api/CustomerOperations/status-given-offers?pageNumber=${page}&pageSize=10`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -248,7 +248,7 @@
             console.log('Gönderilen Task Data:', taskData);
 
             $.ajax({
-                url: 'https://localhost:44309/api/TaskAssignments/taskassignment',
+                url: 'https://sistemeco.online/api/TaskAssignments/taskassignment',
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,

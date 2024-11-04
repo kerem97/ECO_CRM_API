@@ -133,7 +133,7 @@
 
         function fetchData(page) {
             return $.ajax({
-                url: `https://localhost:44309/api/TaskAssignments/completed-tasks?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://sistemeco.online/api/TaskAssignments/completed-tasks?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -202,7 +202,7 @@
 
         function openTaskDetailsModal(taskId) {
             $.ajax({
-                url: `https://localhost:44309/api/TaskAssignments/taskassignment/${taskId}`,
+                url: `https://sistemeco.online/api/TaskAssignments/taskassignment/${taskId}`,
                 method: 'GET',
                 success: function (task) {
                     $('#customerName').text(task.customerName);

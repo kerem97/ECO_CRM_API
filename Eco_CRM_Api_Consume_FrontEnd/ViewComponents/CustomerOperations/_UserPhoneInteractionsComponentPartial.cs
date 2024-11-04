@@ -18,7 +18,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.CustomerOperations
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync("https://localhost:44309/api/CustomerOperations/user-phone-interactions");
+            var response = await client.GetAsync("https://sistemeco.online/api/CustomerOperations/user-phone-interactions");
 
             if (response.IsSuccessStatusCode)
             {

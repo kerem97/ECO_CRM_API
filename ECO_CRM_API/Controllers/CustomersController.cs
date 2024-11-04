@@ -62,7 +62,7 @@ namespace ECO_CRM_API.Controllers
             return Ok(customers);
         }
         [HttpPost]
-        public async Task<IActionResult> AddCustomer([FromBody] AddCustomerRequest customerDto)
+        public async Task<IActionResult> AddCustomer(AddCustomerRequest customerDto)
         {
             var userId = GetCurrentUserId();
 
@@ -70,6 +70,16 @@ namespace ECO_CRM_API.Controllers
 
             return Ok("Customer added successfully");
         }
+        [HttpPost("add-potential-customers")]
+        public async Task<IActionResult> AddPotentialCustomer(AddPotentialCustomerRequest customerDto)
+        {
+            var userId = GetCurrentUserId();
+
+            await _customerService.AddPotentialCustomersAsync(customerDto, userId);
+
+            return Ok("Customer added successfully");
+        }
+
         [HttpGet("search-companies-add-operations")]
         public async Task<IActionResult> SearchCompaniesAddOperations([FromQuery] string searchTerm, int pageNumber = 1, int pageSize = 10)
         {

@@ -22,6 +22,7 @@ namespace BusinessLayer.Mapping
         public MappingProfile()
         {
             CreateMap<Customer, AddCustomerRequest>().ReverseMap();
+            CreateMap<Customer, AddPotentialCustomerRequest>().ReverseMap();
             CreateMap<Customer, UpdateCustomerRequest>().ReverseMap();
             CreateMap<Customer, DisplayCustomerResponse>().ReverseMap();
             CreateMap<Customer, GetByIdCustomerResponse>().ReverseMap();

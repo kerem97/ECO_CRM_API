@@ -23,7 +23,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
             ViewBag.Token = HttpContext.Session.GetString("Token");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/Customers/paged-existed-customers?pageNumber={pageNumber}&pageSize=8");
+            var response = await client.GetAsync($"https://sistemeco.online/api/Customers/paged-existed-customers?pageNumber={pageNumber}&pageSize=8");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -56,7 +56,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
             ViewBag.Token = HttpContext.Session.GetString("Token");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/Customers/paged-existed-customers?pageNumber={pageNumber}&pageSize=8");
+            var response = await client.GetAsync($"https://sistemeco.online/api/Customers/paged-existed-customers?pageNumber={pageNumber}&pageSize=8");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -88,7 +88,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
             ViewBag.Token = HttpContext.Session.GetString("Token");
-            var response = await client.GetAsync($"https://localhost:44309/api/Customers/paged-potential-customers?pageNumber={pageNumber}&pageSize=8");
+            var response = await client.GetAsync($"https://sistemeco.online/api/Customers/paged-potential-customers?pageNumber={pageNumber}&pageSize=8");
             if (!response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Login", "Account");
@@ -118,7 +118,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
             ViewBag.Token = HttpContext.Session.GetString("Token");
-            var response = await client.GetAsync($"https://localhost:44309/api/Customers/paged-potential-customers?pageNumber={pageNumber}&pageSize=8");
+            var response = await client.GetAsync($"https://sistemeco.online/api/Customers/paged-potential-customers?pageNumber={pageNumber}&pageSize=8");
             if (!response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Login", "Account");
@@ -141,7 +141,46 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             return View(customerList);
         }
         [HttpGet]
-        public IActionResult NewCustomer()
+        public IActionResult NewCustomer(string? type)
+        {
+            Console.WriteLine("Type Parametresi: " + type);
+            var fullName = HttpContext.Session.GetString("FullName");
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            ViewBag.FullName = fullName;
+            ViewBag.Token = HttpContext.Session.GetString("Token");
+            ViewBag.IsPotentialCustomer = type == "potential";
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> NewCustomer(AddCustomerRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
+
+            var jsonContent = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://localhost:44309/api/Customers/add-potential-customers", httpContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();  
+                TempData["ErrorMessage"] = $"Müşteri eklenirken hata oluştu: {errorContent}";
+                return View(request);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Müşteri eklenirken hata oluştu.";
+                return View(request);
+            }
+        }
+        [HttpGet]
+        public IActionResult NewPotentialCustomer()
         {
             var fullName = HttpContext.Session.GetString("FullName");
             if (string.IsNullOrEmpty(fullName))
@@ -155,7 +194,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> NewCustomer(AddCustomerRequest request)
+        public async Task<IActionResult> NewPotentialCustomer(AddPotentialCustomerRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
@@ -163,12 +202,13 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var jsonContent = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:44309/api/Customers", httpContent);
+            var response = await client.PostAsync("https://sistemeco.online/api/Customers", httpContent);
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Müşteri başarıyla eklendi!";
-                return RedirectToAction("Index", "Customer");
+                var errorContent = await response.Content.ReadAsStringAsync();
+                TempData["ErrorMessage"] = $"Müşteri eklenirken hata oluştu: {errorContent}";
+                return View(request);
             }
             else
             {

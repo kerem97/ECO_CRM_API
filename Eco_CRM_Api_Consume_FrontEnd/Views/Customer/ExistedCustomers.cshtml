@@ -105,7 +105,7 @@
 
         function fetchData(page) {
             $.ajax({
-                url: `https://localhost:44309/api/Customers/paged-existed-customers?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://sistemeco.online/api/Customers/paged-existed-customers?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -169,7 +169,7 @@
             }
 
             $.ajax({
-                url: `https://localhost:44309/api/Customers/paged-existed-customers?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://sistemeco.online/api/Customers/paged-existed-customers?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token

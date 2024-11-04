@@ -13,7 +13,8 @@ namespace DataAccessLayer.Concrete
         protected override void OnConfiguring
             (DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=HUAWEI\\SQLEXPRESS;database=EcoCRMDb;integrated security=true");
+            //optionsBuilder.UseSqlServer("server=HUAWEI\\SQLEXPRESS;database=EcoCRMDb;integrated security=true");
+            optionsBuilder.UseSqlServer("Server=SQLNCLI10;Server=94.73.144.8;Database=u1989810_ecrmdb; Uid=u1989810_ecosoft;Pwd=@Xg0@t5cO2CU6y:");
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }

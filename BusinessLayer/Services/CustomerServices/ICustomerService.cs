@@ -13,6 +13,7 @@ namespace BusinessLayer.Services.CustomerServices
         Task<List<DisplayCustomerResponse>> GetAllCustomersAsync();
         Task<GetByIdCustomerResponse> GetCustomerByIdAsync(int id);
         Task AddCustomersAsync(AddCustomerRequest addCustomerRequest, int createdByUserId);
+        Task AddPotentialCustomersAsync(AddPotentialCustomerRequest addPotentialCustomerRequest, int createdByUserId);
         Task UpdateCustomersAsync(UpdateCustomerRequest updateCustomerRequest, int updatedByUserId);
         Task DeleteCustomersAsync(int id);
         Task<(List<DisplayCustomerResponse>, int)> GetPagedCustomersAsync(int pageNumber, int pageSize);

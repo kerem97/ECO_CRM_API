@@ -25,7 +25,11 @@ namespace BusinessLayer.Services.TaskAssignmentFileServices
         }
         public async Task AddTaskAssignmentFile(AddTaskAssignmentFileRequest request)
         {
-            string uploadsFolder = Path.Combine("C:\\Users\\kerem\\source\\repos\\Eco_CRM_Api_Consume_FrontEnd", "wwwroot", "uploads");
+            //string uploadsFolder = Path.Combine("C:\\Users\\kerem\\source\\repos\\Eco_CRM_Api_Consume_FrontEnd", "wwwroot", "uploads");
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Yükleme yapılacak tam dosya yolunu belirtelim
+            string uploadsFolder = Path.Combine(baseDir, "wwwroot", "uploads");
 
             if (!Directory.Exists(uploadsFolder))
             {

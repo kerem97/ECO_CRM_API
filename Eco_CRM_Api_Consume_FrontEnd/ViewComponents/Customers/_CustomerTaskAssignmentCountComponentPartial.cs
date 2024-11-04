@@ -26,7 +26,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Customers
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/customer/{customerId}/task-assignment-count");
+            var response = await client.GetAsync($"https://sistemeco.online/api/TaskAssignments/customer/{customerId}/task-assignment-count");
 
             if (response.IsSuccessStatusCode)
             {

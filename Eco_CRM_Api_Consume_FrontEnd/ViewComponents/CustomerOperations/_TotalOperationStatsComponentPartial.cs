@@ -26,7 +26,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.CustomerOperations
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync("https://localhost:44309/api/CustomerOperations/total-operation-stats");
+            var response = await client.GetAsync("https://sistemeco.online/api/CustomerOperations/total-operation-stats");
 
             if (response.IsSuccessStatusCode)
             {

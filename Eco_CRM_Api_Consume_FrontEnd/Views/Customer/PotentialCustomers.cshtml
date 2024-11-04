@@ -28,7 +28,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Potensiyel Müşteriler</h4>
                             <div>
-                                <a href="/Customer/NewCustomer" class="btn btn-primary me-2">Yeni Müşteri Ekle</a>
+                                <a href="/Customer/NewPotentialCustomer" class="btn btn-primary me-2">Yeni Müşteri Ekle</a>
                                 <a href="/Customer/PotentialCustomersCard" class="text-secondary btn btn-secondary">
                                     <i class="fas fa-th-large" style="color: #fff;"></i>
                                 </a>
@@ -110,7 +110,7 @@
 
         function fetchData(page) {
             $.ajax({
-                url: `https://localhost:44309/api/Customers/paged-potential-customers?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://sistemeco.online/api/Customers/paged-potential-customers?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -174,7 +174,7 @@
             }
 
             $.ajax({
-                url: `https://localhost:44309/api/Customers/paged-potential-customers?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://sistemeco.online/api/Customers/paged-potential-customers?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token

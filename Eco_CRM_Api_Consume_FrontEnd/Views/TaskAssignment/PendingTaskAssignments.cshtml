@@ -166,7 +166,7 @@
 
         function fetchData(page) {
             return $.ajax({
-                url: `https://localhost:44309/api/TaskAssignments/pending-tasks?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://sistemeco.online/api/TaskAssignments/pending-tasks?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -247,7 +247,7 @@
 
         function openTaskDetailsModal(taskId) {
             $.ajax({
-                url: `https://localhost:44309/api/TaskAssignments/taskassignment/${taskId}`,
+                url: `https://sistemeco.online/api/TaskAssignments/taskassignment/${taskId}`,
                 method: 'GET',
                 success: function (task) {
                     $('#customerName').text(task.customerName);
@@ -318,7 +318,7 @@
             const taskId = $('#taskId').val();
             console.log('Görev ID:', taskId);
             $.ajax({
-                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-givenoffer',
+                url: 'https://sistemeco.online/api/TaskAssignments/task/update-status-to-givenoffer',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -357,7 +357,7 @@
                 formData.append("taskAssignmentId", taskId);
 
                 $.ajax({
-                    url: 'https://localhost:44309/api/TaskAssignmentFiles/upload',
+                    url: 'https://sistemeco.online/api/TaskAssignmentFiles/upload',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -397,7 +397,7 @@
         }
         function updateTaskStatusToProposalGiven(taskId) {
             $.ajax({
-                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-givenproposal', 
+                url: 'https://sistemeco.online/api/TaskAssignments/task/update-status-to-givenproposal',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

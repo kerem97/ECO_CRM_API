@@ -20,9 +20,9 @@ namespace DtoLayer.Customer.Responses
         public string ContactPhone2 { get; set; }
         public string ContactEmail { get; set; }
         public string IsDomestic { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string Status { get; set; }
-        public decimal LimitTl { get; set; }
+        public decimal? LimitTl { get; set; }
         public string Group { get; set; }
     }
 }

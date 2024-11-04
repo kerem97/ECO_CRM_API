@@ -53,12 +53,12 @@ namespace BusinessLayer.Services.CustomerServices
                 Country = customer.Country,
                 ContactName = customer.ContactName,
                 ContactPhone1 = customer.ContactPhone1,
-                ContactPhone2 = customer.ContactPhone2,
+                ContactPhone2 = customer.ContactPhone2 ?? null,
                 ContactEmail = customer.ContactEmail,
                 IsDomestic = customer.IsDomestic,
-                Description = customer.Description,
+                Description = customer.Description ?? null,
                 Status = customer.Status,
-                LimitTl = customer.LimitTl
+                LimitTl = customer.LimitTl ?? null
             }).ToList();
 
             return customerResponses;
@@ -153,14 +153,24 @@ namespace BusinessLayer.Services.CustomerServices
 
         public async Task<GetCustomerCreatorResponse> GetCustomerCreatorByCustomerIdAsync(int customerId)
         {
-            var customer = await _customerRepository.GetCustomerWithUserByIdAsync(customerId);  
+            var customer = await _customerRepository.GetCustomerWithUserByIdAsync(customerId);
             if (customer == null)
             {
-                return null; 
+                return null;
             }
 
             var customerCreatorDto = _mapper.Map<GetCustomerCreatorResponse>(customer);
             return customerCreatorDto;
+        }
+
+        public async Task AddPotentialCustomersAsync(AddPotentialCustomerRequest addPotentialCustomerRequest, int createdByUserId)
+        {
+            addPotentialCustomerRequest.CreatedDate = DateTime.Now;
+            addPotentialCustomerRequest.Status = "Aday";
+            var customerEntity = _mapper.Map<Customer>(addPotentialCustomerRequest);
+            customerEntity.UserId = createdByUserId;
+
+            await _customerRepository.Add(customerEntity);
         }
     }
 }

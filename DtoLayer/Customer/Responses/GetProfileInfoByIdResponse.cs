@@ -13,6 +13,7 @@ namespace DtoLayer.Customer.Responses
         public string? Instagram { get; set; }
         public string? Twitter { get; set; }
         public string? Facebook { get; set; }
+        public string? LinkedIn { get; set; }
         public string Status { get; set; }
         public string ContactPhone1 { get; set; }
         public string ContactEmail { get; set; }

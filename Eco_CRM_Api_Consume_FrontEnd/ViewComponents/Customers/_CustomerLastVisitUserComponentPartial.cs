@@ -26,7 +26,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.ViewComponents.Customers
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/last-visit-user/{customerId}");
+            var response = await client.GetAsync($"https://sistemeco.online/api/CustomerOperations/last-visit-user/{customerId}");
 
             if (response.IsSuccessStatusCode)
             {

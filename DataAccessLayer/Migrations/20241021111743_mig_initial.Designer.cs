@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241009133510_mig_op_feedback_add")]
-    partial class mig_op_feedback_add
+    [Migration("20241021111743_mig_initial")]
+    partial class mig_initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,8 +75,14 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Facebook")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Group")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instagram")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IsDomestic")
@@ -86,12 +92,27 @@ namespace DataAccessLayer.Migrations
                     b.Property<decimal>("LimitTl")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostalCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sector")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Twitter")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -176,6 +197,106 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("CustomerOperations");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.TaskAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AbasId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OperationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity10")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity2")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity3")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity4")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity5")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity6")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity7")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity8")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity9")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperationId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TaskAssignments");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.TaskAssignmentFile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TaskAssignmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskAssignmentId");
+
+                    b.ToTable("TaskAssignmentFiles");
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.User", b =>
                 {
                     b.Property<int>("Id")
@@ -231,14 +352,52 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.TaskAssignment", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.CustomerOperation", "CustomerOperation")
+                        .WithOne("TaskAssignment")
+                        .HasForeignKey("EntityLayer.Concrete.TaskAssignment", "OperationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EntityLayer.Concrete.User", "User")
+                        .WithMany("TaskAssignments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerOperation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.TaskAssignmentFile", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.TaskAssignment", "TaskAssignment")
+                        .WithMany()
+                        .HasForeignKey("TaskAssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TaskAssignment");
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.Customer", b =>
                 {
                     b.Navigation("CustomerOperations");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.CustomerOperation", b =>
+                {
+                    b.Navigation("TaskAssignment")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.User", b =>
                 {
                     b.Navigation("CustomerOperations");
+
+                    b.Navigation("TaskAssignments");
                 });
 #pragma warning restore 612, 618
         }

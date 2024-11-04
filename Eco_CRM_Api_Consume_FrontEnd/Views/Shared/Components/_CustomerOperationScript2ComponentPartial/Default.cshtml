@@ -14,7 +14,7 @@
         $('#monthFilter').empty().append('<option value="">Ay Seç</option>');
         $('#yearFilter').empty().append('<option value="">Yıl Seç</option>');
         $.ajax({
-            url: 'https://localhost:44309/api/CustomerOperations/get-dropdown-data',
+            url: 'https://sistemeco.online/api/CustomerOperations/get-dropdown-data',
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -56,7 +56,7 @@
             status: $('#statusFilter').val() || null
         };
         $.ajax({
-            url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+            url: `https://sistemeco.online/api/CustomerOperations/filtered-operations`,
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token,
@@ -83,7 +83,7 @@
     });
     function fetchData(page) {
         $.ajax({
-            url: `https://localhost:44309/api/CustomerOperations/paged-operations?pageNumber=${page}&pageSize=${pageSize}`,
+            url: `https://sistemeco.online/api/CustomerOperations/paged-operations?pageNumber=${page}&pageSize=${pageSize}`,
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -151,7 +151,7 @@
         }
 
         $.ajax({
-            url: `https://localhost:44309/api/CustomerOperations/filtered-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+            url: `https://sistemeco.online/api/CustomerOperations/filtered-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token,
@@ -172,7 +172,7 @@
             const encodedSearchTerm = encodeURIComponent(searchTerm);
 
             $.ajax({
-                url: `https://localhost:44309/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
+                url: `https://sistemeco.online/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -208,7 +208,7 @@
         });
         function filterOperationsByCompanyName(companyName) {
             $.ajax({
-                url: `https://localhost:44309/api/CustomerOperations/filtered-operations`,
+                url: `https://sistemeco.online/api/CustomerOperations/filtered-operations`,
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,

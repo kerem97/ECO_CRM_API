@@ -32,7 +32,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-planned-operations?pageNumber={pageNumber}&pageSize=10");
+            var response = await client.GetAsync($"https://sistemeco.online/api/CustomerOperations/user-planned-operations?pageNumber={pageNumber}&pageSize=10");
             var userOperations = new List<DisplayCustomerOperationResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -66,7 +66,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-complated-operations?pageNumber={pageNumber}&pageSize=10");
+            var response = await client.GetAsync($"https://sistemeco.online/api/CustomerOperations/user-complated-operations?pageNumber={pageNumber}&pageSize=10");
             var userOperations = new List<DisplayCustomerOperationResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -100,7 +100,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/user-cancelled-operations?pageNumber={pageNumber}&pageSize=10");
+            var response = await client.GetAsync($"https://sistemeco.online/api/CustomerOperations/user-cancelled-operations?pageNumber={pageNumber}&pageSize=10");
             var userOperations = new List<DisplayCustomerOperationResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -134,7 +134,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync("https://localhost:44309/api/Customers");
+            var response = await client.GetAsync("https://sistemeco.online/api/Customers");
 
             if (response.IsSuccessStatusCode)
             {
@@ -166,7 +166,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var jsonContent = JsonConvert.SerializeObject(request.OperationRequest);
             var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:44309/api/CustomerOperations/add", httpContent);
+            var response = await client.PostAsync("https://sistemeco.online/api/CustomerOperations/add", httpContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -192,7 +192,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
             ViewBag.Token = HttpContext.Session.GetString("Token");
 
-            var response = await client.GetAsync("https://localhost:44309/api/CustomerOperations/all-operations?pageNumber=1&pageSize=10");
+            var response = await client.GetAsync("https://sistemeco.online/api/CustomerOperations/all-operations?pageNumber=1&pageSize=10");
             var allOperations = new List<DisplayCustomerOperationResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -218,7 +218,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ViewBag.Token}");
 
-            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/by-customer/{id}");
+            var response = await client.GetAsync($"https://sistemeco.online/api/CustomerOperations/by-customer/{id}");
             var customerOperations = new List<DisplayCustomerOperationByCustomerResponse>();
 
             if (response.IsSuccessStatusCode)
@@ -244,7 +244,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync("https://localhost:44309/api/Customers");
+            var response = await client.GetAsync("https://sistemeco.online/api/Customers");
 
             if (response.IsSuccessStatusCode)
             {
