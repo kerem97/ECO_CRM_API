@@ -23,8 +23,11 @@ namespace EntityLayer.Concrete
         public string IsDomestic { get; set; }
         public string? Description { get; set; }
         public string Status { get; set; }
+        public string? CustomerChannel { get; set; }
         public decimal? LimitTl { get; set; }
         public string Group { get; set; }
+        public string GroupCategoryDetail{ get; set; }
+        public string? PriorityLevel { get; set; }
         public int? PostalCode { get; set; }
         public string? Website { get; set; }
         public string? Instagram { get; set; }

@@ -1,5 +1,6 @@
 ﻿using DtoLayer.Customer.Requests;
 using DtoLayer.Customer.Responses;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -141,9 +142,8 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             return View(customerList);
         }
         [HttpGet]
-        public IActionResult NewCustomer(string? type)
+        public IActionResult NewCustomer()
         {
-            Console.WriteLine("Type Parametresi: " + type);
             var fullName = HttpContext.Session.GetString("FullName");
             if (string.IsNullOrEmpty(fullName))
             {
@@ -152,7 +152,6 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
 
             ViewBag.FullName = fullName;
             ViewBag.Token = HttpContext.Session.GetString("Token");
-            ViewBag.IsPotentialCustomer = type == "potential";
 
             return View();
         }
@@ -165,20 +164,19 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var jsonContent = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:44309/api/Customers/add-potential-customers", httpContent);
+            var response = await client.PostAsync("https://sistemeco.online/api/Customers/", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorContent = await response.Content.ReadAsStringAsync();  
+                var errorContent = await response.Content.ReadAsStringAsync();
                 TempData["ErrorMessage"] = $"Müşteri eklenirken hata oluştu: {errorContent}";
                 return View(request);
             }
-            else
-            {
-                TempData["ErrorMessage"] = "Müşteri eklenirken hata oluştu.";
-                return View(request);
-            }
+
+            return RedirectToAction("ExistedCustomersCard", "Customer");
         }
+
+
         [HttpGet]
         public IActionResult NewPotentialCustomer()
         {
@@ -202,20 +200,17 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var jsonContent = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://sistemeco.online/api/Customers", httpContent);
-
+            var response = await client.PostAsync("https://sistemeco.online/api/Customers/add-potential-customers", httpContent);
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
                 TempData["ErrorMessage"] = $"Müşteri eklenirken hata oluştu: {errorContent}";
                 return View(request);
             }
-            else
-            {
-                TempData["ErrorMessage"] = "Müşteri eklenirken hata oluştu.";
-                return View(request);
-            }
+
+            return RedirectToAction("PotentialCustomersCard", "Customer");
         }
+
 
 
         [HttpGet("{id}")]

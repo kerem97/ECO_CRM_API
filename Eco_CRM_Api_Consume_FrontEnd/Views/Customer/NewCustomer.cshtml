@@ -15,7 +15,6 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
 </head>
 
 <body>
@@ -32,6 +31,7 @@
                     <div class="card-body pt-0">
                         <form asp-action="NewCustomer" method="post" id="customerForm">
                             <div class="row">
+                                <!-- Sol Kolon -->
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label asp-for="CompanyName" class="form-label">Şirket Adı</label>
@@ -70,7 +70,19 @@
                                         <input asp-for="PostalCode" class="form-control" />
                                     </div>
                                 </div>
+
+                                <!-- Sağ Kolon -->
                                 <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label asp-for="PriorityLevel" class="form-label">Önem Derecesi</label>
+                                        <select asp-for="PriorityLevel" class="form-select">
+                                            <option value="Çok düşük">Çok Düşük</option>
+                                            <option value="Düşük">Düşük</option>
+                                            <option value="Orta">Orta</option>
+                                            <option value="Yüksek">Yüksek</option>
+                                            <option value="Çok yüksek">Çok Yüksek</option>
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
                                         <label asp-for="Status" class="form-label">Durum</label>
                                         <select asp-for="Status" class="form-select">
@@ -80,23 +92,61 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
+                                        <label asp-for="CustomerChannel" class="form-label">Müşteri Kanalı</label>
+                                        <select asp-for="CustomerChannel" class="form-select">
+                                            <option value="İnternet">İnternet</option>
+                                            <option value="Tavsiye">Tavsiye</option>
+                                            <option value="Fuar">Fuar</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" asp-for="IsDomestic" value="Yurt İçi" id="yurtIci" required>
-                                            <label class="form-check-label" for="yurtIci" asp-for="IsDomestic">Yurt İçi</label>
+                                            <label class="form-check-label" for="yurtIci">Yurt İçi</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="IsDomestic" value="Yurt Dışı" id="yurtDisi" required>
+                                            <input class="form-check-input" type="radio" asp-for="IsDomestic" value="Yurt Dışı" id="yurtDisi" required>
                                             <label class="form-check-label" for="yurtDisi">Yurt Dışı</label>
                                         </div>
-                                        <div class="invalid-feedback">Lütfen bir seçenek belirleyin.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label asp-for="Group" class="form-label">Grup</label>
-                                        <select asp-for="Group" class="form-select">
-                                            <option value="Denim">Denim</option>
-                                            <option value="Non-Denim">Non-Denim</option>
+                                        <select asp-for="Group" class="form-select" id="groupSelect">
+                                            <option value="" disabled selected>Seçiniz...</option>
+                                            <option value="Tekstil">Tekstil</option>
+                                            <option value="Rulo">Rulo</option>
                                         </select>
                                     </div>
+
+                                    <div class="mb-3" id="ruloOptions" style="display: none;">
+                                        <label asp-for="GroupCategoryDetail" class="form-label">Rulo Seçenekleri</label>
+                                        <div class="form-check">
+                                            <input asp-for="GroupCategoryDetail" class="form-check-input" type="radio" value="Yapışkanlı" id="Yapışkanlı">
+                                            <label class="form-check-label" for="Yapışkanlı">Yapışkanlı</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input asp-for="GroupCategoryDetail" class="form-check-input" type="radio" value="Shrink Sleeve" id="ShrinkSleeve">
+                                            <label class="form-check-label" for="ShrinkSleeve">Shrink Sleeve</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input asp-for="GroupCategoryDetail" class="form-check-input" type="radio" value="Piggyback" id="Piggyback">
+                                            <label class="form-check-label" for="Piggyback">Piggyback</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3" id="tekstilOptions" style="display: none;">
+                                        <label asp-for="GroupCategoryDetail" class="form-label">Tekstil Seçenekleri</label>
+                                        <div class="form-check">
+                                            <input asp-for="GroupCategoryDetail" class="form-check-input" type="radio" value="Denim" id="Denim">
+                                            <label class="form-check-label" for="Denim">Denim</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input asp-for="GroupCategoryDetail" class="form-check-input" type="radio" value="Non-Denim" id="NonDenim">
+                                            <label class="form-check-label" for="NonDenim">Non-Denim</label>
+                                        </div>
+                                    </div>
+
+
                                     <div class="mb-3">
                                         <label asp-for="Address" class="form-label">Adres</label>
                                         <textarea asp-for="Address" class="form-control"></textarea>
@@ -109,22 +159,6 @@
                                         <label asp-for="Description" class="form-label">Açıklama</label>
                                         <textarea asp-for="Description" class="form-control"></textarea>
                                     </div>
-                                    <div class="mb-3">
-                                        <label asp-for="Website" class="form-label">Web Sitesi</label>
-                                        <input asp-for="Website" class="form-control" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label asp-for="Instagram" class="form-label">Instagram</label>
-                                        <input asp-for="Instagram" class="form-control" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label asp-for="Twitter" class="form-label">Twitter</label>
-                                        <input asp-for="Twitter" class="form-control" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label asp-for="Facebook" class="form-label">Facebook</label>
-                                        <input asp-for="Facebook" class="form-control" />
-                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -135,21 +169,28 @@
     </div>
 </body>
 </html>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.body.style.opacity = 1;
+    $(document).ready(function () {
+        $('#groupSelect').on('change', function () {
+            if ($(this).val() === "Rulo") {
+                $('#ruloOptions').show();
+                $('#tekstilOptions').hide();
+            } else if ($(this).val() === "Tekstil") {
+                $('#tekstilOptions').show();
+                $('#ruloOptions').hide();
+            } else {
+                $('#ruloOptions, #tekstilOptions').hide();
+            }
+        });
+        $('#groupSelect').trigger('change');
     });
-    $('#customerForm').on('submit', function (e) {
-        $('#countryInput').val(function () {
-            return $(this).val().toUpperCase();
-        });
-        $('#cityInput').val(function () {
-            return $(this).val().toUpperCase();
-        });
-        $('#districtInput').val(function () {
-            return $(this).val().toUpperCase();
+
+    $('#customerForm').on('submit', function () {
+        $('#countryInput, #cityInput, #districtInput').each(function () {
+            $(this).val($(this).val().toUpperCase());
         });
     });
 </script>
