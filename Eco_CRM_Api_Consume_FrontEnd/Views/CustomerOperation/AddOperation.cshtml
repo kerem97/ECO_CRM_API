@@ -132,6 +132,7 @@
 
                             $('#firmSelector').val(selectedFirmName);
                             $('#selectedCustomerId').val(selectedFirmId);
+                            console.log("Selected CustomerId:", $('#selectedCustomerId').val());
                             $('#firmDropdown').hide(); 
                         });
                     },
@@ -142,6 +143,9 @@
             } else {
                 $('#firmDropdown').hide(); 
             }
+        });
+        $('#operationForm').submit(function (e) {
+            console.log("Form gönderiliyor");
         });
 
         $(document).on('click', function (event) {

@@ -194,6 +194,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> NewPotentialCustomer(AddPotentialCustomerRequest request)
         {
+            request.Status = "Aday";
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
@@ -204,6 +205,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(errorContent);
                 TempData["ErrorMessage"] = $"Müşteri eklenirken hata oluştu: {errorContent}";
                 return View(request);
             }

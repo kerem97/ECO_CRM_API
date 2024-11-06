@@ -82,7 +82,14 @@
                                             <option value="Çok yüksek">Çok Yüksek</option>
                                         </select>
                                     </div>
-
+                                    <div class="mb-3">
+                                        <label asp-for="CustomerChannel" class="form-label">Müşteri Kanalı</label>
+                                        <select asp-for="CustomerChannel" class="form-select">
+                                            <option value="İnternet">İnternet</option>
+                                            <option value="Tavsiye">Tavsiye</option>
+                                            <option value="Fuar">Fuar</option>
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
                                         <label asp-for="Group" class="form-label">Grup</label>
                                         <select asp-for="Group" class="form-select" id="groupSelect">

@@ -14,6 +14,6 @@ namespace DtoLayer.CustomerOperation.Requests
         public bool? IsMeetingOnPlannedDate { get; set; }
         public string? UpdatedStatusDescription { get; set; }
         public string? OfferStatus { get; set; }
-        public string MeetingFeedback { get; set; }
+        public string? MeetingFeedback { get; set; }
     }
 }

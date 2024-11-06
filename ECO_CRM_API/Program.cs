@@ -37,13 +37,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", builder =>
-    {
-        builder.SetIsOriginAllowed(_ => true) // Tüm origin'leri kabul et
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials();
-    });
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://ecosistem.runasp.net")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials());
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -63,7 +61,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 var app = builder.Build();
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigin");
+
 
 if (app.Environment.IsDevelopment())
 {

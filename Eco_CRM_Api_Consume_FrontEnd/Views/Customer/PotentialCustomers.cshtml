@@ -73,8 +73,8 @@
                                             <td>@x.Status</td>
                                             <td>@x.Group</td>
                                             <td>
-                                                <a href="/CustomerOperation/OperationsByCustomer/@x.Id" class="btn btn-primary btn-sm" style="background-color: #555; border: none; padding: 5px 10px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                                    Detaylar
+                                                <a asp-controller="Customer" asp-action="CustomerDetail" asp-route-id="@x.Id" class="btn btn-sm btn-primary px-2 d-inline-flex align-items-center">
+                                                    <i class="iconoir-user fs-14 me-1"></i>Detaylar
                                                 </a>
                                             </td>
                                         </tr>

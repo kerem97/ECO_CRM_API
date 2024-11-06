@@ -25,7 +25,7 @@ namespace EntityLayer.Concrete
         public bool? IsMeetingOnPlannedDate { get; set; }
         public string? UpdatedStatusDescription { get; set; }
         public string? OfferStatus { get; set; }
-        public string MeetingFeedback { get; set; }
+        public string? MeetingFeedback { get; set; }
         public User User { get; set; }
         public Customer Customer { get; set; }
         public TaskAssignment TaskAssignment { get; set; }

@@ -164,6 +164,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
             var jsonContent = JsonConvert.SerializeObject(request.OperationRequest);
+            Console.WriteLine("Gönderilen JSON: " + jsonContent);
             var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("https://sistemeco.online/api/CustomerOperations/add", httpContent);
