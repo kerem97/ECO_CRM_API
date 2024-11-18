@@ -25,10 +25,14 @@ namespace DataAccessLayer.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(TaskAssignment entity)
+        public async Task Delete(int id )
         {
-            _context.Set<TaskAssignment>().Remove(entity);
-            _context.SaveChanges();
+            var exist = await _context.Customers.FindAsync(id);
+            if (exist != null)
+            {
+                _context.Customers.Remove(exist);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<TaskAssignment>> GetAll()
@@ -187,6 +191,11 @@ namespace DataAccessLayer.EntityFramework
                          .OrderByDescending(ta => ta.CreatedDate)
                          .Take(10)
                          .ToListAsync();
+        }
+
+        public async Task<TaskAssignment> GetByIdAsync(int id)
+        {
+            return await _context.TaskAssignments.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

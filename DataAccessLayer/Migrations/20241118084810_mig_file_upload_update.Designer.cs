@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118084810_mig_file_upload_update")]
+    partial class mig_file_upload_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,35 +207,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("CustomerOperations");
                 });
 
-            modelBuilder.Entity("EntityLayer.Concrete.CustomerOperationFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CustomerOperationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UploadedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerOperationId");
-
-                    b.ToTable("CustomerOperationFiles");
-                });
-
             modelBuilder.Entity("EntityLayer.Concrete.TaskAssignment", b =>
                 {
                     b.Property<int>("Id")
@@ -391,17 +364,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EntityLayer.Concrete.CustomerOperationFile", b =>
-                {
-                    b.HasOne("EntityLayer.Concrete.CustomerOperation", "CustomerOperation")
-                        .WithMany()
-                        .HasForeignKey("CustomerOperationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerOperation");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.TaskAssignment", b =>

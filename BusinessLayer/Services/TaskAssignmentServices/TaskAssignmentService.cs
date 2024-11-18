@@ -76,7 +76,7 @@ namespace BusinessLayer.Services.TaskAssignmentServices
                 throw new Exception("Görev bulunamadı.");
             }
 
-            await _repository.Delete(taskAssignment);
+            await _repository.Delete(id);
         }
 
         public async Task<List<DisplayTaskAssignmentResponse>> GetAllTaskAssignmentAsync()

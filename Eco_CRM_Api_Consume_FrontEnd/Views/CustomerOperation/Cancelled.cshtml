@@ -386,7 +386,7 @@
             };
 
             $.ajax({
-                url: `https://sistemeco.online/api/CustomerOperations/filtered-cancelled-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/filtered-cancelled-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -403,7 +403,7 @@
         });
         function fetchData(page) {
             $.ajax({
-                url: `https://sistemeco.online/api/CustomerOperations/user-cancelled-operations?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/user-cancelled-operations?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -511,7 +511,7 @@
                 });
             } else {
                 $.ajax({
-                    url: `https://sistemeco.online/api/CustomerOperations/user-cancelled-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/user-cancelled-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -562,7 +562,7 @@
                     updatedStatusDescription: updatedStatusDescription,
                     isMeetingOnPlannedDate: meetingStatus === 'yes'
                 });
-                endpointUrl = "https://sistemeco.online/api/CustomerOperations/complete-operation";
+                endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
             }
             else if (status === "İptal") {
                 requestData = JSON.stringify({
@@ -570,7 +570,7 @@
                     cancelReason: cancelReason,
                     status: status
                 });
-                endpointUrl = "https://sistemeco.online/api/CustomerOperations/cancel-operation";
+                endpointUrl = "https://localhost:44309/api/CustomerOperations/cancel-operation";
             }
 
             $.ajax({
@@ -623,7 +623,7 @@
                 const encodedSearchTerm = encodeURIComponent(searchTerm);
 
                 $.ajax({
-                    url: `https://sistemeco.online/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
+                    url: `https://localhost:44309/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -660,7 +660,7 @@
             });
             function filterOperationsByCompanyName(companyName) {
                 $.ajax({
-                    url: `https://sistemeco.online/api/CustomerOperations/filtered-cancelled-user-operations`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-cancelled-user-operations`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,

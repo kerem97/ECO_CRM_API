@@ -29,7 +29,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://sistemeco.online/api/CustomerOperations/status-given-offers?pageNumber=1&pageSize=10");
+            var response = await client.GetAsync($"https://localhost:44309/api/CustomerOperations/status-given-offers?pageNumber=1&pageSize=10");
 
             if (response.IsSuccessStatusCode)
             {
@@ -50,7 +50,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://sistemeco.online/api/TaskAssignments/pending-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
+            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/pending-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -71,7 +71,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://sistemeco.online/api/TaskAssignments/proposal-given-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
+            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/proposal-given-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -93,7 +93,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {HttpContext.Session.GetString("Token")}");
 
-            var response = await client.GetAsync($"https://sistemeco.online/api/TaskAssignments/completed-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
+            var response = await client.GetAsync($"https://localhost:44309/api/TaskAssignments/completed-tasks?pageNumber={pageNumber}&pageSize={pageSize}");
 
             if (response.IsSuccessStatusCode)
             {

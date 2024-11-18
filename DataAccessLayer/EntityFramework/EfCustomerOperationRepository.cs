@@ -26,10 +26,14 @@ namespace DataAccessLayer.EntityFramework
             await _context.Set<CustomerOperation>().AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task Delete(CustomerOperation entity)
+        public async Task Delete(int id)
         {
-            _context.Set<CustomerOperation>().Remove(entity);
-            _context.SaveChanges();
+            var exist = await _context.Customers.FindAsync(id);
+            if (exist != null)
+            {
+                _context.Customers.Remove(exist);
+                await _context.SaveChangesAsync();
+            }
         }
         public async Task<List<CustomerOperation>> GetAll()
         {

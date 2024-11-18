@@ -81,7 +81,7 @@
 
     function fetchData(page) {
         $.ajax({
-            url: `https://sistemeco.online/api/Customers/paged-potential-customers?pageNumber=${page}&pageSize=${pageSize}`,
+            url: `https://localhost:44309/api/Customers/paged-potential-customers?pageNumber=${page}&pageSize=${pageSize}`,
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + token

@@ -19,6 +19,7 @@ namespace DataAccessLayer.Concrete
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerOperation> CustomerOperations { get; set; }
+        public DbSet<CustomerOperationFile> CustomerOperationFiles { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<TaskAssignmentFile> TaskAssignmentFiles { get; set; }
 

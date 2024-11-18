@@ -113,7 +113,7 @@
 
             if (searchTerm.length >= 1) {  
                 $.ajax({
-                    url: `https://sistemeco.online/api/Customers/search-companies-add-operations?searchTerm=${searchTerm}`,
+                    url: `https://localhost:44309/api/Customers/search-companies-add-operations?searchTerm=${searchTerm}`,
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token, 

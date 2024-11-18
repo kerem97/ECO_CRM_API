@@ -32,7 +32,7 @@ namespace BusinessLayer.Services.UserServices
             var user = await _userRepository.GetById(id);
             if (user != null)
             {
-                _userRepository.Delete(user);
+                _userRepository.Delete(id);
             }
         }
 

@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BusinessLayer.Services.TaskAssignmentServices;
 using BusinessLayer.Services.TaskAssignmentFileServices;
+using BusinessLayer.Services.CustomerOperationsFileServices;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,9 @@ builder.Services.AddScoped<ITaskAssignmentRepository, EfTaskAssignmentRepository
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ITaskAssignmentFileRepository, EfTaskAssignmentFileRepository>();
 builder.Services.AddScoped<ITaskAssignmentFileService, TaskAssignmentFileService>();
+builder.Services.AddScoped<ICustomerOperationFileRepository, EfCustomerOperationFileRepository>();
+builder.Services.AddScoped<ICustomerOperationFileService, CustomerOperationFileService>();
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 var jwtSettings = builder.Configuration.GetSection("JWT");
 
@@ -38,7 +43,7 @@ builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("https://ecosistem.runasp.net")
+        builder => builder.WithOrigins("https://ecosistem.runasp.net", "https://localhost:7269")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials());
@@ -61,7 +66,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 var app = builder.Build();
-app.UseCors("AllowSpecificOrigin");
 
 
 if (app.Environment.IsDevelopment())
@@ -69,9 +73,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
+    RequestPath = "/uploads"
+});
+
+app.UseCors("AllowSpecificOrigin"); // CORS'u öne alýn
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

@@ -13,6 +13,7 @@ namespace EntityLayer.Concrete
         public DateTime UploadedDate { get; set; } = DateTime.Now;
         public int TaskAssignmentId { get; set; }
         public string FilePath { get; set; }
+        public string FileType { get; set; }
         public TaskAssignment TaskAssignment { get; set; }
     }
 

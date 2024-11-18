@@ -110,6 +110,10 @@
                     <p><strong>Miktar 8:</strong> <span id="quantity8"></span></p>
                     <p><strong>Miktar 9:</strong> <span id="quantity9"></span></p>
                     <p><strong>Miktar 10:</strong> <span id="quantity10"></span></p>
+                    <div id="fileListContainer" style="margin-top: 20px;">
+                        <h6>Dosyalar:</h6>
+                    </div>
+
                     <input type="hidden" id="taskId" />
                 </div>
                 <div class="modal-footer">
@@ -166,7 +170,7 @@
 
         function fetchData(page) {
             return $.ajax({
-                url: `https://sistemeco.online/api/TaskAssignments/pending-tasks?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/TaskAssignments/pending-tasks?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -247,7 +251,7 @@
 
         function openTaskDetailsModal(taskId) {
             $.ajax({
-                url: `https://sistemeco.online/api/TaskAssignments/taskassignment/${taskId}`,
+                url: `https://localhost:44309/api/TaskAssignments/taskassignment/${taskId}`,
                 method: 'GET',
                 success: function (task) {
                     $('#customerName').text(task.customerName);
@@ -280,6 +284,26 @@
                         }
                     });
 
+                    const fileListContainer = $('#fileListContainer');
+                    fileListContainer.empty();
+
+                    if (task.files && task.files.length > 0) {
+                        task.files.forEach(file => {
+                            const fileRow = `
+                                <div style="margin-bottom: 10px; display: flex; align-items: center;">
+                                    <button class="btn btn-primary btn-sm me-2" onclick="viewFile('${file.filePath}')">
+                                        Gör
+                                    </button>
+                                    <a href="https://localhost:44309/api/CustomerOperationFiles/download/${file.fileName}" class="btn btn-secondary btn-sm" download>
+                                        İndir
+                                    </a>
+                                </div>
+                            `;
+                            fileListContainer.append(fileRow);
+                        });
+                    } else {
+                        fileListContainer.append('<p>Dosya bulunamadı.</p>');
+                    }
 
                     $('#taskDetailModal').modal('show');
                 },
@@ -288,6 +312,22 @@
                 }
             });
         }
+
+        function viewFile(filePath) {
+            if (!filePath) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Dosya bulunamadı.',
+                });
+            } else {
+                const validPath = filePath.replace(/\\/g, '/');
+                window.open(validPath, '_blank');
+            }
+        }
+
+
+
         function openOfferModal(taskId) {
             console.log('Task ID:', taskId);
             $('#offerModal').modal('show');
@@ -318,7 +358,7 @@
             const taskId = $('#taskId').val();
             console.log('Görev ID:', taskId);
             $.ajax({
-                url: 'https://sistemeco.online/api/TaskAssignments/task/update-status-to-givenoffer',
+                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-givenoffer',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -357,7 +397,7 @@
                 formData.append("taskAssignmentId", taskId);
 
                 $.ajax({
-                    url: 'https://sistemeco.online/api/TaskAssignmentFiles/upload',
+                    url: 'https://localhost:44309/api/TaskAssignmentFiles/upload',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -397,7 +437,7 @@
         }
         function updateTaskStatusToProposalGiven(taskId) {
             $.ajax({
-                url: 'https://sistemeco.online/api/TaskAssignments/task/update-status-to-givenproposal',
+                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-givenproposal',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

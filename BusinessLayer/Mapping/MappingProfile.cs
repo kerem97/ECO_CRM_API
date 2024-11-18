@@ -3,6 +3,8 @@ using DtoLayer.Customer.Requests;
 using DtoLayer.Customer.Responses;
 using DtoLayer.CustomerOperation.Requests;
 using DtoLayer.CustomerOperation.Responses;
+using DtoLayer.CustomerOperationFile.Requests;
+using DtoLayer.CustomerOperationFile.Responses;
 using DtoLayer.TaskAssignment.Requests;
 using DtoLayer.TaskAssignment.Responses;
 using DtoLayer.TaskAssignmentFile.Requests;
@@ -36,6 +38,10 @@ namespace BusinessLayer.Mapping
             CreateMap<CustomerOperation, FilterCustomerOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, CompleteOperationRequest>().ReverseMap();
             CreateMap<CustomerOperation, CancelOperationRequest>().ReverseMap();
+
+
+            CreateMap<CustomerOperationFile, AddCustomerOperationFileRequest>().ReverseMap();
+            CreateMap<CustomerOperationFile, DisplayCustomerOperationFileResponse>().ReverseMap();
 
 
             CreateMap<TaskAssignment, AddTaskAssignmentRequest>().ReverseMap();

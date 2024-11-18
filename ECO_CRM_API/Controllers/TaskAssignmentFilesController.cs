@@ -21,11 +21,27 @@ namespace ECO_CRM_API.Controllers
         {
             if (request.File == null || request.File.Length == 0)
             {
-                return BadRequest("Dosya seçiniz.");
+                return BadRequest("Lütfen bir dosya seçiniz.");
+            }
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf" };
+            var fileExtension = Path.GetExtension(request.File.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                return BadRequest("Sadece PDF ve görsel dosyalar yüklenebilir.");
+            }
+
+            const long maxFileSize = 5 * 1024 * 1024; // 5 MB
+            if (request.File.Length > maxFileSize)
+            {
+                return BadRequest("Dosya boyutu 5 MB'yi geçemez.");
             }
 
             await _taskAssignmentFileService.AddTaskAssignmentFile(request);
-            return Ok("Dosya başarıyla yüklendi.");
+
+            return Ok(new { message = "Dosya başarıyla yüklendi." });
         }
+
     }
 }

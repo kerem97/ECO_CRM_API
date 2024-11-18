@@ -30,7 +30,7 @@ namespace Eco_CRM_Api_Consume_FrontEnd.Controllers
                 var loginData = JsonConvert.SerializeObject(model);
                 var content = new StringContent(loginData, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("https://sistemeco.online/api/Auths/login", content);
+                var response = await client.PostAsync("https://localhost:44309/api/Auths/login", content);
 
                 if (response.IsSuccessStatusCode)
                 {

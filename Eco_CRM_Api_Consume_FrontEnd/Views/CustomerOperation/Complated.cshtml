@@ -346,7 +346,7 @@
             $('#monthFilter').empty().append('<option value="">Ay Seç</option>');
             $('#yearFilter').empty().append('<option value="">Yıl Seç</option>');
             $.ajax({
-                url: 'https://sistemeco.online/api/CustomerOperations/get-dropdown-data',
+                url: 'https://localhost:44309/api/CustomerOperations/get-dropdown-data',
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -387,7 +387,7 @@
             };
 
             $.ajax({
-                url: `https://sistemeco.online/api/CustomerOperations/filtered-complated-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/filtered-complated-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -404,7 +404,7 @@
         });
         function fetchData(page) {
             $.ajax({
-                url: `https://sistemeco.online/api/CustomerOperations/user-complated-operations?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/CustomerOperations/user-complated-operations?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -495,7 +495,7 @@
                 };
 
                 $.ajax({
-                    url: `https://sistemeco.online/api/CustomerOperations/filtered-complated-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-complated-user-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -512,7 +512,7 @@
                 });
             } else {
                 $.ajax({
-                    url: `https://sistemeco.online/api/CustomerOperations/user-complated-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
+                    url: `https://localhost:44309/api/CustomerOperations/user-complated-operations?pageNumber=${currentPage}&pageSize=${pageSize}`,
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -563,7 +563,7 @@
                     updatedStatusDescription: updatedStatusDescription,
                     isMeetingOnPlannedDate: meetingStatus === 'yes'
                 });
-                endpointUrl = "https://sistemeco.online/api/CustomerOperations/complete-operation";
+                endpointUrl = "https://localhost:44309/api/CustomerOperations/complete-operation";
             }
             else if (status === "Gerçekleşmedi") {
                 requestData = JSON.stringify({
@@ -571,7 +571,7 @@
                     cancelReason: cancelReason,
                     status: status
                 });
-                endpointUrl = "https://sistemeco.online/api/CustomerOperations/cancel-operation";
+                endpointUrl = "https://localhost:44309/api/CustomerOperations/cancel-operation";
             }
 
             $.ajax({
@@ -624,7 +624,7 @@
                 const encodedSearchTerm = encodeURIComponent(searchTerm);
 
                 $.ajax({
-                    url: `https://sistemeco.online/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
+                    url: `https://localhost:44309/api/Customers/search-companies?searchTerm=${encodedSearchTerm}`,
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer ' + token
@@ -661,7 +661,7 @@
             });
             function filterOperationsByCompanyName(companyName) {
                 $.ajax({
-                    url: `https://sistemeco.online/api/CustomerOperations/filtered-complated-user-operations`,
+                    url: `https://localhost:44309/api/CustomerOperations/filtered-complated-user-operations`,
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,

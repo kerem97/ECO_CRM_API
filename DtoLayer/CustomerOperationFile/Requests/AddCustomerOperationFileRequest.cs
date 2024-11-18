@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DtoLayer.TaskAssignmentFile.Requests
+namespace DtoLayer.CustomerOperationFile.Requests
 {
-    public class AddTaskAssignmentFileRequest
+    public class AddCustomerOperationFileRequest
     {
+        public int CustomerOperationId { get; set; }
         public IFormFile File { get; set; }
-        public int TaskAssignmentId { get; set; }
-
     }
 }

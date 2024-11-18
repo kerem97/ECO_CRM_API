@@ -132,7 +132,7 @@
 
         function fetchData(page) {
             return $.ajax({
-                url: `https://sistemeco.online/api/TaskAssignments/proposal-given-tasks?pageNumber=${page}&pageSize=${pageSize}`,
+                url: `https://localhost:44309/api/TaskAssignments/proposal-given-tasks?pageNumber=${page}&pageSize=${pageSize}`,
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -210,7 +210,7 @@
 
         function openTaskDetailsModal(taskId) {
             $.ajax({
-                url: `https://sistemeco.online/api/TaskAssignments/taskassignment/${taskId}`,
+                url: `https://localhost:44309/api/TaskAssignments/taskassignment/${taskId}`,
                 method: 'GET',
                 success: function (task) {
                     $('#customerName').text(task.customerName);
@@ -259,7 +259,7 @@
             }
 
             $.ajax({
-                url: 'https://sistemeco.online/api/TaskAssignments/task/update-status-to-approved',
+                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-approved',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -297,7 +297,7 @@
             }
 
             $.ajax({
-                url: 'https://sistemeco.online/api/TaskAssignments/task/update-status-to-rejected',
+                url: 'https://localhost:44309/api/TaskAssignments/task/update-status-to-rejected',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

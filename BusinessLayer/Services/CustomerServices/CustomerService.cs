@@ -35,7 +35,7 @@ namespace BusinessLayer.Services.CustomerServices
             var customer = await _customerRepository.GetById(id);
             if (customer != null)
             {
-                _customerRepository.Delete(customer);
+                _customerRepository.Delete(id);
             }
         }
         public async Task<List<DisplayCustomerResponse>> GetAllCustomersAsync()

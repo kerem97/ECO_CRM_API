@@ -99,7 +99,7 @@ namespace BusinessLayer.Services.CustomerOperationServices
             var operation = await _customerOperationRepository.GetById(id);
             if (operation != null)
             {
-                _customerOperationRepository.Delete(operation);
+                _customerOperationRepository.Delete(id);
             }
         }
         public async Task<List<DisplayCustomerOperationResponse>> GetAllCustomerOperationsAsync()

@@ -1,4 +1,6 @@
-﻿using BusinessLayer.Services.TaskAssignmentServices;
+﻿using BusinessLayer.Services.CustomerOperationsFileServices;
+using BusinessLayer.Services.TaskAssignmentServices;
+using DtoLayer.CustomerOperationFile.Responses;
 using DtoLayer.TaskAssignment.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +12,14 @@ namespace ECO_CRM_API.Controllers
     public class TaskAssignmentsController : ControllerBase
     {
         private readonly ITaskAssignmentService _taskAssignmentService;
-
-        public TaskAssignmentsController(ITaskAssignmentService taskAssignmentService)
+        private readonly ICustomerOperationFileService _customerOperationFileService;
+        public TaskAssignmentsController(ITaskAssignmentService taskAssignmentService, ICustomerOperationFileService customerOperationFileService)
         {
             _taskAssignmentService = taskAssignmentService;
+            _customerOperationFileService = customerOperationFileService;
         }
         [HttpPost("taskassignment")]
-        public async Task<IActionResult> AddTaskAssignment([FromBody] AddTaskAssignmentRequest request)
+        public async Task<IActionResult> AddTaskAssignment([FromForm] AddTaskAssignmentRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -45,12 +48,29 @@ namespace ECO_CRM_API.Controllers
         [HttpGet("taskassignment/{id}")]
         public async Task<IActionResult> GetTaskAssignmentById(int id)
         {
-            var result = await _taskAssignmentService.GetTaskAssignmentByIdAsync(id);
-            if (result == null)
+            var task = await _taskAssignmentService.GetTaskAssignmentByIdAsync(id);
+            if (task == null)
                 return NotFound("Görev bulunamadı.");
 
-            return Ok(result);
+            var operationId = task.OperationId;
+            var files = await _customerOperationFileService.GetFilesByOperationIdAsync(operationId);
+
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var mappedFiles = files.Select(file => new DisplayCustomerOperationFileResponse
+            {
+                Id = file.Id,
+                FilePath = $"{baseUrl}/uploads/customeroperations/{file.FileName}",
+                FileName = file.FileName,
+                UploadedDate = file.UploadedDate
+            }).ToList();
+
+            task.Files = mappedFiles;
+
+            return Ok(task);
         }
+
+
+
         [HttpGet("pending-tasks")]
         public async Task<IActionResult> GetPendingTasks(int pageNumber = 1, int pageSize = 10)
         {
